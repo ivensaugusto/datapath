@@ -219,11 +219,12 @@ public class OnboardingController : ControllerBase
             request.ReviewedByUserId = reviewerId;
 
             // 2. Criar Tenant / PartnerInstitution
+            var instName = string.IsNullOrWhiteSpace(request.InstitutionAndDepartment) ? "Instituição Parceira" : request.InstitutionAndDepartment;
             var tenant = new PartnerInstitution
             {
                 Id = Guid.NewGuid(),
-                CorporateName = request.InstitutionAndDepartment,
-                TradeName = request.InstitutionAndDepartment.Split('-')[0].Trim(),
+                CorporateName = instName,
+                TradeName = instName.Split('-')[0].Trim(),
                 DocumentNumber = "ISENTO-" + Guid.NewGuid().ToString("N")[..8].ToUpper(),
                 ContactEmail = request.Email,
                 ContactPhone = request.Phone,
@@ -262,6 +263,7 @@ public class OnboardingController : ControllerBase
             var currentYear = DateTime.UtcNow.Year;
             var ordersCount = await _db.DigitizationOrders.CountAsync(o => o.OrderCode.StartsWith($"ORD-{currentYear}"));
             var orderCode = $"ORD-{currentYear}-{(ordersCount + 1):D4}";
+            var researchTitleSafe = string.IsNullOrWhiteSpace(request.ResearchTitle) ? "Geral" : request.ResearchTitle;
 
             var order = new DigitizationOrder
             {
@@ -272,7 +274,7 @@ public class OnboardingController : ControllerBase
                 ExpectedSlidesCount = dto.ExpectedSlidesCount,
                 DigitizedSlidesCount = 0,
                 Status = DigitizationOrderStatus.Received,
-                TechnicalNotes = $"Solicitação aprovada em {DateTime.UtcNow:dd/MM/yyyy HH:mm}. Título da Pesquisa: {request.ResearchTitle}",
+                TechnicalNotes = $"Solicitação aprovada em {DateTime.UtcNow:dd/MM/yyyy HH:mm}. Título da Pesquisa: {researchTitleSafe}",
                 RequestedAt = DateTime.UtcNow
             };
             _db.DigitizationOrders.Add(order);
@@ -281,7 +283,7 @@ public class OnboardingController : ControllerBase
             var folder = new SlideFolder
             {
                 Id = Guid.NewGuid(),
-                FolderName = $"Acervo — {request.ResearchTitle[..Math.Min(30, request.ResearchTitle.Length)]}",
+                FolderName = $"Acervo — {researchTitleSafe[..Math.Min(30, researchTitleSafe.Length)]}",
                 OwnerUserId = user.Id,
                 PartnerInstitutionId = tenant.Id,
                 Policy = request.RequestedStoragePolicy,
