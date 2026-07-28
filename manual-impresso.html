@@ -262,20 +262,19 @@ git commit -m "feat: evolucao arquitetural multi-tenancy, onboarding nativo, pur
 git push origin main
   </pre>
 
-  <h3>B. Execução do Deploy em Produção (Docker / Hetzner / Portainer)</h3>
-  <pre>
-# 1. No servidor de produção, baixe as alterações do repositório
-git pull origin main
-
-# 2. Reconstrua e suba a stack de produção em background
-docker compose -f docker-compose.prod.yml up -d --build
-
-# 3. Verificar o status dos containers ativos
-docker compose -f docker-compose.prod.yml ps
-
-# 4. Acompanhar os logs da aplicação e banco de dados
-docker compose -f docker-compose.prod.yml logs -f
-  </pre>
+  <h3>B. Configuração da Stack Nativa no Portainer (Nome da Aplicação: <code>app-datapath</code>)</h3>
+  <p>Para evitar que a aplicação fique marcada como "Stack Externa Limitada" (sem botão de Redeploy/Webhook) no Portainer:</p>
+  <ol>
+    <li>No Portainer (<code>pac.produtoweb.com.br</code>), navegue até <strong>Stacks</strong>. Se houver a stack externa antiga <code>datapath</code>, remova-a.</li>
+    <li>Clique no botão <strong>+ Add stack</strong>.</li>
+    <li><strong>Name:</strong> <code>app-datapath</code></li>
+    <li><strong>Build method:</strong> Selecione a opção <strong>Repository</strong>.</li>
+    <li><strong>Repository URL:</strong> <code>https://github.com/ivensaugusto/datapath</code></li>
+    <li><strong>Repository reference:</strong> <code>refs/heads/master</code> (ou <code>master</code>)</li>
+    <li><strong>Compose path:</strong> <code>docker-compose.prod.yml</code></li>
+    <li>Ative a opção <strong>Automatic updates</strong> (ou copie o <strong>Webhook URL</strong>).</li>
+    <li>Clique em <strong>Deploy the stack</strong>. O Portainer compilará e executará os containers nativamente com controle total!</li>
+  </ol>
 
   <div class="no-print" style="margin-top: 30px; text-align: center;">
     <button onclick="window.print()" style="padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">

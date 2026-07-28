@@ -1,9 +1,10 @@
-version: '3.8'
+name: app-datapath
 
 # ════════════════════════════════════════════════════════════════════
-# dataPATH — Stack de Produção (Portainer / Hetzner)
+# dataPATH — Stack de Produção Nativa Portainer (Hetzner)
+# Stack Name: app-datapath
 # Subdomínio: datapath.produtoweb.com.br
-# Proxy: nginx-proxy com acme-companion (SSL Automático Let's Encrypt)
+# Proxy: nginx-proxy com acme-companion (SSL Automático Let's Encrypt na rede pwbot_net)
 # ════════════════════════════════════════════════════════════════════
 
 services:
