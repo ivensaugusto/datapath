@@ -14,7 +14,7 @@ RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
 
 # Copiar todo o código e compilar
 COPY . .
-RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/publish
 
 # ── Stage 2: Runtime ──────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
