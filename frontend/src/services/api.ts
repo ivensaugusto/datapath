@@ -1,6 +1,8 @@
 import type { AuthResponse, BiopsyCaseDetail, BiopsyCaseSummary, AuditLog } from '../types/api';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = typeof window !== 'undefined' && window.location.port === '5173'
+  ? 'http://localhost:5000/api'
+  : '/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('datapath_token');
