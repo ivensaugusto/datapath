@@ -1,0 +1,49 @@
+# ════════════════════════════════════════════════════════════════════
+# STAGE 1: Build Frontend (React 18 / Vite / TypeScript / Tailwind)
+# ════════════════════════════════════════════════════════════════════
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
+
+# ════════════════════════════════════════════════════════════════════
+# STAGE 2: Build Backend (.NET 8 Web API)
+# ════════════════════════════════════════════════════════════════════
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-builder
+WORKDIR /src
+COPY backend/src/DataPath.Core/DataPath.Core.csproj src/DataPath.Core/
+COPY backend/src/DataPath.Infrastructure/DataPath.Infrastructure.csproj src/DataPath.Infrastructure/
+COPY backend/src/DataPath.Api/DataPath.Api.csproj src/DataPath.Api/
+RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
+
+COPY backend/src/ src/
+RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/backend/publish /p:UseAppHost=false
+
+# ════════════════════════════════════════════════════════════════════
+# STAGE 3: Final Production Image (ASP.NET 8 Runtime + Nginx + Supervisor)
+# ════════════════════════════════════════════════════════════════════
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y nginx supervisor curl && rm -rf /var/lib/apt/lists/*
+
+# Copy Backend Published Binaries
+COPY --from=backend-builder /app/backend/publish ./backend
+
+# Copy Frontend Built Assets
+COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
+
+# Copy Nginx Configuration
+COPY nginx.prod.conf /etc/nginx/sites-available/default
+
+# Supervisor configuration to run both .NET API and Nginx
+RUN echo '[supervisord]\nnodaemon=true\n\n[program:backend]\ncommand=dotnet /app/backend/DataPath.Api.dll\ndirectory=/app/backend\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n' > /etc/supervisor/conf.d/supervisord.conf
+
+# Storage volume for WSI slides
+VOLUME /app/storage
+
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

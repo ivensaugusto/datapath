@@ -1,0 +1,84 @@
+# ════════════════════════════════════════════════════════════════════
+# dataPATH — Docker Compose (Desenvolvimento Local)
+# ════════════════════════════════════════════════════════════════════
+# Uso: docker compose up --build
+# ════════════════════════════════════════════════════════════════════
+
+services:
+  # ── PostgreSQL 16 ───────────────────────────────────────────────
+  datapath-db:
+    image: postgres:16-alpine
+    container_name: datapath-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: datapath
+      POSTGRES_USER: datapath_user
+      POSTGRES_PASSWORD: DataPath_Dev_2026!
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - datapath_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datapath_user -d datapath"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - datapath-net
+
+  # ── Backend API (.NET 8) ────────────────────────────────────────
+  datapath-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: datapath-api
+    restart: unless-stopped
+    depends_on:
+      datapath-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=datapath-db;Port=5432;Database=datapath;Username=datapath_user;Password=DataPath_Dev_2026!;Include Error Detail=true"
+      Storage__DriverType: Local
+      Storage__LocalBasePath: /app/storage
+      Cors__AllowedOrigins__0: http://localhost:5173
+      Cors__AllowedOrigins__1: http://localhost:3000
+      Cors__AllowedOrigins__2: http://localhost:80
+      Jwt__SecretKey: "DevOnly_SuperSecret_MinLength32Chars!!"
+      Jwt__Issuer: dataPATH
+      Jwt__Audience: dataPATH-clients
+      Jwt__ExpirationMinutes: 480
+    ports:
+      - "8080:8080"
+    volumes:
+      - datapath_storage:/app/storage
+    networks:
+      - datapath-net
+
+  # ── Frontend React (Nginx) ─────────────────────────────────────
+  datapath-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: datapath-web
+    restart: unless-stopped
+    depends_on:
+      - datapath-api
+    ports:
+      - "3000:80"
+    networks:
+      - datapath-net
+
+# ── Volumes Persistentes ────────────────────────────────────────
+volumes:
+  datapath_pgdata:
+    driver: local
+  datapath_storage:
+    driver: local
+
+# ── Rede Interna ────────────────────────────────────────────────
+networks:
+  datapath-net:
+    driver: bridge
