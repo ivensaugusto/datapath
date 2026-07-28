@@ -33,7 +33,9 @@ const MainApp: React.FC = () => {
   if (currentPage === 'onboarding-apply') {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
-        <OnboardingApplyPage onNavigate={page => setCurrentPage(page)} />
+        <div className="flex-1 max-w-4xl w-full mx-auto px-6 sm:px-8 py-10">
+          <OnboardingApplyPage onNavigate={page => setCurrentPage(page)} />
+        </div>
       </div>
     );
   }
@@ -53,7 +55,7 @@ const MainApp: React.FC = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500 selection:text-white flex flex-col">
       <Navbar onNavigate={handleNavigate} currentPage={currentPage} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-6 sm:px-8 lg:px-10 py-10">
         {currentPage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} />}
         {currentPage === 'new-case' && <NewCasePage onNavigate={handleNavigate} />}
         {currentPage === 'case-detail' && selectedCaseId && (

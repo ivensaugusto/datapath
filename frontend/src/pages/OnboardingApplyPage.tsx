@@ -87,9 +87,9 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-6 space-y-8">
+    <div className="space-y-10">
       {/* Header */}
-      <div className="flex justify-between items-center bg-slate-900/60 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl">
+      <div className="flex justify-between items-center bg-slate-900/60 p-8 rounded-2xl border border-slate-800 backdrop-blur-xl">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight">Módulo de Onboarding & Captação de Parceiros</h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -106,7 +106,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* SEÇÃO 1: Identificação */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
+        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
           <div className="border-b border-slate-800 pb-3">
             <h2 className="text-base font-bold text-white flex items-center space-x-2">
               <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
@@ -174,7 +174,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
         </div>
 
         {/* SEÇÃO 2: Perfil e Modalidade */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
+        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
           <div className="border-b border-slate-800 pb-3">
             <h2 className="text-base font-bold text-white flex items-center space-x-2">
               <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
@@ -218,7 +218,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
         </div>
 
         {/* SEÇÃO 3: Documentação Ética (CEP/CEUA) */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
+        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
           <div className="border-b border-slate-800 pb-3">
             <h2 className="text-base font-bold text-white flex items-center space-x-2">
               <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
@@ -281,7 +281,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
         </div>
 
         {/* SEÇÃO 4: Equipamentos & Política de Storage */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
+        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
           <div className="border-b border-slate-800 pb-3">
             <h2 className="text-base font-bold text-white flex items-center space-x-2">
               <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">4</span>
