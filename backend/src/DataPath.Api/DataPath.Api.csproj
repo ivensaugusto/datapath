@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataPath.Core\DataPath.Core.csproj" />
-    <ProjectReference Include="..\DataPath.Infrastructure\DataPath.Infrastructure.csproj" />
+    <ProjectReference Include="../DataPath.Core/DataPath.Core.csproj" />
+    <ProjectReference Include="../DataPath.Infrastructure/DataPath.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

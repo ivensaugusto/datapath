@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataPath.Core\DataPath.Core.csproj" />
+    <ProjectReference Include="../DataPath.Core/DataPath.Core.csproj" />
   </ItemGroup>
 
 </Project>
