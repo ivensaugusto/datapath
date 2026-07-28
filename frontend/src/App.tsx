@@ -79,7 +79,7 @@ const MainApp: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
+      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center text-slate-400">
         <div className="flex items-center space-x-3">
           <div className="w-4 h-4 rounded-full bg-blue-500 animate-ping" />
           <span className="text-sm font-semibold tracking-wide text-slate-300">Carregando dataPATH...</span>
@@ -102,22 +102,26 @@ const MainApp: React.FC = () => {
     );
   }
 
-  if (!isAuthenticated || route.page === 'login') {
+  // If not logged in, force Login Page
+  if (!isAuthenticated) {
     return <LoginPage onNavigate={handleNavigate} />;
   }
 
+  // If authenticated but page was set to 'login', default to dashboard
+  const activePage = route.page === 'login' ? 'dashboard' : route.page;
+
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 font-sans selection:bg-blue-600 selection:text-white flex flex-col antialiased">
-      <Navbar onNavigate={handleNavigate} currentPage={route.page} />
+      <Navbar onNavigate={handleNavigate} currentPage={activePage} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {route.page === 'dashboard' && <DashboardPage onNavigate={handleNavigate} />}
-        {route.page === 'new-case' && <NewCasePage onNavigate={handleNavigate} />}
-        {route.page === 'case-detail' && route.caseId && (
+        {activePage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} />}
+        {activePage === 'new-case' && <NewCasePage onNavigate={handleNavigate} />}
+        {activePage === 'case-detail' && route.caseId && (
           <CaseDetailPage caseId={route.caseId} onNavigate={handleNavigate} />
         )}
-        {route.page === 'audit-logs' && <AuditLogsPage />}
-        {route.page === 'onboarding-management' && <OnboardingManagementPage />}
+        {activePage === 'audit-logs' && <AuditLogsPage />}
+        {activePage === 'onboarding-management' && <OnboardingManagementPage />}
       </main>
 
       <footer className="border-t border-slate-900 bg-[#090d16] py-6 text-center text-xs text-slate-500">

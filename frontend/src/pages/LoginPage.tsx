@@ -19,6 +19,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
     try {
       await login(email, password);
+      if (onNavigate) {
+        onNavigate('dashboard');
+      }
     } catch (err: any) {
       setError(err.message || 'Erro ao efetuar login. Verifique suas credenciais.');
     } finally {
