@@ -62,16 +62,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             </button>
 
             {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
-              <button
-                onClick={() => onNavigate('new-case')}
-                className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  currentPage === 'new-case'
-                    ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40 shadow-lg shadow-blue-500/10'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                }`}
-              >
-                ➕ Novo Caso
-              </button>
+              <>
+                <button
+                  onClick={() => onNavigate('new-case')}
+                  className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                    currentPage === 'new-case'
+                      ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40 shadow-lg shadow-blue-500/10'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                  }`}
+                >
+                  ➕ Novo Caso
+                </button>
+
+                <button
+                  onClick={() => onNavigate('onboarding-management')}
+                  className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                    currentPage === 'onboarding-management'
+                      ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40 shadow-lg shadow-blue-500/10'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                  }`}
+                >
+                  📋 Gestão de Onboarding
+                </button>
+              </>
             )}
 
             {user?.role === 'Admin' && (

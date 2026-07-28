@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { LoginPage } from './pages/LoginPage';
@@ -6,16 +6,34 @@ import { DashboardPage } from './pages/DashboardPage';
 import { NewCasePage } from './pages/NewCasePage';
 import { CaseDetailPage } from './pages/CaseDetailPage';
 import { AuditLogsPage } from './pages/AuditLogsPage';
+import { OnboardingApplyPage } from './pages/OnboardingApplyPage';
+import { OnboardingManagementPage } from './pages/OnboardingManagementPage';
 
 const MainApp: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
 
+  useEffect(() => {
+    const handleCustomNav = (e: any) => {
+      if (e.detail) setCurrentPage(e.detail);
+    };
+    window.addEventListener('navigate', handleCustomNav);
+    return () => window.removeEventListener('navigate', handleCustomNav);
+  }, []);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
         Carregando dataPATH...
+      </div>
+    );
+  }
+
+  if (currentPage === 'onboarding-apply') {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
+        <OnboardingApplyPage onNavigate={page => setCurrentPage(page)} />
       </div>
     );
   }
@@ -42,6 +60,7 @@ const MainApp: React.FC = () => {
           <CaseDetailPage caseId={selectedCaseId} onNavigate={handleNavigate} />
         )}
         {currentPage === 'audit-logs' && <AuditLogsPage />}
+        {currentPage === 'onboarding-management' && <OnboardingManagementPage />}
       </main>
 
       <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">

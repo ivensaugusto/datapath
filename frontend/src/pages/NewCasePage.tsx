@@ -91,7 +91,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             <select
               value={organSite}
               onChange={(e) => setOrganSite(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             >
               <option value="Pele">Pele</option>
               <option value="Mama">Mama</option>
@@ -113,7 +113,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             <select
               value={stainingType}
               onChange={(e) => setStainingType(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             >
               <option value="HE">Hematoxilina-Eosina (HE)</option>
               <option value="Imuno-histoquímica">Imuno-histoquímica (IHQ)</option>
@@ -133,7 +133,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             <select
               value={patientBiologicalSex}
               onChange={(e) => setPatientBiologicalSex(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             >
               <option value="F">Feminino</option>
               <option value="M">Masculino</option>
@@ -153,7 +153,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
               value={patientAgeAtBiopsy}
               onChange={(e) => setPatientAgeAtBiopsy(e.target.value ? Number(e.target.value) : '')}
               placeholder="Ex: 45"
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             />
           </div>
         </div>
@@ -165,11 +165,11 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           </label>
           <textarea
             required
-            rows={4}
+            rows={5}
             value={clinicalSummary}
             onChange={(e) => setClinicalSummary(e.target.value)}
             placeholder="Descreva a história clínica, suspeita diagnóstica e achados macroscópicos..."
-            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+            className="w-full min-h-[160px] p-4 leading-relaxed rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-base"
           />
         </div>
 

@@ -100,7 +100,7 @@ export const LoginPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seu.email@datapath.local"
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
             />
           </div>
 
@@ -114,14 +114,14 @@ export const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-sm"
+              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all disabled:opacity-50 flex items-center justify-center space-x-2 text-sm"
+            className="w-full h-12 py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all disabled:opacity-50 flex items-center justify-center space-x-2 text-base"
           >
             {loading ? (
               <span>Autenticando...</span>
@@ -133,6 +133,22 @@ export const LoginPage: React.FC = () => {
             )}
           </button>
         </form>
+
+        <div className="pt-2 border-t border-slate-800/80 text-center space-y-2">
+          <p className="text-xs text-slate-400">
+            É uma universidade ou laboratório parceiro?
+          </p>
+          <a
+            href="#onboarding"
+            onClick={(e) => {
+              e.preventDefault();
+              window.dispatchEvent(new CustomEvent('navigate', { detail: 'onboarding-apply' }));
+            }}
+            className="inline-block px-4 py-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20 text-xs font-bold transition-all"
+          >
+            🚀 Solicitar Cadastro / Onboarding Nativo
+          </a>
+        </div>
 
         <p className="text-center text-xs text-slate-500">
           Senha padrão de teste: <code className="text-blue-400 font-mono bg-slate-950 px-1.5 py-0.5 rounded">DataPath@2026</code>

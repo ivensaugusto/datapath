@@ -216,21 +216,21 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
             </div>
 
             {/* Viewer Stage */}
-            <div className="relative h-80 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center group">
+            <div className="relative w-full h-[650px] min-h-[70vh] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center group shadow-inner">
               <div
                 className="transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing text-center p-8"
                 style={{ transform: `scale(${zoomLevel})` }}
               >
-                <div className="w-48 h-32 rounded-lg bg-gradient-to-tr from-purple-950/80 via-pink-900/60 to-rose-950/80 border-2 border-pink-500/30 mx-auto shadow-2xl flex items-center justify-center p-4">
-                  <div className="space-y-1">
-                    <span className="text-xs font-mono text-pink-300 font-bold block">Histopatologia WSI</span>
-                    <span className="text-[10px] text-pink-400/80 block">Coloração {caseData.stainingType}</span>
-                    <div className="w-12 h-12 rounded-full bg-pink-500/20 ring-2 ring-pink-400/40 mx-auto animate-pulse" />
+                <div className="w-64 h-44 rounded-xl bg-gradient-to-tr from-purple-950/80 via-pink-900/60 to-rose-950/80 border-2 border-pink-500/30 mx-auto shadow-2xl flex items-center justify-center p-4">
+                  <div className="space-y-2">
+                    <span className="text-sm font-mono text-pink-300 font-bold block">Histopatologia WSI</span>
+                    <span className="text-xs text-pink-400/80 block">Coloração {caseData.stainingType}</span>
+                    <div className="w-16 h-16 rounded-full bg-pink-500/20 ring-4 ring-pink-400/40 mx-auto animate-pulse" />
                   </div>
                 </div>
               </div>
 
-              <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-lg bg-slate-900/80 backdrop-blur-md text-[10px] text-slate-300 border border-slate-800 font-mono">
+              <div className="absolute bottom-4 left-4 px-4 py-2 rounded-xl bg-slate-900/90 backdrop-blur-md text-xs text-slate-300 border border-slate-800 font-mono shadow-lg">
                 📍 Resolução Gigapixel • Pan & Zoom Ativo
               </div>
             </div>
@@ -288,48 +288,48 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
 
             {/* New Opinion Form (Available for Specialist Doctor or Admin) */}
             {isDoctorOrAdmin && (!latestOpinion || !latestOpinion.isSigned) && (
-              <form onSubmit={handleCreateOpinion} className="space-y-4 pt-2 border-t border-slate-800">
+              <form onSubmit={handleCreateOpinion} className="space-y-6 pt-2 border-t border-slate-800">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400">
                   Emitir Novo Parecer Técnico
                 </h3>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                     Impressão Diagnóstica *
                   </label>
                   <textarea
                     required
-                    rows={3}
+                    rows={4}
                     value={diagnosticImpression}
                     onChange={(e) => setDiagnosticImpression(e.target.value)}
                     placeholder="Ex: Carcinoma ductal invasivo, grau histológico II..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                    className="w-full min-h-[160px] p-4 leading-relaxed rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-base"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                     Descrição Microscópica
                   </label>
                   <textarea
-                    rows={3}
+                    rows={4}
                     value={microscopicDescription}
                     onChange={(e) => setMicroscopicDescription(e.target.value)}
                     placeholder="Detalhes histológicos, mitoses, estroma..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                    className="w-full min-h-[160px] p-4 leading-relaxed rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-base"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                     Observações Complementares
                   </label>
                   <textarea
-                    rows={2}
+                    rows={3}
                     value={additionalComments}
                     onChange={(e) => setAdditionalComments(e.target.value)}
                     placeholder="Recomendações adicionais ou observações gerais..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                    className="w-full min-h-[120px] p-4 leading-relaxed rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-base"
                   />
                 </div>
 

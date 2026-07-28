@@ -56,7 +56,7 @@ public class AuthService : IAuthService
         }
 
         // Gerar JWT
-        var token = GenerateJwtToken(user.Id, user.Email, user.Role.ToString(), user.FullName);
+        var token = GenerateJwtToken(user.Id, user.Email, user.Role.ToString(), user.FullName, user.PartnerInstitutionId);
         var expirationMinutes = int.Parse(_config["Jwt:ExpirationMinutes"] ?? "480");
 
         _logger.LogInformation("Login bem-sucedido: {Email} ({Role})", user.Email, user.Role);
@@ -96,7 +96,7 @@ public class AuthService : IAuthService
     }
 
     // ── Geração do Token JWT ─────────────────────────────────────
-    private string GenerateJwtToken(Guid userId, string email, string role, string fullName)
+    private string GenerateJwtToken(Guid userId, string email, string role, string fullName, Guid? partnerInstitutionId)
     {
         var secretKey = _config["Jwt:SecretKey"]
             ?? throw new InvalidOperationException("Jwt:SecretKey não configurado.");
@@ -107,7 +107,7 @@ public class AuthService : IAuthService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
@@ -118,6 +118,11 @@ public class AuthService : IAuthService
                 DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
                 ClaimValueTypes.Integer64)
         };
+
+        if (partnerInstitutionId.HasValue)
+        {
+            claims.Add(new Claim("partner_institution_id", partnerInstitutionId.Value.ToString()));
+        }
 
         var token = new JwtSecurityToken(
             issuer: issuer,

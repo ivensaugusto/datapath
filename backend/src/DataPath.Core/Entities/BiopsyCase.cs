@@ -57,6 +57,24 @@ public class BiopsyCase
     public Guid CreatedByUserId { get; set; }
     public User CreatedByUser { get; set; } = null!;
 
+    /// <summary>
+    /// Inquilino / Instituição parceira à qual este caso pertence.
+    /// </summary>
+    public Guid? PartnerInstitutionId { get; set; }
+    public PartnerInstitution? PartnerInstitution { get; set; }
+
+    /// <summary>
+    /// Médico especialista especificamente atribuído para laudar o caso.
+    /// </summary>
+    public Guid? AssignedDoctorId { get; set; }
+    public User? AssignedDoctor { get; set; }
+
+    /// <summary>
+    /// Pasta de acervo à qual este caso pertence.
+    /// </summary>
+    public Guid? SlideFolderId { get; set; }
+    public SlideFolder? SlideFolder { get; set; }
+
     // ── Navegação ────────────────────────────────────────────────
     /// <summary>
     /// Arquivos de lâmina WSI vinculados a este caso.

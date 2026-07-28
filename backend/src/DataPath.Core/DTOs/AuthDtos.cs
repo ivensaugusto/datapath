@@ -37,4 +37,5 @@ public class UserInfoDto
     public string Role { get; set; } = string.Empty;
     public string? ProfessionalRegistration { get; set; }
     public string? Specialty { get; set; }
+    public Guid? PartnerInstitutionId { get; set; }
 }

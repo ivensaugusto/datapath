@@ -31,6 +31,7 @@ else
 // ── Serviços de Autenticação & Background ─────────────────────────
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHostedService<DataPath.Infrastructure.BackgroundServices.CaseRetentionBackgroundService>();
+builder.Services.AddHostedService<DataPath.Infrastructure.BackgroundServices.StoragePurgeBackgroundService>();
 
 // ── JWT Authentication ───────────────────────────────────────────
 var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]

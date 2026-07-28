@@ -52,4 +52,10 @@ public class SlideFile
     /// </summary>
     public Guid BiopsyCaseId { get; set; }
     public BiopsyCase BiopsyCase { get; set; } = null!;
+
+    /// <summary>
+    /// Pasta de acervo (SlideFolder) à qual este arquivo pertence.
+    /// </summary>
+    public Guid? SlideFolderId { get; set; }
+    public SlideFolder? SlideFolder { get; set; }
 }

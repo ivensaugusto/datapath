@@ -19,10 +19,50 @@ public class DataPathDbContext : DbContext
     public DbSet<SlideFile> SlideFiles => Set<SlideFile>();
     public DbSet<ClinicalOpinion> ClinicalOpinions => Set<ClinicalOpinion>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<PartnerInstitution> PartnerInstitutions => Set<PartnerInstitution>();
+    public DbSet<DigitizationOrder> DigitizationOrders => Set<DigitizationOrder>();
+    public DbSet<SlideFolder> SlideFolders => Set<SlideFolder>();
+    public DbSet<EquipmentAccessRequest> EquipmentAccessRequests => Set<EquipmentAccessRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // ── PartnerInstitution ───────────────────────────────────
+        modelBuilder.Entity<PartnerInstitution>(entity =>
+        {
+            entity.ToTable("partner_institutions");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.Property(e => e.CorporateName)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            entity.Property(e => e.TradeName)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            entity.Property(e => e.DocumentNumber)
+                .IsRequired()
+                .HasMaxLength(30);
+            entity.HasIndex(e => e.DocumentNumber);
+
+            entity.Property(e => e.ContactEmail)
+                .IsRequired()
+                .HasMaxLength(254);
+
+            entity.Property(e => e.ContactPhone)
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Type)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+        });
 
         // ── User ─────────────────────────────────────────────────
         modelBuilder.Entity<User>(entity =>
@@ -57,6 +97,49 @@ public class DataPathDbContext : DbContext
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("NOW()");
+
+            // FK: User → PartnerInstitution (Multi-Tenant)
+            entity.HasOne(e => e.PartnerInstitution)
+                .WithMany(p => p.Users)
+                .HasForeignKey(e => e.PartnerInstitutionId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // ── SlideFolder ──────────────────────────────────────────
+        modelBuilder.Entity<SlideFolder>(entity =>
+        {
+            entity.ToTable("slide_folders");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.Property(e => e.FolderName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(e => e.Policy)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.ShareToken)
+                .IsRequired()
+                .HasMaxLength(100);
+            entity.HasIndex(e => e.ShareToken).IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            // FK: SlideFolder → OwnerUser
+            entity.HasOne(e => e.OwnerUser)
+                .WithMany(u => u.OwnedSlideFolders)
+                .HasForeignKey(e => e.OwnerUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // FK: SlideFolder → PartnerInstitution
+            entity.HasOne(e => e.PartnerInstitution)
+                .WithMany(p => p.SlideFolders)
+                .HasForeignKey(e => e.PartnerInstitutionId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         // ── BiopsyCase ───────────────────────────────────────────
@@ -101,10 +184,29 @@ public class DataPathDbContext : DbContext
                 .HasForeignKey(e => e.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // FK: Caso → PartnerInstitution (Multi-Tenant)
+            entity.HasOne(e => e.PartnerInstitution)
+                .WithMany(p => p.BiopsyCases)
+                .HasForeignKey(e => e.PartnerInstitutionId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // FK: Caso → Médico Atribuído
+            entity.HasOne(e => e.AssignedDoctor)
+                .WithMany()
+                .HasForeignKey(e => e.AssignedDoctorId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // FK: Caso → SlideFolder
+            entity.HasOne(e => e.SlideFolder)
+                .WithMany(f => f.BiopsyCases)
+                .HasForeignKey(e => e.SlideFolderId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             // Índices compostos para filtros do Dashboard
             entity.HasIndex(e => e.Status);
             entity.HasIndex(e => e.OrganSite);
             entity.HasIndex(e => e.CreatedAt);
+            entity.HasIndex(e => e.PartnerInstitutionId);
         });
 
         // ── SlideFile ────────────────────────────────────────────
@@ -140,6 +242,12 @@ public class DataPathDbContext : DbContext
                 .WithMany(c => c.SlideFiles)
                 .HasForeignKey(e => e.BiopsyCaseId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // FK: Arquivo → SlideFolder
+            entity.HasOne(e => e.SlideFolder)
+                .WithMany(f => f.SlideFiles)
+                .HasForeignKey(e => e.SlideFolderId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         // ── ClinicalOpinion ──────────────────────────────────────
@@ -176,6 +284,101 @@ public class DataPathDbContext : DbContext
                 .WithMany(u => u.IssuedOpinions)
                 .HasForeignKey(e => e.IssuedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ── EquipmentAccessRequest ────────────────────────────────
+        modelBuilder.Entity<EquipmentAccessRequest>(entity =>
+        {
+            entity.ToTable("equipment_access_requests");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.Property(e => e.FullName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(254);
+
+            entity.Property(e => e.Phone)
+                .HasMaxLength(50);
+
+            entity.Property(e => e.InstitutionAndDepartment)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            entity.Property(e => e.Modality)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.ResearchTitle)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            entity.Property(e => e.EthicsDocumentPathsJson)
+                .HasMaxLength(4000);
+
+            entity.Property(e => e.RequestedStoragePolicy)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Status)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50)
+                .HasDefaultValue(Core.Enums.EquipmentRequestStatus.Pending);
+
+            entity.Property(e => e.ReviewNotes)
+                .HasMaxLength(2000);
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("NOW()");
+
+            // FK: Solicitacao → Avaliador
+            entity.HasOne(e => e.ReviewedByUser)
+                .WithMany()
+                .HasForeignKey(e => e.ReviewedByUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // ── DigitizationOrder ────────────────────────────────────
+        modelBuilder.Entity<DigitizationOrder>(entity =>
+        {
+            entity.ToTable("digitization_orders");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.Property(e => e.OrderCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.HasIndex(e => e.OrderCode).IsUnique();
+
+            entity.Property(e => e.Status)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50)
+                .HasDefaultValue(Core.Enums.DigitizationOrderStatus.Received);
+
+            entity.Property(e => e.TechnicalNotes)
+                .HasMaxLength(2000);
+
+            entity.Property(e => e.RequestedAt)
+                .HasDefaultValueSql("NOW()");
+
+            // FK: Ordem → PartnerInstitution
+            entity.HasOne(e => e.PartnerInstitution)
+                .WithMany(p => p.DigitizationOrders)
+                .HasForeignKey(e => e.PartnerInstitutionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // FK: Ordem → EquipmentAccessRequest
+            entity.HasOne(e => e.EquipmentAccessRequest)
+                .WithMany(r => r.DigitizationOrders)
+                .HasForeignKey(e => e.EquipmentAccessRequestId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         // ── AuditLog ─────────────────────────────────────────────
@@ -221,4 +424,5 @@ public class DataPathDbContext : DbContext
             entity.HasIndex(e => new { e.EntityName, e.EntityId });
         });
     }
+
 }

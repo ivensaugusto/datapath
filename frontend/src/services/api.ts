@@ -152,5 +152,60 @@ export const api = {
 
   getReportUrl(caseId: string) {
     return `${API_BASE_URL}/opinions/cases/${caseId}/report`;
+  },
+
+  async submitOnboarding(formData: FormData) {
+    const res = await fetch(`${API_BASE_URL}/v1/onboarding/apply`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Erro ao submeter solicitação de cadastro');
+    }
+    return res.json();
+  },
+
+  async getOnboardingRequests(status?: string, equipment?: string, page = 1) {
+    const query = new URLSearchParams();
+    if (status) query.append('status', status);
+    if (equipment) query.append('equipment', equipment);
+    query.append('page', page.toString());
+
+    const res = await fetch(`${API_BASE_URL}/v1/onboarding/requests?${query.toString()}`, {
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error('Erro ao carregar solicitações de onboarding');
+    return res.json();
+  },
+
+  async approveOnboardingRequest(id: string, data: { reviewNotes?: string; expectedSlidesCount?: number }) {
+    const res = await fetch(`${API_BASE_URL}/v1/onboarding/requests/${id}/approve`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Erro ao aprovar solicitação');
+    }
+    return res.json();
+  },
+
+  async rejectOnboardingRequest(id: string, reviewNotes: string) {
+    const res = await fetch(`${API_BASE_URL}/v1/onboarding/requests/${id}/reject`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ reviewNotes }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Erro ao rejeitar solicitação');
+    }
+    return res.json();
+  },
+
+  getOnboardingDocumentUrl(id: string, index: number) {
+    return `${API_BASE_URL}/v1/onboarding/requests/${id}/documents/${index}`;
   }
 };

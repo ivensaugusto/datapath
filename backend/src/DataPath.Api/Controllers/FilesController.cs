@@ -33,11 +33,34 @@ public class FilesController : ControllerBase
     public async Task<IActionResult> DownloadSlide(Guid slideId)
     {
         var slide = await _db.SlideFiles
+            .Include(s => s.BiopsyCase)
+                .ThenInclude(c => c.Opinions)
+            .Include(s => s.SlideFolder)
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Id == slideId);
 
         if (slide == null)
             return NotFound(new { Message = "Lâmina não encontrada." });
+
+        // Trava Multi-Tenant e Permissões de Caso
+        var userIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+        Guid.TryParse(userIdStr, out var userId);
+        var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? string.Empty;
+        var partnerInstStr = User.FindFirst("partner_institution_id")?.Value;
+        Guid? partnerInstId = Guid.TryParse(partnerInstStr, out var pId) ? pId : null;
+
+        if (role != "Admin" && role != "LabOperator" && slide.SlideFolder?.Policy != Core.Enums.StoragePolicyType.PublicRepository)
+        {
+            bool hasAccess = slide.BiopsyCase.CreatedByUserId == userId ||
+                             slide.BiopsyCase.AssignedDoctorId == userId ||
+                             (slide.BiopsyCase.PartnerInstitutionId != null && slide.BiopsyCase.PartnerInstitutionId == partnerInstId) ||
+                             slide.BiopsyCase.Opinions.Any(o => o.IssuedByUserId == userId);
+
+            if (!hasAccess)
+            {
+                return StatusCode(403, new { Message = "Segurança LGPD/Tenant: Você não possui permissão para visualizar ou baixar as lâminas deste acervo." });
+            }
+        }
 
         var stream = await _storageProvider.GetFileStreamAsync(slide.StoragePath);
         if (stream == null)

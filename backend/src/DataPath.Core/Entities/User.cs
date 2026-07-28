@@ -45,6 +45,12 @@ public class User
     /// </summary>
     public bool IsActive { get; set; } = true;
 
+    /// <summary>
+    /// Inquilino / Instituição parceira à qual o usuário pertence.
+    /// </summary>
+    public Guid? PartnerInstitutionId { get; set; }
+    public PartnerInstitution? PartnerInstitution { get; set; }
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
 
@@ -63,4 +69,9 @@ public class User
     /// Registros de auditoria deste usuário.
     /// </summary>
     public ICollection<AuditLog> AuditLogs { get; set; } = new List<AuditLog>();
+
+    /// <summary>
+    /// Acervos de lâminas pertencentes ao usuário.
+    /// </summary>
+    public ICollection<SlideFolder> OwnedSlideFolders { get; set; } = new List<SlideFolder>();
 }

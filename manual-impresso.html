@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Sistema dataPATH — Versão Impressa & Operacional</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #0284c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.6;
+      font-size: 14px;
+      padding: 40px;
+      max-w: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #eff6ff;
+      color: var(--primary-dark);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: var(--text-muted);
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--surface);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: #0f172a;
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary);
+      background: #f0f9ff;
+      color: #0369a1;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        max-w: 100%;
+        font-size: 12px;
+      }
+
+      .no-print {
+        display: none;
+      }
+
+      header {
+        margin-bottom: 20px;
+      }
+
+      pre {
+        background: #f1f5f9;
+        color: #0f172a;
+        border: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <div class="brand">data<span>PATH</span></div>
+      <div class="subtitle">Plataforma de Patologia Digital Mini-PACS • LGPD Compliant (Lei 13.709/2018)</div>
+    </div>
+    <div>
+      <span class="badge">Versão Impressa & Operacional</span>
+    </div>
+  </header>
+
+  <div class="alert">
+    <strong>🔒 Nota de Conformidade LGPD & Multi-Tenancy:</strong> Este manual descreve a operação do dataPATH com isolamento estrito de acervos por Instituição/Parceiro, módulo nativo de onboarding e ciclo de vida de armazenamento com expurgo físico automático.
+  </div>
+
+  <h2>1. Visão Geral do Sistema</h2>
+  <p>
+    O <strong>dataPATH</strong> (e seu módulo acadêmico <strong>Digipath</strong>) é uma plataforma médica e de pesquisa para compartilhamento seguro de lâminas histopatológicas em alta resolução (WSI — <em>Whole Slide Images</em>), emissão de 2ª opinião médica remota e gestão de ordens de serviço de digitalização.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🏛️ Módulo Multi-Tenant</h3>
+      <p>Isolamento estrito de dados entre hospitais, laboratórios e institutos de pesquisa parceiros. Impedimento nativo contra vazamento de acervos para instituições concorrentes.</p>
+    </div>
+    <div class="card">
+      <h3>🔬 Digitalização 3DHISTECH</h3>
+      <p>Gerenciamento de ordens de trabalho (<code>ORD-2026-XXXX</code>) para varredura de lâminas em scanners de lâminas inteiras com formato gigapixel.</p>
+    </div>
+  </div>
+
+  <h2>2. Módulos de Operação e Perfis de Acesso</h2>
+  <ul>
+    <li><strong>Admin (Administrador):</strong> Gestão total de usuários, auditoria LGPD imutável, aprovação de onboarding e configuração de storage.</li>
+    <li><strong>Técnico de Laboratório (LabOperator):</strong> Cadastro de biópsias, upload de lâminas WSI até 2 GB, execução de ordens de digitalização.</li>
+    <li><strong>Patologista (SpecialistDoctor):</strong> Análise de anamnese, navegação no visualizador Gigapixel WSI, emissão e assinatura digital de laudos de 2ª opinião.</li>
+    <li><strong>Pesquisador / Parceiro Institucional:</strong> Acesso aos acervos vinculados à sua instituição ou projeto de pesquisa.</li>
+  </ul>
+
+  <h2>3. Fluxo de Onboarding Nativo e Ordens de Serviço</h2>
+  <ol>
+    <li><strong>Solicitação Pública (<code>/seja-parceiro</code>):</strong> O pesquisador/parceiro preenche os dados cadastrais, escolhe os equipamentos (Scanner 3DHISTECH / PCR 7500), anexa até 5 PDFs de parecer do CEP/CEUA e define a Política de Storage.</li>
+    <li><strong>Avaliação pelo Laboratório (<code>/solicitacoes</code>):</strong> O técnico/admin visualiza o parecer em PDF direto na tela (sem baixar) e clica em <em>"Aprovar e Gerar Ordem"</em>.</li>
+    <li><strong>Geração Transacional:</strong> O backend cria o Tenant (<code>PartnerInstitution</code>), a conta de usuário, a pasta de acervo (<code>SlideFolder</code>) e a Ordem de Serviço (<code>ORD-2026-XXXX</code>).</li>
+  </ol>
+
+  <h2>4. Políticas de Armazenamento e Expurgo Automático</h2>
+  <div class="card">
+    <ul>
+      <li><strong>🔒 Privada Temporária (PrivateTemporary):</strong> Exclusão física automática e definitiva do arquivo WSI no QNAP/Storage após X dias (expurgo gerenciado por Background Worker).</li>
+      <li><strong>📁 Privada Persistente (PrivatePersistent):</strong> Guarda de longa duração no QNAP NAS durante a vigência do contrato/pesquisa.</li>
+      <li><strong>🌐 Repositório Público (PublicRepository):</strong> Acervo anonimizado para repositório Open Science e ensino.</li>
+    </ul>
+  </div>
+
+  <h2>5. Guia de Atualização no GitHub & Deploy em Produção</h2>
+
+  <h3>A. Envio das Atualizações para o GitHub</h3>
+  <pre>
+# 1. Verificar status das alterações
+git status
+
+# 2. Adicionar todos os arquivos atualizados do projeto
+git add .
+
+# 3. Criar commit estruturado
+git commit -m "feat: evolucao arquitetural multi-tenancy, onboarding nativo, purge de storage e UI/UX Tailwind"
+
+# 4. Enviar para o repositório no GitHub (main/master)
+git push origin main
+  </pre>
+
+  <h3>B. Execução do Deploy em Produção (Docker / Hetzner / Portainer)</h3>
+  <pre>
+# 1. No servidor de produção, baixe as alterações do repositório
+git pull origin main
+
+# 2. Reconstrua e suba a stack de produção em background
+docker compose -f docker-compose.prod.yml up -d --build
+
+# 3. Verificar o status dos containers ativos
+docker compose -f docker-compose.prod.yml ps
+
+# 4. Acompanhar os logs da aplicação e banco de dados
+docker compose -f docker-compose.prod.yml logs -f
+  </pre>
+
+  <div class="no-print" style="margin-top: 30px; text-align: center;">
+    <button onclick="window.print()" style="padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+      🖨️ Imprimir / Salvar como PDF
+    </button>
+  </div>
+
+  <footer>
+    Plataforma dataPATH — Mini-PACS de Patologia Digital • Desenvolvido com .NET 8, PostgreSQL 16, React 18 e QNAP Storage Driver.
+  </footer>
+
+</body>
+</html>

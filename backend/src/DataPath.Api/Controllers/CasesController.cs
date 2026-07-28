@@ -41,12 +41,25 @@ public class CasesController : ControllerBase
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10)
     {
+        var (userId, role, partnerInstId) = GetCurrentUserClaims();
+
         var query = _db.BiopsyCases
             .Include(c => c.CreatedByUser)
             .Include(c => c.SlideFiles)
             .Include(c => c.Opinions)
+            .Include(c => c.SlideFolder)
             .AsNoTracking()
             .AsQueryable();
+
+        // Trava Multi-Tenant para Médicos/Parceiros
+        if (role != UserRole.Admin.ToString() && role != UserRole.LabOperator.ToString())
+        {
+            query = query.Where(c => c.SlideFolder != null && c.SlideFolder.Policy == StoragePolicyType.PublicRepository ||
+                                     c.CreatedByUserId == userId ||
+                                     c.AssignedDoctorId == userId ||
+                                     (c.PartnerInstitutionId != null && c.PartnerInstitutionId == partnerInstId) ||
+                                     c.Opinions.Any(o => o.IssuedByUserId == userId));
+        }
 
         // Filtro por Órgão/Sítio
         if (!string.IsNullOrWhiteSpace(organSite))
@@ -106,9 +119,12 @@ public class CasesController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCaseById(Guid id)
     {
+        var (userId, role, partnerInstId) = GetCurrentUserClaims();
+
         var biopsyCase = await _db.BiopsyCases
             .Include(c => c.CreatedByUser)
             .Include(c => c.SlideFiles)
+            .Include(c => c.SlideFolder)
             .Include(c => c.Opinions)
                 .ThenInclude(o => o.IssuedByUser)
             .AsNoTracking()
@@ -116,6 +132,20 @@ public class CasesController : ControllerBase
 
         if (biopsyCase == null)
             return NotFound(new { Message = "Caso clínico não encontrado." });
+
+        if (role != UserRole.Admin.ToString() && role != UserRole.LabOperator.ToString())
+        {
+            bool hasAccess = biopsyCase.SlideFolder?.Policy == StoragePolicyType.PublicRepository ||
+                             biopsyCase.CreatedByUserId == userId ||
+                             biopsyCase.AssignedDoctorId == userId ||
+                             (biopsyCase.PartnerInstitutionId != null && biopsyCase.PartnerInstitutionId == partnerInstId) ||
+                             biopsyCase.Opinions.Any(o => o.IssuedByUserId == userId);
+
+            if (!hasAccess)
+            {
+                return StatusCode(403, new { Message = "Segurança LGPD/Tenant: Você não possui permissão para visualizar ou baixar as lâminas deste acervo." });
+            }
+        }
 
         // Gerar links de compartilhamento temporários atualizados para cada lâmina
         var slideDtos = new List<SlideFileDto>();
@@ -330,5 +360,15 @@ public class CasesController : ControllerBase
         await _db.SaveChangesAsync();
 
         return Ok(new { Message = "Caso clínico e lâminas associadas removidos com sucesso." });
+    }
+
+    private (Guid UserId, string Role, Guid? PartnerInstitutionId) GetCurrentUserClaims()
+    {
+        var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+        Guid.TryParse(userIdStr, out var userId);
+        var role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+        var partnerInstStr = User.FindFirst("partner_institution_id")?.Value;
+        Guid? partnerInstId = Guid.TryParse(partnerInstStr, out var pId) ? pId : null;
+        return (userId, role, partnerInstId);
     }
 }
