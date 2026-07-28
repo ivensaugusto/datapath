@@ -30,9 +30,6 @@ services:
   # ── Aplicação Unificada dataPATH (API .NET 8 + Frontend React) ─────
   datapath-app:
     image: ${DOCKER_IMAGE:-ghcr.io/ivensaugusto/datapath:latest}
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
     container_name: datapath-app
     restart: always
     environment:
