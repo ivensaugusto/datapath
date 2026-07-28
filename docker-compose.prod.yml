@@ -28,7 +28,7 @@ services:
 
   # ── Aplicação Unificada dataPATH (API .NET 8 + Frontend React) ─────
   datapath-app:
-    image: ${DOCKER_IMAGE:-ghcr.io/ivens/datapath:latest}
+    image: ${DOCKER_IMAGE:-ghcr.io/ivensaugusto/datapath:latest}
     build:
       context: .
       dockerfile: Dockerfile.prod
@@ -42,11 +42,11 @@ services:
       - Jwt__Audience=datapath-clients
       - Storage__DriverType=Local
       - Storage__LocalBasePath=/app/storage
-      # Integração com nginx-proxy + acme-companion na Hetzner
+      # Integração com nginx-proxy + acme-companion na Hetzner (pwbot_net)
       - VIRTUAL_HOST=datapath.produtoweb.com.br
       - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=datapath.produtoweb.com.br
-      - LETSENCRYPT_EMAIL=ivens@produtoweb.com.br
+      - LETSENCRYPT_EMAIL=ivensaugusto@users.noreply.github.com
     volumes:
       - wsi_storage_prod:/app/storage
     depends_on:
@@ -54,14 +54,13 @@ services:
         condition: service_healthy
     networks:
       - internal-net
-      - proxy-net
+      - pwbot_net
 
 networks:
   internal-net:
     driver: bridge
-  proxy-net:
+  pwbot_net:
     external: true
-    name: proxy-net # Ou 'nginx-proxy', conforme configurado no servidor Hetzner
 
 volumes:
   postgres_prod_data:
