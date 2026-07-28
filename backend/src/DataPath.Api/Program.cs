@@ -128,17 +128,23 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// ── Auto-migrate + Seed em Development ───────────────────────────
-if (app.Environment.IsDevelopment())
+// ── Auto-migrate + Seed na Inicialização ─────────────────────────
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<DataPathDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<DataPathDbContext>>();
 
-    db.Database.Migrate();
-    app.Logger.LogInformation("✅ Database migrations applied successfully.");
+    try
+    {
+        db.Database.Migrate();
+        app.Logger.LogInformation("✅ Database migrations applied successfully.");
 
-    await DatabaseSeeder.SeedAsync(db, logger);
+        await DatabaseSeeder.SeedAsync(db, logger);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "❌ Erro ao aplicar migrations/seed no banco de dados.");
+    }
 }
 
 // ── Pipeline HTTP ────────────────────────────────────────────────
