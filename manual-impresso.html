@@ -31,7 +31,7 @@
       line-height: 1.6;
       font-size: 14px;
       padding: 40px;
-      max-w: 900px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -98,39 +98,6 @@
 
     p {
       margin-bottom: 12px;
-      color: var(--text-muted);
-    }
-
-    ul, ol {
-      margin-left: 20px;
-      margin-bottom: 16px;
-      color: var(--text-muted);
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      background: var(--surface);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      color: #0f172a;
-    }
-
-    pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      background: #0f172a;
-      color: #f8fafc;
-      padding: 16px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin-bottom: 16px;
-      line-height: 1.5;
     }
 
     .card {
@@ -141,51 +108,68 @@
       margin-bottom: 20px;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .card-title {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .alert {
-      padding: 14px 18px;
-      border-radius: 8px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
       font-size: 13px;
-      margin-bottom: 20px;
-      border-left: 4px solid var(--primary);
-      background: #f0f9ff;
-      color: #0369a1;
     }
 
-    footer {
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .screenshot {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      margin: 16px 0 24px 0;
+    }
+
+    .footer {
       margin-top: 60px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--text-muted);
       text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .url-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #1e40af;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     @media print {
-      body {
-        padding: 0;
-        max-w: 100%;
-        font-size: 12px;
-      }
-
-      .no-print {
-        display: none;
-      }
-
-      header {
-        margin-bottom: 20px;
-      }
-
-      pre {
-        background: #f1f5f9;
-        color: #0f172a;
-        border: 1px solid var(--border);
-      }
+      body { padding: 0; max-width: 100%; }
+      .page-break { page-break-after: always; }
     }
   </style>
 </head>
@@ -194,97 +178,79 @@
   <header>
     <div>
       <div class="brand">data<span>PATH</span></div>
-      <div class="subtitle">Plataforma de Patologia Digital Mini-PACS • LGPD Compliant (Lei 13.709/2018)</div>
+      <div class="subtitle">Plataforma de Patologia Digital Mini-PACS • Módulo de Onboarding & 2ª Opinião Remota</div>
     </div>
-    <div>
-      <span class="badge">Versão Impressa & Operacional</span>
-    </div>
+    <div class="badge">MANUAL TÉCNICO & OPERACIONAL DE PRODUÇÃO</div>
   </header>
 
-  <div class="alert">
-    <strong>🔒 Nota de Conformidade LGPD & Multi-Tenancy:</strong> Este manual descreve a operação do dataPATH com isolamento estrito de acervos por Instituição/Parceiro, módulo nativo de onboarding e ciclo de vida de armazenamento com expurgo físico automático.
+  <div class="url-box">
+    <span>🌐 URL de Produção: <strong>https://datapath.produtoweb.com.br</strong></span>
+    <span>SSL Ativo 🔒</span>
   </div>
 
-  <h2>1. Visão Geral do Sistema</h2>
-  <p>
-    O <strong>dataPATH</strong> (e seu módulo acadêmico <strong>Digipath</strong>) é uma plataforma médica e de pesquisa para compartilhamento seguro de lâminas histopatológicas em alta resolução (WSI — <em>Whole Slide Images</em>), emissão de 2ª opinião médica remota e gestão de ordens de serviço de digitalização.
-  </p>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>🏛️ Módulo Multi-Tenant</h3>
-      <p>Isolamento estrito de dados entre hospitais, laboratórios e institutos de pesquisa parceiros. Impedimento nativo contra vazamento de acervos para instituições concorrentes.</p>
-    </div>
-    <div class="card">
-      <h3>🔬 Digitalização 3DHISTECH</h3>
-      <p>Gerenciamento de ordens de trabalho (<code>ORD-2026-XXXX</code>) para varredura de lâminas em scanners de lâminas inteiras com formato gigapixel.</p>
-    </div>
+  <div class="card">
+    <div class="card-title">🎯 Propósito do Sistema</div>
+    <p style="margin:0;">
+      O <strong>dataPATH</strong> possibilita a solicitação, captação de parceiros e publicação de lâminas histopatológicas em altíssima resolução (WSI — Gigapixel) para emissão assíncrona de pareceres médicos de 2ª opinião, operando em total conformidade com a LGPD (Lei nº 13.709/2018).
+    </p>
   </div>
 
-  <h2>2. Módulos de Operação e Perfis de Acesso</h2>
+  <h2>🔑 Perfis de Acesso e Credenciais de Teste</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Perfil</th>
+        <th>E-mail</th>
+        <th>Senha Padrão</th>
+        <th>Escopo de Permissões</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Técnico de Laboratório</strong></td>
+        <td><code>maria.silva@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Cadastro de casos clínicos, upload de lâminas WSI e gestão de amostras.</td>
+      </tr>
+      <tr>
+        <td><strong>Médico Patologista</strong></td>
+        <td><code>carlos.mendes@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Análise visual WSI, emissão e assinatura de pareceres diagnósticos.</td>
+      </tr>
+      <tr>
+        <td><strong>Administrador</strong></td>
+        <td><code>admin@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Acesso total, governança, auditoria LGPD e gestão do onboarding.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>1. Tela de Autenticação (Login)</h2>
+  <p>Acesse o sistema no endereço oficial. Para acelerar testes operacionais, utilize os botões de preenchimento automático para selecionar o perfil desejado.</p>
+
+  <h2>2. Dashboard de Casos Histopatológicos</h2>
+  <p>Painel principal com indicadores em tempo real (Total Registrado, Pendentes, Em Revisão, Laudados), busca rápida, filtros por órgão/status e acesso direto aos casos.</p>
+
+  <h2>3. Módulo de Onboarding e Captação de Parceiros</h2>
+  <p>Formulário público estruturado em 4 etapas para captação de pesquisadores e instituições parceiras:</p>
   <ul>
-    <li><strong>Admin (Administrador):</strong> Gestão total de usuários, auditoria LGPD imutável, aprovação de onboarding e configuração de storage.</li>
-    <li><strong>Técnico de Laboratório (LabOperator):</strong> Cadastro de biópsias, upload de lâminas WSI até 2 GB, execução de ordens de digitalização.</li>
-    <li><strong>Patologista (SpecialistDoctor):</strong> Análise de anamnese, navegação no visualizador Gigapixel WSI, emissão e assinatura digital de laudos de 2ª opinião.</li>
-    <li><strong>Pesquisador / Parceiro Institucional:</strong> Acesso aos acervos vinculados à sua instituição ou projeto de pesquisa.</li>
+    <li><strong>Seção 1 - Identificação Cadastral:</strong> Nome completo, e-mail institucional, telefone, instituição e departamento.</li>
+    <li><strong>Seção 2 - Perfil & Modalidade:</strong> Vínculo acadêmico (Iniciação Científica, Mestrado, Doutorado, etc.) e título do projeto.</li>
+    <li><strong>Seção 3 - Documentação Ética:</strong> Indicação de aprovação do CEP/CEUA com upload de parecer formal em formato PDF.</li>
+    <li><strong>Seção 4 - Equipamentos & Storage:</strong> Seleção dos equipamentos solicitados (<em>Scanner 3DHISTECH</em> e/ou <em>Real Time 7500 PCR</em>) e definição da política de armazenamento de dados.</li>
   </ul>
 
-  <h2>3. Fluxo de Onboarding Nativo e Ordens de Serviço</h2>
-  <ol>
-    <li><strong>Solicitação Pública (<code>/seja-parceiro</code>):</strong> O pesquisador/parceiro preenche os dados cadastrais, escolhe os equipamentos (Scanner 3DHISTECH / PCR 7500), anexa até 5 PDFs de parecer do CEP/CEUA e define a Política de Storage.</li>
-    <li><strong>Avaliação pelo Laboratório (<code>/solicitacoes</code>):</strong> O técnico/admin visualiza o parecer em PDF direto na tela (sem baixar) e clica em <em>"Aprovar e Gerar Ordem"</em>.</li>
-    <li><strong>Geração Transacional:</strong> O backend cria o Tenant (<code>PartnerInstitution</code>), a conta de usuário, a pasta de acervo (<code>SlideFolder</code>) e a Ordem de Serviço (<code>ORD-2026-XXXX</code>).</li>
-  </ol>
+  <h2>4. Visualizador WSI (Gigapixel) e Emissão de Parecer Técnico</h2>
+  <p>Interface médica integrada para navegação de lâminas em alta resolução, leitura de anamnese anonimizada e preenchimento de parecer técnico com assinatura digital.</p>
 
-  <h2>4. Políticas de Armazenamento e Expurgo Automático</h2>
-  <div class="card">
-    <ul>
-      <li><strong>🔒 Privada Temporária (PrivateTemporary):</strong> Exclusão física automática e definitiva do arquivo WSI no QNAP/Storage após X dias (expurgo gerenciado por Background Worker).</li>
-      <li><strong>📁 Privada Persistente (PrivatePersistent):</strong> Guarda de longa duração no QNAP NAS durante a vigência do contrato/pesquisa.</li>
-      <li><strong>🌐 Repositório Público (PublicRepository):</strong> Acervo anonimizado para repositório Open Science e ensino.</li>
-    </ul>
+  <h2>5. Governança, Segurança e Trilha de Auditoria LGPD</h2>
+  <p>Registro automático e imutável de todas as leituras de casos e visualizações de lâminas, armazenando timestamp em UTC, IP de origem, identificador do usuário e ação executada.</p>
+
+  <div class="footer">
+    dataPATH — Sistema de Patologia Digital Mini-PACS • Documentação Oficial de Produção (2026)
   </div>
-
-  <h2>5. Guia de Atualização no GitHub & Deploy em Produção</h2>
-
-  <h3>A. Envio das Atualizações para o GitHub</h3>
-  <pre>
-# 1. Verificar status das alterações
-git status
-
-# 2. Adicionar todos os arquivos atualizados do projeto
-git add .
-
-# 3. Criar commit estruturado
-git commit -m "feat: evolucao arquitetural multi-tenancy, onboarding nativo, purge de storage e UI/UX Tailwind"
-
-# 4. Enviar para o repositório no GitHub (main/master)
-git push origin main
-  </pre>
-
-  <h3>B. Configuração da Stack Nativa no Portainer (Nome da Aplicação: <code>app-datapath</code>)</h3>
-  <p>Para evitar que a aplicação fique marcada como "Stack Externa Limitada" (sem botão de Redeploy/Webhook) no Portainer:</p>
-  <ol>
-    <li>No Portainer (<code>pac.produtoweb.com.br</code>), navegue até <strong>Stacks</strong>. Se houver a stack externa antiga <code>datapath</code>, remova-a.</li>
-    <li>Clique no botão <strong>+ Add stack</strong>.</li>
-    <li><strong>Name:</strong> <code>app-datapath</code></li>
-    <li><strong>Build method:</strong> Selecione a opção <strong>Repository</strong>.</li>
-    <li><strong>Repository URL:</strong> <code>https://github.com/ivensaugusto/datapath</code></li>
-    <li><strong>Repository reference:</strong> <code>refs/heads/master</code> (ou <code>master</code>)</li>
-    <li><strong>Compose path:</strong> <code>docker-compose.prod.yml</code></li>
-    <li>Ative a opção <strong>Automatic updates</strong> (ou copie o <strong>Webhook URL</strong>).</li>
-    <li>Clique em <strong>Deploy the stack</strong>. O Portainer compilará e executará os containers nativamente com controle total!</li>
-  </ol>
-
-  <div class="no-print" style="margin-top: 30px; text-align: center;">
-    <button onclick="window.print()" style="padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
-      🖨️ Imprimir / Salvar como PDF
-    </button>
-  </div>
-
-  <footer>
-    Plataforma dataPATH — Mini-PACS de Patologia Digital • Desenvolvido com .NET 8, PostgreSQL 16, React 18 e QNAP Storage Driver.
-  </footer>
 
 </body>
 </html>
