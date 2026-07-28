@@ -5,15 +5,9 @@
 # ── Stage 1: Restore + Build ──────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-
-COPY src/DataPath.Core/DataPath.Core.csproj src/DataPath.Core/
-COPY src/DataPath.Infrastructure/DataPath.Infrastructure.csproj src/DataPath.Infrastructure/
-COPY src/DataPath.Api/DataPath.Api.csproj src/DataPath.Api/
-COPY DataPath.sln ./
-RUN dotnet restore DataPath.sln
-
 COPY . .
-RUN dotnet publish DataPath.sln -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
+RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 # ── Stage 2: Runtime ──────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime

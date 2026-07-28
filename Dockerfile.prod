@@ -14,6 +14,7 @@ RUN npm run build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-builder
 WORKDIR /app/backend
 COPY backend/ ./
+RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
 RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/backend/publish /p:UseAppHost=false
 
 # ════════════════════════════════════════════════════════════════════
