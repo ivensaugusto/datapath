@@ -78,7 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call Portainer Webhook
-        if: ${{ secrets.PORTAINER_WEBHOOK_URL != '' }}
+        env:
+          PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+        if: ${{ env.PORTAINER_WEBHOOK_URL != '' }}
         run: |
           echo "Triggering Portainer Webhook for auto-redeploy on datapath.produtoweb.com.br..."
-          curl -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}" || echo "Webhook trigger sent."
+          curl -X POST "$PORTAINER_WEBHOOK_URL" || echo "Webhook trigger sent."
