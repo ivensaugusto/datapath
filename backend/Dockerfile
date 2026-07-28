@@ -4,7 +4,7 @@
 
 # ── Stage 1: Restore + Build ──────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 COPY . .
 RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
 RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/publish /p:UseAppHost=false

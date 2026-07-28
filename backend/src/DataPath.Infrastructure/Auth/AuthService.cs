@@ -72,7 +72,8 @@ public class AuthService : IAuthService
                 Email = user.Email,
                 Role = user.Role.ToString(),
                 ProfessionalRegistration = user.ProfessionalRegistration,
-                Specialty = user.Specialty
+                Specialty = user.Specialty,
+                PartnerInstitutionId = user.PartnerInstitutionId
             }
         };
     }
