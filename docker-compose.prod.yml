@@ -36,6 +36,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
       - ConnectionStrings__DefaultConnection=Host=datapath-db;Port=5432;Database=${POSTGRES_DB:-datapath_prod};Username=${POSTGRES_USER:-datapath_user};Password=${POSTGRES_PASSWORD:-DataPathProd2026SecureKey!}
       - Jwt__SecretKey=${JWT_SECRET:-DataPath_Production_JWT_Secret_Key_2026_LGPD_Strict_Minimum_64_Chars!}
       - Jwt__Issuer=datapath.produtoweb.com.br

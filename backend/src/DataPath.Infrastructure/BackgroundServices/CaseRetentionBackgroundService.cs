@@ -28,6 +28,9 @@ public class CaseRetentionBackgroundService : BackgroundService
     {
         _logger.LogInformation("🚀 CaseRetentionBackgroundService iniciado.");
 
+        // Aguardar a conclusão das migrations e seed iniciais no Program.cs
+        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
