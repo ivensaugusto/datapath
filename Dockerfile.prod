@@ -12,15 +12,10 @@ RUN npm run build
 # STAGE 2: Build Backend (.NET 8 Web API)
 # ════════════════════════════════════════════════════════════════════
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-builder
-WORKDIR /app/backend
-
-COPY backend/src/DataPath.Core/DataPath.Core.csproj src/DataPath.Core/
-COPY backend/src/DataPath.Infrastructure/DataPath.Infrastructure.csproj src/DataPath.Infrastructure/
-COPY backend/src/DataPath.Api/DataPath.Api.csproj src/DataPath.Api/
-RUN dotnet restore src/DataPath.Api/DataPath.Api.csproj
-
-COPY backend/src/ src/
-RUN dotnet publish src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/backend/publish /p:UseAppHost=false
+WORKDIR /app
+COPY backend/ ./backend/
+RUN dotnet restore backend/src/DataPath.Api/DataPath.Api.csproj
+RUN dotnet publish backend/src/DataPath.Api/DataPath.Api.csproj -c Release -o /app/backend/publish /p:UseAppHost=false
 
 # ════════════════════════════════════════════════════════════════════
 # STAGE 3: Final Production Image (ASP.NET 8 Runtime + Nginx + Supervisor)
