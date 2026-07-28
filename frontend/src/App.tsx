@@ -9,63 +9,118 @@ import { AuditLogsPage } from './pages/AuditLogsPage';
 import { OnboardingApplyPage } from './pages/OnboardingApplyPage';
 import { OnboardingManagementPage } from './pages/OnboardingManagementPage';
 
+function getInitialRoute(): { page: string; caseId?: string } {
+  const path = window.location.pathname.toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+
+  if (path === '/onboarding' || path === '/cadastrar' || searchParams.get('page') === 'onboarding-apply') {
+    return { page: 'onboarding-apply' };
+  }
+  if (path === '/login') {
+    return { page: 'login' };
+  }
+  if (path === '/novo-caso') {
+    return { page: 'new-case' };
+  }
+  if (path.startsWith('/caso/')) {
+    const id = path.split('/caso/')[1];
+    return { page: 'case-detail', caseId: id };
+  }
+  if (path === '/gestao-onboarding') {
+    return { page: 'onboarding-management' };
+  }
+  if (path === '/auditoria') {
+    return { page: 'audit-logs' };
+  }
+  return { page: 'dashboard' };
+}
+
+function updateBrowserUrl(page: string, caseId?: string) {
+  let targetPath = '/';
+  if (page === 'onboarding-apply') targetPath = '/onboarding';
+  else if (page === 'login') targetPath = '/login';
+  else if (page === 'new-case') targetPath = '/novo-caso';
+  else if (page === 'case-detail' && caseId) targetPath = `/caso/${caseId}`;
+  else if (page === 'onboarding-management') targetPath = '/gestao-onboarding';
+  else if (page === 'audit-logs') targetPath = '/auditoria';
+  else if (page === 'dashboard') targetPath = '/';
+
+  if (window.location.pathname !== targetPath) {
+    window.history.pushState({}, '', targetPath);
+  }
+}
+
 const MainApp: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
-  const [currentPage, setCurrentPage] = useState('dashboard');
-  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [route, setRoute] = useState(() => getInitialRoute());
 
   useEffect(() => {
-    const handleCustomNav = (e: any) => {
-      if (e.detail) setCurrentPage(e.detail);
+    const handlePopState = () => {
+      setRoute(getInitialRoute());
     };
+    const handleCustomNav = (e: any) => {
+      if (e.detail) {
+        handleNavigate(e.detail.page || e.detail, e.detail.caseId);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
     window.addEventListener('navigate', handleCustomNav);
-    return () => window.removeEventListener('navigate', handleCustomNav);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('navigate', handleCustomNav);
+    };
   }, []);
+
+  const handleNavigate = (page: string, caseId?: string) => {
+    setRoute({ page, caseId });
+    updateBrowserUrl(page, caseId);
+  };
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
-        Carregando dataPATH...
-      </div>
-    );
-  }
-
-  if (currentPage === 'onboarding-apply') {
-    return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
-        <div className="flex-1 max-w-4xl w-full mx-auto px-6 sm:px-8 py-10">
-          <OnboardingApplyPage onNavigate={page => setCurrentPage(page)} />
+        <div className="flex items-center space-x-3">
+          <div className="w-4 h-4 rounded-full bg-blue-500 animate-ping" />
+          <span className="text-sm font-semibold tracking-wide text-slate-300">Carregando dataPATH...</span>
         </div>
       </div>
     );
   }
 
-  if (!isAuthenticated) {
-    return <LoginPage />;
+  // Direct public access to Onboarding Apply Page
+  if (route.page === 'onboarding-apply') {
+    return (
+      <div className="min-h-screen bg-[#0b0f19] text-slate-100 font-sans flex flex-col antialiased">
+        <div className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <OnboardingApplyPage onNavigate={page => handleNavigate(page)} />
+        </div>
+        <footer className="border-t border-slate-900 bg-[#090d16] py-6 text-center text-xs text-slate-500">
+          Plataforma dataPATH — Mini-PACS & Onboarding • LGPD Compliant (Lei 13.709/2018)
+        </footer>
+      </div>
+    );
   }
 
-  const handleNavigate = (page: string, caseId?: string) => {
-    setCurrentPage(page);
-    if (caseId) {
-      setSelectedCaseId(caseId);
-    }
-  };
+  if (!isAuthenticated || route.page === 'login') {
+    return <LoginPage onNavigate={handleNavigate} />;
+  }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500 selection:text-white flex flex-col">
-      <Navbar onNavigate={handleNavigate} currentPage={currentPage} />
+    <div className="min-h-screen bg-[#0b0f19] text-slate-100 font-sans selection:bg-blue-600 selection:text-white flex flex-col antialiased">
+      <Navbar onNavigate={handleNavigate} currentPage={route.page} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 sm:px-8 lg:px-10 py-10">
-        {currentPage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} />}
-        {currentPage === 'new-case' && <NewCasePage onNavigate={handleNavigate} />}
-        {currentPage === 'case-detail' && selectedCaseId && (
-          <CaseDetailPage caseId={selectedCaseId} onNavigate={handleNavigate} />
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {route.page === 'dashboard' && <DashboardPage onNavigate={handleNavigate} />}
+        {route.page === 'new-case' && <NewCasePage onNavigate={handleNavigate} />}
+        {route.page === 'case-detail' && route.caseId && (
+          <CaseDetailPage caseId={route.caseId} onNavigate={handleNavigate} />
         )}
-        {currentPage === 'audit-logs' && <AuditLogsPage />}
-        {currentPage === 'onboarding-management' && <OnboardingManagementPage />}
+        {route.page === 'audit-logs' && <AuditLogsPage />}
+        {route.page === 'onboarding-management' && <OnboardingManagementPage />}
       </main>
 
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-900 bg-[#090d16] py-6 text-center text-xs text-slate-500">
         Plataforma dataPATH — Mini-PACS de Patologia Digital • LGPD Compliant (Lei 13.709/2018)
       </footer>
     </div>

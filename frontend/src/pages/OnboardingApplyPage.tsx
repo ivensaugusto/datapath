@@ -67,54 +67,68 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
 
   if (submittedSuccess) {
     return (
-      <div className="max-w-3xl mx-auto py-16 px-6 text-center space-y-6">
-        <div className="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto text-3xl">
+      <div className="max-w-2xl mx-auto py-16 px-4 text-center space-y-6">
+        <div className="w-20 h-20 rounded-2xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center mx-auto text-3xl shadow-xl shadow-blue-500/10">
           ✓
         </div>
-        <h1 className="text-3xl font-black text-white">Solicitação de Cadastro Enviada!</h1>
+        <h1 className="text-3xl font-black text-white tracking-tight">Solicitação de Onboarding Enviada!</h1>
         <p className="text-slate-300 leading-relaxed text-base">
-          Sua solicitação de acesso aos equipamentos do laboratório e cadastro no sistema foi recebida com sucesso.
-          Nossa equipe técnica analisará a documentação do parecer CEP/CEUA e enviará as credenciais de acesso para o e-mail cadastrado (<strong className="text-blue-400">{email}</strong>).
+          Sua solicitação de acesso aos equipamentos do laboratório foi recebida com sucesso.
+          Nossa equipe analisará a documentação de aprovação CEP/CEUA e enviará o parecer de liberação para <strong className="text-blue-400">{email}</strong>.
         </p>
-        <button
-          onClick={() => onNavigate('login')}
-          className="mt-4 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all shadow-lg shadow-blue-600/30"
-        >
-          Voltar para a Tela de Login
-        </button>
+        <div className="pt-4">
+          <button
+            onClick={() => onNavigate('login')}
+            className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all shadow-lg shadow-blue-600/30"
+          >
+            Voltar para a Tela de Login
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-10">
-      {/* Header */}
-      <div className="flex justify-between items-center bg-slate-900/60 p-8 rounded-2xl border border-slate-800 backdrop-blur-xl">
-        <div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Módulo de Onboarding & Captação de Parceiros</h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Cadastre-se para solicitar digitalização de lâminas no Scanner 3DHISTECH ou uso da plataforma de Patologia Digital.
-          </p>
+    <div className="space-y-8">
+      {/* Hero Header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-950/40 via-slate-900/60 to-slate-900/40 p-8 rounded-2xl border border-blue-500/20 backdrop-blur-xl shadow-xl">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">
+              <span>🔬 Formulário Oficial de Parceiros</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Onboarding & Digitalização de Lâminas
+            </h1>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Solicite acesso ao <strong className="text-blue-400">Scanner 3DHISTECH</strong> e serviços de Patologia Digital Mini-PACS.
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={() => onNavigate('login')}
+              className="px-5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 text-xs font-bold transition-all whitespace-nowrap shadow-md"
+            >
+              Já possui conta? Entrar →
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => onNavigate('login')}
-          className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
-        >
-          Já possui conta? Entrar
-        </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* SEÇÃO 1: Identificação */}
-        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
-              <span>Identificação Cadastral</span>
-            </h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* SEÇÃO 1: Identificação Cadastral */}
+        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
+          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+              01
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Identificação Cadastral</h2>
+              <p className="text-xs text-slate-400">Dados do pesquisador ou responsável técnico</p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
                 Nome Completo *
@@ -125,7 +139,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 value={fullName}
                 onChange={e => setFullName(e.target.value)}
                 placeholder="Ex: Dra. Ana Paula Vasconcelos"
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
 
@@ -139,7 +153,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="ana.vasconcelos@universidade.edu.br"
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
 
@@ -153,7 +167,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="(11) 98765-4321"
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
 
@@ -167,22 +181,25 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 value={institutionAndDepartment}
                 onChange={e => setInstitutionAndDepartment(e.target.value)}
                 placeholder="Ex: USP - Faculdade de Medicina / Patologia"
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
           </div>
         </div>
 
-        {/* SEÇÃO 2: Perfil e Modalidade */}
-        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
-              <span>Perfil & Modalidade da Solicitação</span>
-            </h2>
+        {/* SEÇÃO 2: Perfil & Modalidade */}
+        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
+          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+              02
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Perfil & Modalidade do Projeto</h2>
+              <p className="text-xs text-slate-400">Vínculo de pesquisa e finalidade do uso</p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
                 Modalidade de Vínculo *
@@ -190,7 +207,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
               <select
                 value={modality}
                 onChange={e => setModality(e.target.value)}
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               >
                 <option value="IniciacaoCientifica">🎓 Iniciação Científica (Digipath)</option>
                 <option value="Mestrado">🎓 Mestrado (Digipath)</option>
@@ -203,7 +220,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Título do Projeto ou Finalidade Clínica *
+                Título do Projeto ou Finalidade *
               </label>
               <input
                 type="text"
@@ -211,40 +228,43 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 value={researchTitle}
                 onChange={e => setResearchTitle(e.target.value)}
                 placeholder="Ex: Análise histopatológica de carcinoma mamário"
-                className="w-full h-12 py-3 px-4 text-base bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
           </div>
         </div>
 
-        {/* SEÇÃO 3: Documentação Ética (CEP/CEUA) */}
-        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
-              <span>Aprovação Ética (CEP / CEUA)</span>
-            </h2>
+        {/* SEÇÃO 3: Aprovação Ética CEP/CEUA */}
+        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
+          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+              03
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Documentação Ética (CEP / CEUA)</h2>
+              <p className="text-xs text-slate-400">Anexo obrigatório de comprovação comitê de ética</p>
+            </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center space-x-3 cursor-pointer text-sm text-slate-300">
-              <input
-                type="checkbox"
-                checked={hasEthicsApproval}
-                onChange={e => setHasEthicsApproval(e.target.checked)}
-                className="w-5 h-5 rounded bg-slate-950 border-slate-800 text-blue-600 focus:ring-blue-500"
-              />
-              <span>Projeto possui aprovação formal do Comitê de Ética em Pesquisa (CEP / CEUA)</span>
-            </label>
-          </div>
+          <label className="flex items-center space-x-3 cursor-pointer p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-all">
+            <input
+              type="checkbox"
+              checked={hasEthicsApproval}
+              onChange={e => setHasEthicsApproval(e.target.checked)}
+              className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-blue-500"
+            />
+            <span className="text-sm font-semibold text-slate-200">
+              O projeto possui aprovação formal do Comitê de Ética em Pesquisa (CEP / CEUA)
+            </span>
+          </label>
 
           {hasEthicsApproval && (
-            <div className="space-y-3">
+            <div className="space-y-3 pt-1">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Anexo do Parecer de Aprovação em PDF (Até 5 arquivos, máx 10 MB cada)
+                Parecer de Aprovação Ética (PDF)
               </label>
 
-              <div className="border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-xl p-6 text-center bg-slate-950/60 transition-colors">
+              <div className="border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-xl p-6 text-center bg-slate-950/40 transition-colors">
                 <input
                   type="file"
                   accept=".pdf"
@@ -254,21 +274,23 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                   id="pdf-upload"
                 />
                 <label htmlFor="pdf-upload" className="cursor-pointer space-y-2 block">
-                  <span className="text-2xl block">📄</span>
-                  <span className="text-sm font-semibold text-blue-400 block">Clique para selecionar os PDFs de aprovação</span>
-                  <span className="text-xs text-slate-500 block">Formato aceito: .pdf apenas</span>
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mx-auto text-xl">
+                    📄
+                  </div>
+                  <span className="text-sm font-semibold text-blue-400 block">Clique para anexar os arquivos PDF de aprovação</span>
+                  <span className="text-xs text-slate-500 block">Máximo de 5 arquivos (até 10MB por arquivo)</span>
                 </label>
               </div>
 
               {ethicsFiles.length > 0 && (
                 <div className="space-y-2 pt-2">
                   {ethicsFiles.map((file, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs">
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs">
                       <span className="text-slate-200 font-mono font-semibold truncate">{file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)</span>
                       <button
                         type="button"
                         onClick={() => removeFile(idx)}
-                        className="text-rose-400 hover:text-rose-300 font-bold px-2"
+                        className="text-slate-400 hover:text-rose-400 font-bold px-2 transition-colors"
                       >
                         ✕ Remover
                       </button>
@@ -280,43 +302,58 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
           )}
         </div>
 
-        {/* SEÇÃO 4: Equipamentos & Política de Storage */}
-        <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono font-bold">4</span>
-              <span>Equipamentos & Política de Armazenamento</span>
-            </h2>
+        {/* SEÇÃO 4: Equipamentos & Política de Armazenamento */}
+        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
+          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+              04
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Equipamentos & Política de Privacidade</h2>
+              <p className="text-xs text-slate-400">Escolha de aparelhos e retenção de arquivos</p>
+            </div>
           </div>
 
           <div className="space-y-3">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
               Equipamentos Solicitados no Laboratório:
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <label className="flex items-center space-x-3 p-4 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+              <label
+                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                  requestScanner3DHistech
+                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={requestScanner3DHistech}
                   onChange={e => setRequestScanner3DHistech(e.target.checked)}
-                  className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500"
+                  className="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
                 />
                 <div>
                   <span className="text-sm font-bold text-white block">🔬 Scanner 3DHISTECH</span>
-                  <span className="text-xs text-slate-400">Digitalização WSI de lâminas histológicas</span>
+                  <span className="text-xs text-slate-400">Digitalização WSI de lâminas histológicas em altíssima resolução</span>
                 </div>
               </label>
 
-              <label className="flex items-center space-x-3 p-4 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+              <label
+                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                  requestPcrRealTime7500
+                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={requestPcrRealTime7500}
                   onChange={e => setRequestPcrRealTime7500(e.target.checked)}
-                  className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500"
+                  className="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
                 />
                 <div>
                   <span className="text-sm font-bold text-white block">🧬 Real Time 7500 PCR</span>
-                  <span className="text-xs text-slate-400">Termociclador para análise molecular</span>
+                  <span className="text-xs text-slate-400">Termociclador para análise de quantificação molecular</span>
                 </div>
               </label>
             </div>
@@ -327,44 +364,62 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
               Política de Armazenamento e Privacidade Desejada:
             </label>
             <div className="space-y-3">
-              <label className="flex items-start space-x-3 p-4 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+              <label
+                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                  requestedStoragePolicy === 'PrivateTemporary'
+                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
                 <input
                   type="radio"
                   name="storagePolicy"
                   value="PrivateTemporary"
                   checked={requestedStoragePolicy === 'PrivateTemporary'}
                   onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600"
+                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
                 />
                 <div>
-                  <span className="text-sm font-bold text-white block">🔒 Privada Temporária (Exclusão Automática em 30 Dias)</span>
-                  <span className="text-xs text-slate-400">Privacidade total/segredo industrial. O arquivo é excluído fisicamente após o expurgo.</span>
+                  <span className="text-sm font-bold text-white block">🔒 Privada Temporária (Expurgo Automático em 30 Dias)</span>
+                  <span className="text-xs text-slate-400">Privacidade total/segredo industrial. O arquivo é excluído fisicamente após a emissão do laudo.</span>
                 </div>
               </label>
 
-              <label className="flex items-start space-x-3 p-4 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+              <label
+                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                  requestedStoragePolicy === 'PrivatePersistent'
+                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
                 <input
                   type="radio"
                   name="storagePolicy"
                   value="PrivatePersistent"
                   checked={requestedStoragePolicy === 'PrivatePersistent'}
                   onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600"
+                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
                 />
                 <div>
-                  <span className="text-sm font-bold text-white block">📁 Privada Persistente (Guarda Longa no QNAP NAS)</span>
-                  <span className="text-xs text-slate-400">Mantido no acervo privado da sua instituição durante a vigência da pesquisa.</span>
+                  <span className="text-sm font-bold text-white block">📁 Privada Persistente (Guarda Longa no Acervo)</span>
+                  <span className="text-xs text-slate-400">Mantido no acervo privado da sua instituição durante a vigência do projeto.</span>
                 </div>
               </label>
 
-              <label className="flex items-start space-x-3 p-4 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+              <label
+                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                  requestedStoragePolicy === 'PublicRepository'
+                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
                 <input
                   type="radio"
                   name="storagePolicy"
                   value="PublicRepository"
                   checked={requestedStoragePolicy === 'PublicRepository'}
                   onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600"
+                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
                 />
                 <div>
                   <span className="text-sm font-bold text-white block">🌐 Repositório Público (Open Science / Ensino)</span>
@@ -375,14 +430,21 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
           </div>
         </div>
 
-        {/* Action Button */}
+        {/* Submit Action */}
         <div className="flex justify-end pt-4">
           <button
             type="submit"
             disabled={submitting}
-            className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base transition-all shadow-xl shadow-blue-600/30 disabled:opacity-50"
+            className="w-full sm:w-auto px-10 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base transition-all shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 disabled:opacity-50 flex items-center justify-center space-x-2"
           >
-            {submitting ? 'Submetendo Solicitação...' : '🚀 Enviar Solicitação de Onboarding'}
+            {submitting ? (
+              <span>Submetendo Solicitação...</span>
+            ) : (
+              <>
+                <span>Enviar Solicitação de Onboarding</span>
+                <span>→</span>
+              </>
+            )}
           </button>
         </div>
       </form>
