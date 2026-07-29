@@ -159,25 +159,12 @@
       align-items: center;
     }
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .feature-box {
-      background: #ffffff;
-      border: 1px solid var(--border);
+    .diagram-img {
+      width: 100%;
       border-radius: 12px;
-      padding: 16px;
-    }
-
-    .feature-box h4 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #0284c7;
-      margin-bottom: 6px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 16px 0;
     }
 
     .footer {
@@ -250,44 +237,21 @@
     </tbody>
   </table>
 
-  <h2>📊 1. Painel Dashboard & Métricas Globais</h2>
-  <p>O Dashboard principal do dataPATH oferece uma visão operacional completa do acervo de lâminas em tempo real:</p>
-  <div class="feature-grid">
-    <div class="feature-box">
-      <h4>Métricas em Tempo Real (KPI Cards)</h4>
-      <p style="margin:0; font-size:12.5px;">Monitoramento contínuo do total de casos registrados, pareceres aguardando 2ª opinião, laudos concluídos, lâminas em análise técnica e volume de armazenamento WSI no NAS (TB).</p>
-    </div>
-    <div class="feature-box">
-      <h4>Filtros Rápido & Busca por Código</h4>
-      <p style="margin:0; font-size:12.5px;">Localização imediata por código do caso (ex: <code>DP-2026-0089</code>), órgão (Próstata, Mama, Tiróide, Pele, Pulmão) e status de laudo.</p>
-    </div>
-  </div>
+  <h2>🏛️ 1. Diagrama de Arquitetura do Sistema (Padrão Astah UML)</h2>
+  <p>Arquitetura em camadas e serviços integrados do ecossistema dataPATH:</p>
+  <img src="docs/images/c4_context_diagram.png" alt="Diagrama de Arquitetura Astah UML" class="diagram-img" />
 
-  <h2>🔬 2. Visualizador WSI (Gigapixel) & Comparador de Colorações</h2>
+  <h2>🗄️ 2. Modelo de Banco de Dados (Astah ERD)</h2>
+  <p>Estrutura relacional de tabelas e cardinalidades no PostgreSQL 16:</p>
+  <img src="docs/images/database_erd_diagram.png" alt="Diagrama ERD Astah UML" class="diagram-img" />
+
+  <h2>🔬 3. Visualizador WSI (Gigapixel) & Comparador de Colorações</h2>
   <p>Interface médica desenvolvida para análise detalhada de tecidos e tomada de decisão diagnóstica:</p>
   <ul>
     <li><strong>Navegação Interativa:</strong> Controles de zoom óptico (10x, 20x, 40x), pan e ajuste de brilho/contraste.</li>
     <li><strong>Barra de Ferramentas Diagnósticas:</strong> Selecionar, desenhar região de interesse (ROI), medidor micrométrico (<code>1 px ≈ 0,25 µm</code>), fixar notas e centralizar.</li>
     <li><strong>Modo Comparativo Side-by-Side:</strong> Botão para dividir a tela e comparar a lâmina de imunohistoquímica (IHQ/PAS) lado a lado com a lâmina H&E de referência.</li>
-    <li><strong>Emissão de Parecer & Laudo PDF:</strong> Formulário com impressão diagnóstica, descrição microscópica, código CID-10, gradação e geração de relatório em PDF com 1 clique.</li>
   </ul>
-
-  <h2>🤝 3. Portal de Onboarding & Captação de Parceiros</h2>
-  <p>Fluxo público estruturado em 4 seções para cadastro de pesquisadores e instituições parceiras:</p>
-  <ul>
-    <li><strong>Seção 1 - Identificação:</strong> Nome completo, e-mail institucional, telefone e departamento.</li>
-    <li><strong>Seção 2 - Perfil do Projeto:</strong> Vínculo acadêmico (Iniciação Científica, Mestrado, Doutorado, Pós-Doc) e título do projeto.</li>
-    <li><strong>Seção 3 - Documentação Ética:</strong> Indicação de aprovação CEP/CEUA com upload de parecer em PDF (até 5 arquivos).</li>
-    <li><strong>Seção 4 - Equipamentos & Storage:</strong> Seleção dos equipamentos (<em>Scanner 3DHISTECH</em> e/ou <em>Real Time 7500 PCR</em>) e definição da política de retenção de dados.</li>
-  </ul>
-
-  <h2>📋 4. Gestão Gestora de Parcerias & Ordens de Serviço</h2>
-  <p>Painel administrativo exclusivo para revisão de cadastros recebidos:</p>
-  <p>Permite a avaliação do parecer ético em PDF, definição de cotas de lâminas para digitalização, aprovação/rejeição com parecer justificado e emissão de Ordem de Serviço (<code>ORD-2026-XXXX</code>).</p>
-
-  <h2>🛡️ 5. Governança, Segurança e Auditoria LGPD</h2>
-  <p>Trilha de auditoria imutável integrada no backend .NET 8 (<code>AuditLogMiddleware</code>):</p>
-  <p>Cada acesso aos metadados clínicos ou visualização de arquivo WSI gera um log no banco registrando o timestamp em UTC, o IP do solicitante, o usuário e a ação realizada. Os dados podem ser pesquisados e exportados para relatório CSV.</p>
 
   <div class="footer">
     dataPATH — Plataforma de Patologia Digital Mini-PACS & Onboarding • Documentação Oficial de Produção (2026)
