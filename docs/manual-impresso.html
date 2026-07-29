@@ -2,99 +2,296 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manual do Sistema dataPATH — Versão Impressa & Operacional</title>
   <style>
-    @page { size: A4; margin: 20mm; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; color: #0f172a; line-height: 1.6; margin: 0; padding: 20px; background: #fff; }
-    .header { text-align: center; border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
-    .logo { font-size: 32px; font-weight: 900; color: #1e3a8a; letter-spacing: -1px; }
-    .logo span { color: #3b82f6; }
-    .subtitle { font-size: 14px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-    .badge { display: inline-block; background: #dbeafe; color: #1e40af; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 9999px; margin-top: 8px; }
-    h1, h2, h3 { color: #1e293b; }
-    h2 { border-left: 4px solid #2563eb; padding-left: 12px; margin-top: 36px; }
-    .screenshot { width: 100%; max-width: 800px; border-radius: 12px; border: 1px solid #cbd5e1; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); margin: 16px 0; }
-    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
-    .card-title { font-weight: 700; color: #1e40af; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
-    table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-    th, td { padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-size: 13px; }
-    th { background: #f1f5f9; font-weight: 700; color: #334155; }
-    .footer { margin-top: 50px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 16px; font-size: 11px; color: #94a3b8; }
-    .page-break { page-break-after: always; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    :root {
+      --primary: #06b6d4;
+      --primary-dark: #0284c7;
+      --indigo: #6366f1;
+      --emerald: #10b981;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.6;
+      font-size: 13.5px;
+      padding: 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary-dark);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--text);
+    }
+
+    .brand span {
+      background: linear-gradient(100deg, #0284c7, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #ecfeff;
+      color: #0891b2;
+      border: 1px solid #a5f3fc;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h1, h2, h3 {
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+
+    p {
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+      font-size: 12.5px;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .url-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #166534;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .feature-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .feature-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0284c7;
+      margin-bottom: 6px;
+    }
+
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    @media print {
+      body { padding: 0; max-width: 100%; font-size: 12px; }
+      .page-break { page-break-after: always; }
+      .url-box { border: 1px solid #000; }
+    }
   </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">data<span>PATH</span></div>
-        <div class="subtitle">Plataforma de Patologia Digital Mini-PACS • 2ª Opinião Remota & Onboarding</div>
-        <div class="badge">MANUAL DE UTILIZAÇÃO TÉCNICO E OPERACIONAL (PRODUÇÃO)</div>
+
+  <header>
+    <div>
+      <div class="brand">data<span>PATH</span></div>
+      <div class="subtitle">Plataforma de Patologia Digital Mini-PACS • Módulo de Onboarding & 2ª Opinião Remota</div>
     </div>
+    <div class="badge">MANUAL TÉCNICO & OPERACIONAL DE PRODUÇÃO (v2.0)</div>
+  </header>
 
-    <div class="card">
-        <div class="card-title">🎯 Propósito do Sistema</div>
-        <p style="margin:0; font-size:14px;">
-            O <strong>dataPATH</strong> (disponível em <code>https://datapath.produtoweb.com.br</code>) possibilita a publicação e o compartilhamento de lâminas histopatológicas em altíssima resolução (WSI — Gigapixel) para emissão assíncrona de pareceres médicos de 2ª opinião, operando em conformidade estrita com a LGPD (Lei nº 13.709/2018).
-        </p>
+  <div class="url-box">
+    <span>🌐 Sistema em Produção: <strong>https://datapath.produtoweb.com.br</strong></span>
+    <span>Conexão Segura SSL HTTPS 🔒</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Visão Geral & Propósito da Plataforma</div>
+    <p style="margin:0;">
+      O <strong>dataPATH</strong> é um sistema médico de Patologia Digital do tipo Mini-PACS projetado para o armazenamento seguro, visualização interativa e compartilhamento de lâminas histopatológicas em altíssima resolução (WSI — Gigapixel). O sistema opera em conformidade rigorosa com a <strong>LGPD (Lei nº 13.709/2018)</strong>, pseudonimizando dados clínicos de pacientes e permitindo a captação de parceiros acadêmicos para reserva de equipamentos científicos (<em>Scanner 3DHISTECH</em> e <em>Real Time 7500 PCR</em>).
+    </p>
+  </div>
+
+  <h2>🔑 Perfis de Acesso e Credenciais de Teste Operacional</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Perfil</th>
+        <th>E-mail de Acesso</th>
+        <th>Senha Padrão</th>
+        <th>Escopo de Permissões</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Técnico de Laboratório</strong></td>
+        <td><code>maria.silva@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Cadastro de casos biópticos anonimizados, upload de arquivos WSI e gestão de parceiros.</td>
+      </tr>
+      <tr>
+        <td><strong>Médico Patologista</strong></td>
+        <td><code>carlos.mendes@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Análise de lâminas gigapixel no WSI Viewer, emissão de pareceres de 2ª opinião e assinatura digital.</td>
+      </tr>
+      <tr>
+        <td><strong>Administrador</strong></td>
+        <td><code>admin@datapath.local</code></td>
+        <td><code>DataPath@2026</code></td>
+        <td>Acesso irrestrito a todas as funcionalidades, governança, trilha de auditoria LGPD e gestão de onboarding.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>📊 1. Painel Dashboard & Métricas Globais</h2>
+  <p>O Dashboard principal do dataPATH oferece uma visão operacional completa do acervo de lâminas em tempo real:</p>
+  <div class="feature-grid">
+    <div class="feature-box">
+      <h4>Métricas em Tempo Real (KPI Cards)</h4>
+      <p style="margin:0; font-size:12.5px;">Monitoramento contínuo do total de casos registrados, pareceres aguardando 2ª opinião, laudos concluídos, lâminas em análise técnica e volume de armazenamento WSI no NAS (TB).</p>
     </div>
-
-    <h2>🔑 Perfis de Acesso e Credenciais de Teste</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Perfil</th>
-                <th>E-mail</th>
-                <th>Senha</th>
-                <th>Escopo de Permissões</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Técnico de Laboratório</strong></td>
-                <td><code>maria.silva@datapath.local</code></td>
-                <td><code>DataPath@2026</code></td>
-                <td>Cadastro de casos clínicos, upload de lâminas WSI e gestão de amostras.</td>
-            </tr>
-            <tr>
-                <td><strong>Médico Patologista</strong></td>
-                <td><code>carlos.mendes@datapath.local</code></td>
-                <td><code>DataPath@2026</code></td>
-                <td>Análise WSI, emissão e assinatura de pareceres diagnósticos.</td>
-            </tr>
-            <tr>
-                <td><strong>Administrador</strong></td>
-                <td><code>admin@datapath.local</code></td>
-                <td><code>DataPath@2026</code></td>
-                <td>Acesso total, governança, auditoria LGPD e gestão do onboarding.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="page-break"></div>
-
-    <h2>1. Tela de Autenticação e Seleção de Perfil (Login)</h2>
-    <p>Acesse o sistema via navegador em <code>https://datapath.produtoweb.com.br</code>. Utilize os botões de atalho rápido para preencher as credenciais desejadas.</p>
-    <img class="screenshot" src="images/login_page_mockup_1785263078901.png" alt="Login Screenshot" />
-
-    <h2>2. Dashboard de Casos Histopatológicos</h2>
-    <p>Painel principal com indicadores quantitativos (Total, Pendentes, Em Revisão, Laudados), busca por texto livre, filtros por órgão/status e ações rápidas.</p>
-    <img class="screenshot" src="images/dashboard_page_mockup_1785263091565.png" alt="Dashboard Screenshot" />
-
-    <div class="page-break"></div>
-
-    <h2>3. Módulo de Onboarding e Captação de Parceiros</h2>
-    <p>Formulário de captação em 4 etapas (Identificação, Vínculo Acadêmico, Aprovação Ética CEP/CEUA com upload de PDF e Seleção de Equipamentos como Scanner 3DHISTECH e PCR 7500).</p>
-    <img class="screenshot" src="images/onboarding_form_page_1785279237001.png" alt="Onboarding Form Screenshot" />
-
-    <h2>4. Visualizador WSI (Gigapixel) e Emissão de Parecer Técnico</h2>
-    <p>Interface médica com visualizador zoomable de tecido microscópico, resumo da anamnese anonimizada e formulário para emissão e assinatura do laudo final.</p>
-    <img class="screenshot" src="images/case_detail_page_mockup_1785263102857.png" alt="Case Detail Screenshot" />
-
-    <h2>5. Painel de Governança e Auditoria LGPD</h2>
-    <p>Trilha de auditoria em tempo real exclusiva para perfil Admin, registrando carimbo de data/hora (UTC), endereço IP, ação executada e identificadores.</p>
-    <img class="screenshot" src="images/audit_logs_page_mockup_1785263114076.png" alt="Audit Logs Screenshot" />
-
-    <div class="footer">
-        dataPATH — Sistema de Patologia Digital Mini-PACS • Documento Gerado em 2026 • Versão 1.0 (Produção)
+    <div class="feature-box">
+      <h4>Filtros Rápido & Busca por Código</h4>
+      <p style="margin:0; font-size:12.5px;">Localização imediata por código do caso (ex: <code>DP-2026-0089</code>), órgão (Próstata, Mama, Tiróide, Pele, Pulmão) e status de laudo.</p>
     </div>
+  </div>
+
+  <h2>🔬 2. Visualizador WSI (Gigapixel) & Comparador de Colorações</h2>
+  <p>Interface médica desenvolvida para análise detalhada de tecidos e tomada de decisão diagnóstica:</p>
+  <ul>
+    <li><strong>Navegação Interativa:</strong> Controles de zoom óptico (10x, 20x, 40x), pan e ajuste de brilho/contraste.</li>
+    <li><strong>Barra de Ferramentas Diagnósticas:</strong> Selecionar, desenhar região de interesse (ROI), medidor micrométrico (<code>1 px ≈ 0,25 µm</code>), fixar notas e centralizar.</li>
+    <li><strong>Modo Comparativo Side-by-Side:</strong> Botão para dividir a tela e comparar a lâmina de imunohistoquímica (IHQ/PAS) lado a lado com a lâmina H&E de referência.</li>
+    <li><strong>Emissão de Parecer & Laudo PDF:</strong> Formulário com impressão diagnóstica, descrição microscópica, código CID-10, gradação e geração de relatório em PDF com 1 clique.</li>
+  </ul>
+
+  <h2>🤝 3. Portal de Onboarding & Captação de Parceiros</h2>
+  <p>Fluxo público estruturado em 4 seções para cadastro de pesquisadores e instituições parceiras:</p>
+  <ul>
+    <li><strong>Seção 1 - Identificação:</strong> Nome completo, e-mail institucional, telefone e departamento.</li>
+    <li><strong>Seção 2 - Perfil do Projeto:</strong> Vínculo acadêmico (Iniciação Científica, Mestrado, Doutorado, Pós-Doc) e título do projeto.</li>
+    <li><strong>Seção 3 - Documentação Ética:</strong> Indicação de aprovação CEP/CEUA com upload de parecer em PDF (até 5 arquivos).</li>
+    <li><strong>Seção 4 - Equipamentos & Storage:</strong> Seleção dos equipamentos (<em>Scanner 3DHISTECH</em> e/ou <em>Real Time 7500 PCR</em>) e definição da política de retenção de dados.</li>
+  </ul>
+
+  <h2>📋 4. Gestão Gestora de Parcerias & Ordens de Serviço</h2>
+  <p>Painel administrativo exclusivo para revisão de cadastros recebidos:</p>
+  <p>Permite a avaliação do parecer ético em PDF, definição de cotas de lâminas para digitalização, aprovação/rejeição com parecer justificado e emissão de Ordem de Serviço (<code>ORD-2026-XXXX</code>).</p>
+
+  <h2>🛡️ 5. Governança, Segurança e Auditoria LGPD</h2>
+  <p>Trilha de auditoria imutável integrada no backend .NET 8 (<code>AuditLogMiddleware</code>):</p>
+  <p>Cada acesso aos metadados clínicos ou visualização de arquivo WSI gera um log no banco registrando o timestamp em UTC, o IP do solicitante, o usuário e a ação realizada. Os dados podem ser pesquisados e exportados para relatório CSV.</p>
+
+  <div class="footer">
+    dataPATH — Plataforma de Patologia Digital Mini-PACS & Onboarding • Documentação Oficial de Produção (2026)
+  </div>
+
 </body>
 </html>
