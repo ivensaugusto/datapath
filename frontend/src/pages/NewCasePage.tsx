@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../services/api';
+import { ArrowLeft, Microscope, UploadCloud, ShieldCheck } from 'lucide-react';
 
 interface NewCasePageProps {
   onNavigate: (page: string, caseId?: string) => void;
@@ -12,7 +13,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
   const [patientBiologicalSex, setPatientBiologicalSex] = useState('F');
   const [patientAgeAtBiopsy, setPatientAgeAtBiopsy] = useState<number | ''>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  
+
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +24,6 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
     setLoading(true);
 
     try {
-      // 1. Cadastrar Caso Clínico
       setUploadProgress('Cadastrando metadados anonimizados...');
       const newCase = await api.createCase({
         organSite,
@@ -33,13 +33,11 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
         patientAgeAtBiopsy: patientAgeAtBiopsy === '' ? undefined : Number(patientAgeAtBiopsy),
       });
 
-      // 2. Upload da Lâmina WSI (se selecionada)
       if (selectedFile) {
         setUploadProgress(`Enviando arquivo WSI (${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB)...`);
         await api.uploadSlide(newCase.caseId, selectedFile);
       }
 
-      // Redirecionar para os detalhes do caso recém-criado
       onNavigate('case-detail', newCase.caseId);
     } catch (err: any) {
       setError(err.message || 'Erro ao cadastrar caso ou enviar lâmina.');
@@ -50,70 +48,68 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
+      <div className="flex items-center gap-4">
         <button
           onClick={() => onNavigate('dashboard')}
-          className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white transition-colors"
         >
-          ←
+          <ArrowLeft className="h-4 w-4" />
         </button>
         <div>
-          <h1 className="text-2xl font-black text-white">Cadastrar Nova Biópsia (Mini-PACS)</h1>
-          <p className="text-sm text-slate-400">Preencha os metadados clínicos anonimizados e anexe a lâmina WSI.</p>
+          <h1 className="text-2xl font-extrabold text-white tracking-tight sm:text-3xl">Cadastrar Nova Biópsia (Mini-PACS)</h1>
+          <p className="text-sm text-slate-400 mt-0.5">Preencha a anamnese anonimizada e anexe o arquivo de lâmina gigapixel.</p>
         </div>
       </div>
 
-      {/* Notice LGPD */}
-      <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs flex items-start space-x-3">
-        <span className="text-lg">🔒</span>
+      {/* LGPD Banner */}
+      <div className="flex items-start gap-3 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 p-4 text-xs text-cyan-300">
+        <ShieldCheck className="h-5 w-5 shrink-0 text-cyan-400 mt-0.5" />
         <div>
-          <strong className="block text-blue-200">Garantia de Anonimização LGPD:</strong>
-          Nunca insira CPF, nome completo ou endereço do paciente. O sistema gera automaticamente um código único pseudonimizado (ex: DP-2026-0003).
+          <strong className="block text-cyan-200 font-bold">Garantia de Anonimização LGPD:</strong>
+          Nunca insira CPF, nome completo ou contato direto do paciente. O sistema gera automaticamente um código único pseudonimizado (ex: DP-2026-0003).
         </div>
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm">
+        <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs font-semibold text-rose-300">
           ⚠️ {error}
         </div>
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl space-y-6">
+      <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Organ Site */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
               Órgão / Sítio Anatômico *
             </label>
             <select
               value={organSite}
               onChange={(e) => setOrganSite(e.target.value)}
-              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
             >
               <option value="Pele">Pele</option>
               <option value="Mama">Mama</option>
               <option value="Próstata">Próstata</option>
               <option value="Pulmão">Pulmão</option>
               <option value="Intestino">Intestino</option>
-              <option value="Tireoide">Tireoide</option>
+              <option value="Tiróide">Tiróide</option>
               <option value="Rim">Rim</option>
               <option value="Fígado">Fígado</option>
               <option value="Outro">Outro</option>
             </select>
           </div>
 
-          {/* Staining Type */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Tipo de Coloração *
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+              Tipo de Coloração Histológica *
             </label>
             <select
               value={stainingType}
               onChange={(e) => setStainingType(e.target.value)}
-              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
             >
               <option value="HE">Hematoxilina-Eosina (HE)</option>
               <option value="Imuno-histoquímica">Imuno-histoquímica (IHQ)</option>
@@ -125,15 +121,14 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Biological Sex */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
               Sexo Biológico (Opcional)
             </label>
             <select
               value={patientBiologicalSex}
               onChange={(e) => setPatientBiologicalSex(e.target.value)}
-              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
             >
               <option value="F">Feminino</option>
               <option value="M">Masculino</option>
@@ -141,9 +136,8 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             </select>
           </div>
 
-          {/* Age */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
               Idade à Biópsia (Anos)
             </label>
             <input
@@ -153,14 +147,13 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
               value={patientAgeAtBiopsy}
               onChange={(e) => setPatientAgeAtBiopsy(e.target.value ? Number(e.target.value) : '')}
               placeholder="Ex: 45"
-              className="w-full h-12 py-3 px-4 text-base rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
             />
           </div>
         </div>
 
-        {/* Clinical Summary */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+          <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
             Resumo Clínico / Anamnese Anonimizada *
           </label>
           <textarea
@@ -169,46 +162,42 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             value={clinicalSummary}
             onChange={(e) => setClinicalSummary(e.target.value)}
             placeholder="Descreva a história clínica, suspeita diagnóstica e achados macroscópicos..."
-            className="w-full min-h-[160px] p-4 leading-relaxed rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-base"
+            className="w-full min-h-[140px] p-4 text-sm text-white leading-relaxed rounded-xl border border-slate-800 bg-slate-950/80 placeholder-slate-500 outline-none focus:border-cyan-500/60"
           />
         </div>
 
-        {/* WSI Slide Upload Selector */}
+        {/* WSI File Upload */}
         <div className="space-y-2">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-            Arquivo de Lâmina WSI (Aperio .svs, .tif, .ndpi ou amostra)
+          <label className="block text-xs font-bold uppercase tracking-wide text-slate-400">
+            Arquivo de Lâmina WSI Gigapixel (.svs, .tif, .ndpi, .mrxs)
           </label>
           
-          <div className="border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-2xl p-6 text-center transition-all bg-slate-950/40">
+          <label className="grid cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-slate-800 bg-slate-950/40 p-8 text-center transition-colors hover:border-cyan-500/50">
             <input
               type="file"
-              id="wsi-file"
               onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
               className="hidden"
             />
-            <label htmlFor="wsi-file" className="cursor-pointer space-y-2 block">
-              <div className="text-3xl">🖼️</div>
-              {selectedFile ? (
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-blue-400">{selectedFile.name}</p>
-                  <p className="text-xs text-slate-400">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-slate-300">Clique para selecionar o arquivo de lâmina WSI</p>
-                  <p className="text-xs text-slate-500">Formatos aceitos: .svs, .tiff, .ndpi, .jpg, .png</p>
-                </div>
-              )}
-            </label>
-          </div>
+            <UploadCloud className="h-8 w-8 text-cyan-400 mb-2" />
+            {selectedFile ? (
+              <div>
+                <p className="text-sm font-bold text-cyan-400">{selectedFile.name}</p>
+                <p className="text-xs text-slate-400 mt-1">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm font-semibold text-slate-200">Clique para selecionar ou arraste o arquivo WSI</p>
+                <p className="text-xs text-slate-500 mt-1">Formatos suportados: .svs, .tiff, .ndpi, .mrxs, .jpg, .png</p>
+              </div>
+            )}
+          </label>
         </div>
 
-        {/* Submit */}
-        <div className="pt-4 flex items-center justify-end space-x-3">
+        <div className="pt-4 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={() => onNavigate('dashboard')}
-            className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm transition-all"
+            className="h-11 rounded-xl border border-slate-800 bg-slate-900 px-5 text-xs font-semibold text-slate-400 hover:text-white"
           >
             Cancelar
           </button>
@@ -216,14 +205,14 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all text-sm disabled:opacity-50 flex items-center space-x-2"
+            className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-6 text-xs font-bold text-slate-950 transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {loading ? (
-              <span>{uploadProgress || 'Processando...'}</span>
+              <span>{uploadProgress || 'Salvando...'}</span>
             ) : (
               <>
-                <span>Cadastrar e Concluir</span>
-                <span>✓</span>
+                <Microscope className="h-4 w-4" />
+                <span>Concluir Cadastro</span>
               </>
             )}
           </button>

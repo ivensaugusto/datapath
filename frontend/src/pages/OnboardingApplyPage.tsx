@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../services/api';
+import { Microscope, CheckCircle2, UploadCloud, ArrowRight } from 'lucide-react';
 
 interface OnboardingApplyPageProps {
   onNavigate: (page: string) => void;
@@ -15,7 +16,7 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
   const [hasEthicsApproval, setHasEthicsApproval] = useState(true);
   const [requestScanner3DHistech, setRequestScanner3DHistech] = useState(true);
   const [requestPcrRealTime7500, setRequestPcrRealTime7500] = useState(false);
-  const [requestedStoragePolicy, setRequestedStoragePolicy] = useState('PrivateTemporary');
+  const [requestedStoragePolicy] = useState('PrivateTemporary');
   const [ethicsFiles, setEthicsFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
@@ -68,18 +69,18 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
   if (submittedSuccess) {
     return (
       <div className="max-w-2xl mx-auto py-16 px-4 text-center space-y-6">
-        <div className="w-20 h-20 rounded-2xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center mx-auto text-3xl shadow-xl shadow-blue-500/10">
-          ✓
+        <div className="w-20 h-20 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto text-3xl shadow-xl shadow-emerald-500/10">
+          <CheckCircle2 className="h-10 w-10" />
         </div>
-        <h1 className="text-3xl font-black text-white tracking-tight">Solicitação de Onboarding Enviada!</h1>
-        <p className="text-slate-300 leading-relaxed text-base">
+        <h1 className="text-3xl font-extrabold text-white tracking-tight">Solicitação Enviada com Sucesso!</h1>
+        <p className="text-slate-300 leading-relaxed text-sm">
           Sua solicitação de acesso aos equipamentos do laboratório foi recebida com sucesso.
-          Nossa equipe analisará a documentação de aprovação CEP/CEUA e enviará o parecer de liberação para <strong className="text-blue-400">{email}</strong>.
+          Nossa equipe analisará a documentação de aprovação CEP/CEUA e enviará o parecer para <strong className="text-cyan-400">{email}</strong>.
         </p>
         <div className="pt-4">
           <button
             onClick={() => onNavigate('login')}
-            className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all shadow-lg shadow-blue-600/30"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-8 text-sm font-bold text-slate-950 hover:opacity-90 shadow-lg shadow-cyan-500/20"
           >
             Voltar para a Tela de Login
           </button>
@@ -90,24 +91,24 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
 
   return (
     <div className="space-y-8">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-950/40 via-slate-900/60 to-slate-900/40 p-8 rounded-2xl border border-blue-500/20 backdrop-blur-xl shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">
-              <span>🔬 Formulário Oficial de Parceiros</span>
+      {/* Banner */}
+      <div className="glass-card rounded-2xl p-8 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400 mb-2">
+              <Microscope className="h-3.5 w-3.5" /> Formulário Oficial de Parceiros de Pesquisa
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h1 className="text-2xl font-extrabold text-white tracking-tight sm:text-3xl">
               Onboarding & Digitalização de Lâminas
             </h1>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Solicite acesso ao <strong className="text-blue-400">Scanner 3DHISTECH</strong> e serviços de Patologia Digital Mini-PACS.
+            <p className="text-sm text-slate-400 mt-1">
+              Solicite reserva do <strong className="text-cyan-400">Scanner 3DHISTECH</strong> e do <strong className="text-indigo-400">Real Time 7500 PCR</strong>.
             </p>
           </div>
           <div>
             <button
               onClick={() => onNavigate('login')}
-              className="px-5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 text-xs font-bold transition-all whitespace-nowrap shadow-md"
+              className="h-10 rounded-xl border border-slate-800 bg-slate-900 px-4 text-xs font-bold text-slate-300 hover:text-white transition-colors whitespace-nowrap"
             >
               Já possui conta? Entrar →
             </button>
@@ -116,98 +117,85 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* SEÇÃO 1: Identificação Cadastral */}
-        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
-          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+        {/* Step 1 */}
+        <div className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <span className="grid h-8 w-8 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono text-sm font-bold text-cyan-400">
               01
-            </div>
+            </span>
             <div>
               <h2 className="text-base font-bold text-white">Identificação Cadastral</h2>
-              <p className="text-xs text-slate-400">Dados do pesquisador ou responsável técnico</p>
+              <p className="text-xs text-slate-400">Dados do pesquisador responsável</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Nome Completo *
-              </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">Nome Completo *</label>
               <input
                 type="text"
                 required
                 value={fullName}
                 onChange={e => setFullName(e.target.value)}
                 placeholder="Ex: Dra. Ana Paula Vasconcelos"
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
               />
             </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                E-mail Institucional / Principal *
-              </label>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">E-mail Institucional *</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="ana.vasconcelos@universidade.edu.br"
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
               />
             </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Telefone / WhatsApp com DDD *
-              </label>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">Telefone com DDD *</label>
               <input
                 type="tel"
                 required
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="(11) 98765-4321"
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
               />
             </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Instituição & Departamento *
-              </label>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">Instituição / Departamento *</label>
               <input
                 type="text"
                 required
                 value={institutionAndDepartment}
                 onChange={e => setInstitutionAndDepartment(e.target.value)}
                 placeholder="Ex: USP - Faculdade de Medicina / Patologia"
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
               />
             </div>
           </div>
         </div>
 
-        {/* SEÇÃO 2: Perfil & Modalidade */}
-        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
-          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+        {/* Step 2 */}
+        <div className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <span className="grid h-8 w-8 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono text-sm font-bold text-cyan-400">
               02
-            </div>
+            </span>
             <div>
               <h2 className="text-base font-bold text-white">Perfil & Modalidade do Projeto</h2>
-              <p className="text-xs text-slate-400">Vínculo de pesquisa e finalidade do uso</p>
+              <p className="text-xs text-slate-400">Vínculo de pesquisa e projeto</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Modalidade de Vínculo *
-              </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">Modalidade de Vínculo *</label>
               <select
                 value={modality}
                 onChange={e => setModality(e.target.value)}
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
               >
                 <option value="IniciacaoCientifica">🎓 Iniciação Científica (Digipath)</option>
                 <option value="Mestrado">🎓 Mestrado (Digipath)</option>
@@ -217,82 +205,60 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
                 <option value="Outro">🌐 Outro Parceiro Institucional</option>
               </select>
             </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Título do Projeto ou Finalidade *
-              </label>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">Título do Projeto *</label>
               <input
                 type="text"
                 required
                 value={researchTitle}
                 onChange={e => setResearchTitle(e.target.value)}
                 placeholder="Ex: Análise histopatológica de carcinoma mamário"
-                className="w-full h-11 px-4 text-sm bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
               />
             </div>
           </div>
         </div>
 
-        {/* SEÇÃO 3: Aprovação Ética CEP/CEUA */}
-        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
-          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+        {/* Step 3 */}
+        <div className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <span className="grid h-8 w-8 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono text-sm font-bold text-cyan-400">
               03
-            </div>
+            </span>
             <div>
               <h2 className="text-base font-bold text-white">Documentação Ética (CEP / CEUA)</h2>
-              <p className="text-xs text-slate-400">Anexo obrigatório de comprovação comitê de ética</p>
+              <p className="text-xs text-slate-400">Upload de aprovação ética em PDF</p>
             </div>
           </div>
 
-          <label className="flex items-center space-x-3 cursor-pointer p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-all">
+          <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-slate-800 bg-slate-950/60">
             <input
               type="checkbox"
               checked={hasEthicsApproval}
               onChange={e => setHasEthicsApproval(e.target.checked)}
-              className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 rounded accent-cyan"
             />
-            <span className="text-sm font-semibold text-slate-200">
+            <span className="text-xs font-semibold text-slate-200">
               O projeto possui aprovação formal do Comitê de Ética em Pesquisa (CEP / CEUA)
             </span>
           </label>
 
           {hasEthicsApproval && (
-            <div className="space-y-3 pt-1">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                Parecer de Aprovação Ética (PDF)
+            <div className="space-y-3">
+              <label className="grid cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-slate-800 bg-slate-950/40 p-8 text-center transition-colors hover:border-cyan-500/50">
+                <input type="file" accept=".pdf" multiple onChange={handleFileChange} className="hidden" />
+                <UploadCloud className="h-8 w-8 text-cyan-400 mb-2" />
+                <p className="text-sm font-bold text-slate-200">Clique para anexar o Parecer CEP/CEUA em PDF</p>
+                <p className="text-xs text-slate-500 mt-1">Máximo de 5 arquivos PDF</p>
               </label>
 
-              <div className="border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-xl p-6 text-center bg-slate-950/40 transition-colors">
-                <input
-                  type="file"
-                  accept=".pdf"
-                  multiple
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="pdf-upload"
-                />
-                <label htmlFor="pdf-upload" className="cursor-pointer space-y-2 block">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mx-auto text-xl">
-                    📄
-                  </div>
-                  <span className="text-sm font-semibold text-blue-400 block">Clique para anexar os arquivos PDF de aprovação</span>
-                  <span className="text-xs text-slate-500 block">Máximo de 5 arquivos (até 10MB por arquivo)</span>
-                </label>
-              </div>
-
               {ethicsFiles.length > 0 && (
-                <div className="space-y-2 pt-2">
+                <div className="space-y-2">
                   {ethicsFiles.map((file, idx) => (
                     <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs">
-                      <span className="text-slate-200 font-mono font-semibold truncate">{file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)</span>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(idx)}
-                        className="text-slate-400 hover:text-rose-400 font-bold px-2 transition-colors"
-                      >
-                        ✕ Remover
+                      <span className="text-slate-200 font-mono font-semibold truncate">{file.name}</span>
+                      <button type="button" onClick={() => removeFile(idx)} className="text-rose-400 font-bold px-2">
+                        Remover
                       </button>
                     </div>
                   ))}
@@ -302,149 +268,58 @@ export const OnboardingApplyPage: React.FC<OnboardingApplyPageProps> = ({ onNavi
           )}
         </div>
 
-        {/* SEÇÃO 4: Equipamentos & Política de Armazenamento */}
-        <div className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800/90 backdrop-blur-xl space-y-6 hover:border-slate-700/80 transition-all">
-          <div className="flex items-center space-x-3 border-b border-slate-800/80 pb-4">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-mono font-bold text-sm">
+        {/* Step 4 */}
+        <div className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <span className="grid h-8 w-8 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono text-sm font-bold text-cyan-400">
               04
-            </div>
+            </span>
             <div>
-              <h2 className="text-base font-bold text-white">Equipamentos & Política de Privacidade</h2>
-              <p className="text-xs text-slate-400">Escolha de aparelhos e retenção de arquivos</p>
+              <h2 className="text-base font-bold text-white">Equipamentos Solicitados & Privacidade</h2>
+              <p className="text-xs text-slate-400">Seleção de aparelhos e retenção de dados</p>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-              Equipamentos Solicitados no Laboratório:
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
+              requestScanner3DHistech ? 'border-cyan-500/50 bg-cyan-500/10' : 'border-slate-800 bg-slate-950/60'
+            }`}>
+              <input
+                type="checkbox"
+                checked={requestScanner3DHistech}
+                onChange={e => setRequestScanner3DHistech(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded accent-cyan"
+              />
+              <div>
+                <span className="text-sm font-bold text-white block">🔬 Scanner 3DHISTECH</span>
+                <span className="text-xs text-slate-400 mt-1 block">Digitalização gigapixel 20x/40x de lâminas histológicas</span>
+              </div>
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <label
-                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
-                  requestScanner3DHistech
-                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={requestScanner3DHistech}
-                  onChange={e => setRequestScanner3DHistech(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-bold text-white block">🔬 Scanner 3DHISTECH</span>
-                  <span className="text-xs text-slate-400">Digitalização WSI de lâminas histológicas em altíssima resolução</span>
-                </div>
-              </label>
 
-              <label
-                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
-                  requestPcrRealTime7500
-                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={requestPcrRealTime7500}
-                  onChange={e => setRequestPcrRealTime7500(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-bold text-white block">🧬 Real Time 7500 PCR</span>
-                  <span className="text-xs text-slate-400">Termociclador para análise de quantificação molecular</span>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div className="space-y-3 pt-2">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-              Política de Armazenamento e Privacidade Desejada:
+            <label className={`flex items-start gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${
+              requestPcrRealTime7500 ? 'border-cyan-500/50 bg-cyan-500/10' : 'border-slate-800 bg-slate-950/60'
+            }`}>
+              <input
+                type="checkbox"
+                checked={requestPcrRealTime7500}
+                onChange={e => setRequestPcrRealTime7500(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded accent-cyan"
+              />
+              <div>
+                <span className="text-sm font-bold text-white block">🧬 Real Time 7500 PCR</span>
+                <span className="text-xs text-slate-400 mt-1 block">Termociclador para quantificação molecular</span>
+              </div>
             </label>
-            <div className="space-y-3">
-              <label
-                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
-                  requestedStoragePolicy === 'PrivateTemporary'
-                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="storagePolicy"
-                  value="PrivateTemporary"
-                  checked={requestedStoragePolicy === 'PrivateTemporary'}
-                  onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-bold text-white block">🔒 Privada Temporária (Expurgo Automático em 30 Dias)</span>
-                  <span className="text-xs text-slate-400">Privacidade total/segredo industrial. O arquivo é excluído fisicamente após a emissão do laudo.</span>
-                </div>
-              </label>
-
-              <label
-                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
-                  requestedStoragePolicy === 'PrivatePersistent'
-                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="storagePolicy"
-                  value="PrivatePersistent"
-                  checked={requestedStoragePolicy === 'PrivatePersistent'}
-                  onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-bold text-white block">📁 Privada Persistente (Guarda Longa no Acervo)</span>
-                  <span className="text-xs text-slate-400">Mantido no acervo privado da sua instituição durante a vigência do projeto.</span>
-                </div>
-              </label>
-
-              <label
-                className={`flex items-start space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
-                  requestedStoragePolicy === 'PublicRepository'
-                    ? 'bg-blue-600/10 border-blue-500/50 ring-1 ring-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="storagePolicy"
-                  value="PublicRepository"
-                  checked={requestedStoragePolicy === 'PublicRepository'}
-                  onChange={e => setRequestedStoragePolicy(e.target.value)}
-                  className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="text-sm font-bold text-white block">🌐 Repositório Público (Open Science / Ensino)</span>
-                  <span className="text-xs text-slate-400">Acervo anonimizado compartilhado abertamente com a comunidade científica.</span>
-                </div>
-              </label>
-            </div>
           </div>
         </div>
 
-        {/* Submit Action */}
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end">
           <button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto px-10 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base transition-all shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 disabled:opacity-50 flex items-center justify-center space-x-2"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-8 text-sm font-bold text-slate-950 hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
-            {submitting ? (
-              <span>Submetendo Solicitação...</span>
-            ) : (
-              <>
-                <span>Enviar Solicitação de Onboarding</span>
-                <span>→</span>
-              </>
-            )}
+            {submitting ? 'Submetendo...' : 'Enviar Solicitação de Onboarding'} <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </form>
