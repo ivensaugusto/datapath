@@ -70,10 +70,10 @@ Write-Host "`n✅ Imagem Docker construída com sucesso no servidor!"
 
 # 4. Atualização e Inicialização da Stack no Portainer
 Write-Host "[4/5] Atualizando e iniciando a stack app-datapath (Stack ID: $stackId)..."
-$fileRes = Invoke-RestMethod -Uri "$portainerUrl/api/stacks/$stackId/file" -Method Get -Headers $headers
-$stackRes = Invoke-RestMethod -Uri "$portainerUrl/api/stacks/$stackId" -Method Get -Headers $headers
+$fileRes = Invoke-RestMethod -Uri "$($portainerUrl)/api/stacks/$($stackId)/file" -Method Get -Headers $headers
+$stackRes = Invoke-RestMethod -Uri "$($portainerUrl)/api/stacks/$($stackId)" -Method Get -Headers $headers
 
-$updateUrl = "$portainerUrl/api/stacks/$stackId?endpointId=$endpointId"
+$updateUrl = "$($portainerUrl)/api/stacks/$($stackId)?endpointId=$($endpointId)"
 $updatePayload = @{
     stackFileContent = $fileRes.StackFileContent
     env = $stackRes.Env
@@ -81,8 +81,15 @@ $updatePayload = @{
     pullImage = $false
 } | ConvertTo-Json -Depth 10
 
-$updateRes = Invoke-RestMethod -Uri $updateUrl -Method Put -Headers $headers -Body $updatePayload -ContentType "application/json"
-Write-Host "Stack inicializada com sucesso!"
+try {
+    $updateRes = Invoke-RestMethod -Uri $updateUrl -Method Put -Headers $headers -Body $updatePayload -ContentType "application/json"
+    Write-Host "Stack atualizada via PUT com sucesso!"
+} catch {
+    Write-Warning "Falha no PUT da stack, tentando iniciar via POST /start..."
+    $startUrl = "$($portainerUrl)/api/stacks/$($stackId)/start?endpointId=$($endpointId)"
+    $startRes = Invoke-RestMethod -Uri $startUrl -Method Post -Headers $headers
+    Write-Host "Stack iniciada via /start com sucesso!"
+}
 
 # 5. Validação dos Containers
 Write-Host "[5/5] Verificando status dos containers em execução..."

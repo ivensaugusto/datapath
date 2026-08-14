@@ -133,31 +133,35 @@ public class OnboardingController : ControllerBase
         var totalItems = await query.CountAsync();
         var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-        var items = await query
+        var rawItems = await query
             .OrderByDescending(r => r.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(r => new EquipmentAccessRequestDto
-            {
-                Id = r.Id,
-                FullName = r.FullName,
-                Email = r.Email,
-                Phone = r.Phone,
-                InstitutionAndDepartment = r.InstitutionAndDepartment,
-                Modality = r.Modality.ToString(),
-                ResearchTitle = r.ResearchTitle,
-                HasEthicsApproval = r.HasEthicsApproval,
-                EthicsDocumentsCount = JsonSerializer.Deserialize<List<string>>(r.EthicsDocumentPathsJson ?? "[]")!.Count,
-                RequestScanner3DHistech = r.RequestScanner3DHistech,
-                RequestPcrRealTime7500 = r.RequestPcrRealTime7500,
-                RequestedStoragePolicy = r.RequestedStoragePolicy.ToString(),
-                Status = r.Status.ToString(),
-                ReviewNotes = r.ReviewNotes,
-                CreatedAt = r.CreatedAt,
-                ReviewedAt = r.ReviewedAt,
-                ReviewedByUserName = r.ReviewedByUser != null ? r.ReviewedByUser.FullName : null
-            })
+            .Include(r => r.ReviewedByUser)
             .ToListAsync();
+
+        var items = rawItems.Select(r => new EquipmentAccessRequestDto
+        {
+            Id = r.Id,
+            FullName = r.FullName,
+            Email = r.Email,
+            Phone = r.Phone,
+            InstitutionAndDepartment = r.InstitutionAndDepartment,
+            Modality = r.Modality.ToString(),
+            ResearchTitle = r.ResearchTitle,
+            HasEthicsApproval = r.HasEthicsApproval,
+            EthicsDocumentsCount = !string.IsNullOrEmpty(r.EthicsDocumentPathsJson)
+                ? (JsonSerializer.Deserialize<List<string>>(r.EthicsDocumentPathsJson, (JsonSerializerOptions?)null)?.Count ?? 0)
+                : 0,
+            RequestScanner3DHistech = r.RequestScanner3DHistech,
+            RequestPcrRealTime7500 = r.RequestPcrRealTime7500,
+            RequestedStoragePolicy = r.RequestedStoragePolicy.ToString(),
+            Status = r.Status.ToString(),
+            ReviewNotes = r.ReviewNotes,
+            CreatedAt = r.CreatedAt,
+            ReviewedAt = r.ReviewedAt,
+            ReviewedByUserName = r.ReviewedByUser != null ? r.ReviewedByUser.FullName : null
+        }).ToList();
 
         return Ok(new
         {
