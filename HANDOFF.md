@@ -51,7 +51,7 @@ O **dataPATH** é uma plataforma de Patologia Digital Mini-PACS e Módulo de Onb
 ### Credenciais de Infraestrutura (Portainer Server)
 * **URL:** `https://pac.produtoweb.com.br/#!/auth`
 * **Usuário:** `pwbot`
-* **Senha:** `sneviugaS!26`
+* **Senha:** `McdSdM*1317a`
 * **Stack Name:** `app-datapath` (obrigatoriamente prefixado com `app-`)
 
 ---
