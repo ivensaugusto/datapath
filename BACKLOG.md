@@ -54,3 +54,4 @@ Stack: .NET 8 (ASP.NET Core Web API) + PostgreSQL 16 + React 18 (Vite/TypeScript
 ## ÉPICO 9: Refinamento de UI/UX, Design System e Espaçamento
 - [x] **US-901**: Refatorar o layout global do frontend ajustando respiro interno (padding `p-6`/`p-8`) em todos os cards, formulários e painéis para evitar contato de textos/ícones com as bordas arredondadas (`rounded-2xl`).
 - [x] **US-902**: Ajustar responsividade do dashboard de métricas e tabela de casos histopatológicos.
+- [x] **US-903**: Redesenhar a interface do frontend React com visual futurista dark mode glassmorphism (OKLCH, Lucide Icons, simulador de lâminas WSI, visualizador side-by-side de colorações e KPIs).

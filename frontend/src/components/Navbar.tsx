@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X } from 'lucide-react';
+import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X, Home } from 'lucide-react';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -16,46 +16,57 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const getRoleBadge = (role?: string) => {
     switch (role) {
       case 'Admin':
-        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Admin</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800 border border-sky-200">Admin</span>;
       case 'LabOperator':
-        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Técnico Lab</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-100 text-teal-800 border border-teal-200">Técnico Lab</span>;
       case 'SpecialistDoctor':
-        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Patologista</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Patologista</span>;
       default:
         return null;
     }
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
       <div className="mx-auto max-w-[1500px] px-4 py-3 sm:px-8 flex items-center justify-between">
         {/* Brand logo */}
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('dashboard')}>
-            <span className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 glow-cyan">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-tr from-sky-600 to-teal-600 text-white shadow-sm shadow-sky-500/20">
               <Microscope className="h-5 w-5" />
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-extrabold tracking-tight text-white">
-                  data<span className="text-gradient">PATH</span>
+                <span className="text-xl font-extrabold tracking-tight text-slate-900">
+                  data<span className="text-sky-600">PATH</span>
                 </span>
-                <span className="rounded-full border border-indigo-500/40 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold text-indigo-300">
+                <span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700">
                   Mini-PACS v2.0
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block">Patologia Digital & 2ª Opinião Remota</p>
+              <p className="text-[11px] font-medium text-slate-500 hidden sm:block">Patologia Digital & 2ª Opinião Remota</p>
             </div>
           </div>
 
           {/* Navigation links */}
           <nav className="hidden lg:flex items-center gap-1">
             <button
+              onClick={() => onNavigate('home')}
+              className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                currentPage === 'home'
+                  ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              }`}
+            >
+              <Home className="h-4 w-4" /> Portal Institucional
+            </button>
+
+            <button
               onClick={() => onNavigate('dashboard')}
               className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                 currentPage === 'dashboard'
-                  ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30'
-                  : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                  ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
               <Layers className="h-4 w-4" /> Painel de Casos
@@ -67,8 +78,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                   onClick={() => onNavigate('new-case')}
                   className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                     currentPage === 'new-case'
-                      ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30'
-                      : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                      ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
                   <PlusCircle className="h-4 w-4" /> Cadastrar Biópsia
@@ -78,8 +89,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                   onClick={() => onNavigate('onboarding-management')}
                   className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                     currentPage === 'onboarding-management'
-                      ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30'
-                      : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                      ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
                   <UserCheck className="h-4 w-4" /> Gestão de Parceiros
@@ -92,8 +103,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 onClick={() => onNavigate('audit-logs')}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                   currentPage === 'audit-logs'
-                    ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30'
-                    : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                    ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
                 <ShieldCheck className="h-4 w-4" /> Auditoria LGPD
@@ -102,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
             <button
               onClick={() => onNavigate('onboarding-apply')}
-              className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-all ml-2"
+              className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 transition-all ml-2"
             >
               <ExternalLink className="h-4 w-4" /> Form. Parceiros
             </button>
@@ -111,22 +122,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
         {/* User profile & actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-1.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-500 to-indigo-600 text-xs font-bold text-slate-950">
+          <div className="hidden sm:flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 shadow-2xs">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-tr from-sky-600 to-teal-600 text-xs font-bold text-white shadow-xs">
               {user?.fullName ? user.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'US'}
             </span>
             <div className="text-left">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-white">{user?.fullName}</span>
+                <span className="text-xs font-bold text-slate-800">{user?.fullName}</span>
                 {getRoleBadge(user?.role)}
               </div>
-              <span className="block text-[10px] text-slate-400">{user?.email}</span>
+              <span className="block text-[10px] text-slate-500">{user?.email}</span>
             </div>
           </div>
 
           <button
             onClick={logout}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 transition-colors hover:text-rose-400 hover:border-rose-500/40"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500 transition-colors hover:text-rose-600 hover:border-rose-300 hover:bg-rose-50 shadow-2xs"
             title="Sair da plataforma"
           >
             <LogOut className="h-4 w-4" />
@@ -134,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 lg:hidden shadow-2xs"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -143,40 +154,46 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-slate-800 bg-slate-950 p-4 space-y-2">
+        <div className="lg:hidden border-t border-slate-200 bg-white p-4 space-y-2 shadow-lg">
+          <button
+            onClick={() => { onNavigate('home'); setMobileOpen(false); }}
+            className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+          >
+            <Home className="h-4 w-4 text-sky-600" /> Portal Institucional
+          </button>
           <button
             onClick={() => { onNavigate('dashboard'); setMobileOpen(false); }}
-            className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
+            className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
           >
-            <Layers className="h-4 w-4 text-cyan-400" /> Painel de Casos
+            <Layers className="h-4 w-4 text-sky-600" /> Painel de Casos
           </button>
           {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
             <>
               <button
                 onClick={() => { onNavigate('new-case'); setMobileOpen(false); }}
-                className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
+                className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
               >
-                <PlusCircle className="h-4 w-4 text-cyan-400" /> Cadastrar Biópsia
+                <PlusCircle className="h-4 w-4 text-sky-600" /> Cadastrar Biópsia
               </button>
               <button
                 onClick={() => { onNavigate('onboarding-management'); setMobileOpen(false); }}
-                className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
+                className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
               >
-                <UserCheck className="h-4 w-4 text-cyan-400" /> Gestão de Parceiros
+                <UserCheck className="h-4 w-4 text-sky-600" /> Gestão de Parceiros
               </button>
             </>
           )}
           {user?.role === 'Admin' && (
             <button
               onClick={() => { onNavigate('audit-logs'); setMobileOpen(false); }}
-              className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
+              className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
             >
-              <ShieldCheck className="h-4 w-4 text-indigo-400" /> Auditoria LGPD
+              <ShieldCheck className="h-4 w-4 text-teal-600" /> Auditoria LGPD
             </button>
           )}
           <button
             onClick={() => { onNavigate('onboarding-apply'); setMobileOpen(false); }}
-            className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-cyan-400 bg-cyan-500/10"
+            className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-sky-700 bg-sky-50"
           >
             <ExternalLink className="h-4 w-4" /> Form. Público de Parceiros
           </button>

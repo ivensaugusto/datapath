@@ -16,34 +16,35 @@ export function KpiCard({
   hint?: string;
 }) {
   const tones = {
-    cyan: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-    indigo: 'text-indigo-400 border-indigo-500/30 bg-indigo-500/10',
-    emerald: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-    amber: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
-    rose: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
+    cyan: 'text-sky-700 border-sky-200 bg-sky-50',
+    indigo: 'text-blue-700 border-blue-200 bg-blue-50',
+    emerald: 'text-teal-700 border-teal-200 bg-teal-50',
+    amber: 'text-amber-700 border-amber-200 bg-amber-50',
+    rose: 'text-rose-700 border-rose-200 bg-rose-50',
   }[tone];
 
   const textTone = {
-    cyan: 'text-cyan-400',
-    indigo: 'text-indigo-400',
-    emerald: 'text-emerald-400',
-    amber: 'text-amber-400',
-    rose: 'text-rose-400',
+    cyan: 'text-sky-700',
+    indigo: 'text-blue-800',
+    emerald: 'text-teal-700',
+    amber: 'text-amber-800',
+    rose: 'text-rose-700',
   }[tone];
 
   return (
-    <div className="glass-card group relative overflow-hidden rounded-2xl p-6 transition-transform hover:-translate-y-0.5">
+    <div className="bg-white border border-slate-200 shadow-xs group relative overflow-hidden rounded-2xl p-6 transition-all hover:border-slate-300 hover:shadow-md">
       <div className="flex items-start justify-between gap-3">
-        <span className="text-xs font-semibold tracking-wide text-slate-400 uppercase">{label}</span>
-        <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border ${tones}`}>
-          <Icon className="h-4 w-4" />
+        <span className="text-xs font-bold tracking-wide text-slate-500 uppercase">{label}</span>
+        <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border ${tones}`}>
+          <Icon className="h-5 w-5" />
         </span>
       </div>
       <div className="mt-4 flex items-baseline gap-1.5">
-        <span className={`text-4xl font-extrabold tabular-nums ${textTone}`}>{value}</span>
-        {unit && <span className="text-sm font-semibold text-slate-400">{unit}</span>}
+        <span className={`text-4xl font-black tabular-nums tracking-tight ${textTone}`}>{value}</span>
+        {unit && <span className="text-sm font-bold text-slate-500">{unit}</span>}
       </div>
-      {hint && <p className="mt-2 text-xs text-slate-400">{hint}</p>}
+      {hint && <p className="mt-2 text-xs font-medium text-slate-500">{hint}</p>}
     </div>
   );
 }
+

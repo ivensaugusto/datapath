@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { KpiCard } from '../components/KpiCard';
 import { StatusBadge } from '../components/StatusBadge';
 import { SlideThumb } from '../components/SlideThumb';
-import { Layers, Users2, FileCheck2, ScanLine, Database, Microscope, Activity, Search } from 'lucide-react';
+import { Layers, Users2, FileCheck2, ScanLine, Database, Microscope, Activity, Search, Plus } from 'lucide-react';
 
 interface DashboardPageProps {
   onNavigate: (page: string, caseId?: string) => void;
@@ -61,17 +61,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl text-white">Painel do Mini-PACS</h1>
-          <p className="mt-1 text-sm text-slate-400">
-            Visão geral operacional do fluxo de telepatologia digital • atualizado em tempo real
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+            Painel do Mini-PACS dataPATH
+          </h1>
+          <p className="mt-1 text-sm text-slate-600">
+            Gestão de lâminas histopatológicas gigapixel e telepatologia diagnóstica em tempo real
           </p>
         </div>
         {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
           <button
             onClick={() => onNavigate('new-case')}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-5 text-sm font-bold text-slate-950 transition-opacity hover:opacity-90 shadow-lg shadow-cyan-500/20"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-sky-600 hover:bg-sky-700 px-5 text-sm font-bold text-white shadow-md shadow-sky-600/20 transition-all"
           >
-            <Microscope className="h-4 w-4" /> Cadastrar Biópsia
+            <Plus className="h-4 w-4" /> Cadastrar Biópsia
           </button>
         )}
       </div>
@@ -118,30 +120,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
       {/* Main Grid: Cases List + Organ Breakdown */}
       <section className="grid gap-6 lg:grid-cols-3">
-        <div className="glass-card rounded-2xl p-6 lg:col-span-2 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm lg:col-span-2 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div>
-              <h2 className="text-sm font-bold tracking-wide text-slate-400 uppercase">Casos Clínicos Recentes</h2>
-              <p className="text-xs text-slate-500">Lâminas histopatológicas anonimizadas (LGPD)</p>
+              <h2 className="text-base font-extrabold tracking-tight text-slate-900">Casos Clínicos & Lâminas</h2>
+              <p className="text-xs text-slate-500">Dados histopatológicos anonimizados em conformidade com a LGPD</p>
             </div>
 
             {/* Quick Filters */}
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1 sm:w-64">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="relative flex-1 sm:w-56">
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                   placeholder="Buscar código ou órgão..."
-                  className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all"
                 />
-                <Search className="absolute left-3 top-2 h-3.5 w-3.5 text-slate-500" />
+                <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
               </div>
 
               <select
                 value={organFilter}
                 onChange={(e) => { setOrganFilter(e.target.value); setPage(1); }}
-                className="h-8 rounded-xl bg-slate-950/80 border border-slate-800 px-3 text-xs text-slate-300 outline-none focus:border-cyan-500/60"
+                className="h-9 rounded-xl bg-slate-50 border border-slate-200 px-3 text-xs font-medium text-slate-700 outline-none focus:border-sky-500 focus:bg-white transition-all"
               >
                 <option value="">Todos Órgãos</option>
                 <option value="Próstata">Próstata</option>
@@ -154,7 +156,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
               <select
                 value={statusFilter}
                 onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                className="h-8 rounded-xl bg-slate-950/80 border border-slate-800 px-3 text-xs text-slate-300 outline-none focus:border-cyan-500/60"
+                className="h-9 rounded-xl bg-slate-50 border border-slate-200 px-3 text-xs font-medium text-slate-700 outline-none focus:border-sky-500 focus:bg-white transition-all"
               >
                 <option value="">Todos Status</option>
                 <option value="Pending">Pendente</option>
@@ -166,32 +168,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
           </div>
 
           {loading ? (
-            <div className="py-12 text-center text-sm text-slate-400">Carregando acervo de lâminas...</div>
+            <div className="py-12 text-center text-sm font-medium text-slate-500">Carregando acervo de lâminas...</div>
           ) : cases.length === 0 ? (
-            <div className="py-12 text-center text-slate-400 space-y-2">
-              <Microscope className="mx-auto h-8 w-8 text-slate-600" />
-              <p className="text-sm font-semibold">Nenhum caso clínico encontrado</p>
+            <div className="py-12 text-center text-slate-500 space-y-2">
+              <Microscope className="mx-auto h-10 w-10 text-slate-300" />
+              <p className="text-sm font-bold text-slate-700">Nenhum caso clínico encontrado</p>
               <p className="text-xs text-slate-500">Tente ajustar os filtros ou pesquisar por outro termo.</p>
             </div>
           ) : (
-            <ul className="divide-y divide-slate-800/60">
+            <ul className="divide-y divide-slate-100">
               {cases.map((c) => (
                 <li
                   key={c.id}
                   onClick={() => onNavigate('case-detail', c.id)}
-                  className="group flex items-center justify-between gap-4 py-3.5 px-2 rounded-xl transition-colors hover:bg-slate-800/40 cursor-pointer"
+                  className="group flex items-center justify-between gap-4 py-3.5 px-3 rounded-2xl transition-all hover:bg-sky-50/50 cursor-pointer"
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <SlideThumb
                       stain={c.stainingType || 'HE'}
                       seed={c.id}
-                      className="h-12 w-12 shrink-0 rounded-xl border border-slate-700/60 object-cover shadow-sm"
+                      className="h-12 w-12 shrink-0 rounded-xl border border-slate-200 object-cover shadow-2xs group-hover:scale-105 transition-transform"
                     />
                     <div className="min-w-0">
-                      <span className="block truncate font-mono text-sm font-bold text-cyan-400 group-hover:text-cyan-300">
+                      <span className="block truncate font-mono text-sm font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
                         {c.internalCaseCode}
                       </span>
-                      <p className="truncate text-xs text-slate-400 mt-0.5">
+                      <p className="truncate text-xs text-slate-500 mt-0.5">
                         {c.organSite} • Coloração {c.stainingType} • {c.slideCount} lâmina(s)
                       </p>
                     </div>
@@ -199,7 +201,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
                   <div className="flex items-center gap-3 shrink-0">
                     <StatusBadge status={c.status} />
-                    <span className="text-xs text-cyan-400 group-hover:translate-x-1 transition-transform">→</span>
+                    <span className="text-xs font-bold text-slate-400 group-hover:text-sky-600 group-hover:translate-x-1 transition-all">→</span>
                   </div>
                 </li>
               ))}
@@ -208,20 +210,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4 border-t border-slate-800/80 text-xs text-slate-400">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs font-medium text-slate-500">
               <span>Página {page} de {totalPages}</span>
               <div className="flex gap-2">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(p => Math.max(1, p - 1))}
-                  className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-1.5 disabled:opacity-40"
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 hover:bg-slate-50 disabled:opacity-40 shadow-2xs font-semibold"
                 >
                   Anterior
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(p => p + 1)}
-                  className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-1.5 disabled:opacity-40"
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 hover:bg-slate-50 disabled:opacity-40 shadow-2xs font-semibold"
                 >
                   Próxima
                 </button>
@@ -232,9 +234,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
         {/* Right Col: Organ Distribution & Scanner Status */}
         <div className="space-y-6">
-          <div className="glass-card rounded-2xl p-6">
-            <h2 className="text-xs font-bold tracking-wide text-slate-400 uppercase">Carga por Órgão / Tecido</h2>
-            <ul className="mt-5 space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-xs font-bold tracking-wide text-slate-500 uppercase">Carga por Órgão / Tecido</h2>
+            <ul className="space-y-3.5">
               {Object.keys(organCounts).length === 0 ? (
                 <li className="text-xs text-slate-500">Sem dados estatísticos.</li>
               ) : (
@@ -243,12 +245,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                   .map(([organ, count]) => (
                     <li key={organ}>
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-slate-200">{organ}</span>
-                        <span className="tabular-nums text-slate-400">{count} caso(s)</span>
+                        <span className="font-semibold text-slate-800">{organ}</span>
+                        <span className="tabular-nums font-bold text-slate-500">{count} caso(s)</span>
                       </div>
-                      <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-800">
+                      <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-100">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-indigo-500"
+                          className="h-full rounded-full bg-gradient-to-r from-sky-500 to-teal-600"
                           style={{ width: `${Math.min(100, (count / (totalItems || 1)) * 100)}%` }}
                         />
                       </div>
@@ -257,9 +259,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
               )}
             </ul>
 
-            <div className="mt-6 flex items-center gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-400">
-              <Activity className="h-4 w-4 shrink-0" />
-              <span>Scanner 3DHISTECH Operacional • Fila de digitalização vazia</span>
+            <div className="mt-6 flex items-center gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs text-emerald-800 font-medium">
+              <Activity className="h-4 w-4 shrink-0 text-emerald-600" />
+              <span>Scanner 3DHISTECH Operacional • Fila de digitalização pronta</span>
             </div>
           </div>
         </div>
@@ -267,3 +269,4 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+

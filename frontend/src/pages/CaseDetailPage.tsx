@@ -98,11 +98,11 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
   };
 
   if (loading) {
-    return <div className="py-12 text-center text-sm text-slate-400">Carregando lâmina e detalhes do caso...</div>;
+    return <div className="py-12 text-center text-sm font-semibold text-slate-500">Carregando lâmina e detalhes do caso...</div>;
   }
 
   if (!caseData) {
-    return <div className="py-12 text-center text-sm text-rose-400">Caso clínico não encontrado.</div>;
+    return <div className="py-12 text-center text-sm font-bold text-rose-600">Caso clínico não encontrado.</div>;
   }
 
   const isDoctorOrAdmin = user?.role === 'SpecialistDoctor' || user?.role === 'Admin';
@@ -110,42 +110,43 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
   return (
     <div className="space-y-6">
       {/* Top Bar Header */}
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-3xl border border-slate-200 shadow-xs">
         <div className="flex min-w-0 items-center gap-3">
           <button
             onClick={() => onNavigate('dashboard')}
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white transition-colors"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors shadow-2xs"
             title="Voltar ao Painel"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div className="min-w-0">
-            <h1 className="truncate font-mono text-xl font-extrabold text-white sm:text-2xl">
-              {caseData.internalCaseCode}
-            </h1>
-            <p className="truncate text-xs text-slate-400 mt-0.5">
-              {caseData.organSite} • Coloração {caseData.stainingType} • Criado em{' '}
+            <div className="flex items-center gap-3">
+              <h1 className="truncate font-mono text-xl font-black text-slate-900 sm:text-2xl">
+                {caseData.internalCaseCode}
+              </h1>
+              <StatusBadge status={caseData.status} />
+            </div>
+            <p className="truncate text-xs text-slate-500 mt-1">
+              {caseData.organSite} • Coloração {caseData.stainingType} • Registrado em{' '}
               {new Date(caseData.createdAt).toLocaleDateString('pt-BR')}
             </p>
           </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-3">
-          <StatusBadge status={caseData.status} />
-
           <a
             href={api.getReportUrl(caseData.id)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all"
+            className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-teal-200 bg-teal-50 px-4 text-xs font-bold text-teal-800 hover:bg-teal-100 transition-all shadow-xs"
           >
-            <Download className="h-3.5 w-3.5" /> Laudo PDF
+            <Download className="h-3.5 w-3.5" /> Laudo em PDF
           </a>
 
           {isDoctorOrAdmin && (
             <button
               onClick={() => setDrawerOpen(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-4 text-xs font-bold text-slate-950 hover:opacity-90 shadow-md shadow-cyan-500/20 transition-all"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-sky-600 hover:bg-sky-700 px-4 text-xs font-bold text-white shadow-md shadow-sky-600/20 transition-all"
             >
               <FileCheck className="h-4 w-4" /> Emitir Parecer
             </button>
@@ -156,68 +157,68 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
       {/* Main Grid */}
       <div className="grid gap-6 lg:grid-cols-[32%_1fr]">
         <aside className="space-y-4">
-          <div className="glass-card rounded-2xl p-6 space-y-4">
-            <h2 className="text-xs font-bold tracking-wide text-slate-400 uppercase">Metadados Clínicos (LGPD)</h2>
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
+            <h2 className="text-xs font-bold tracking-wide text-slate-500 uppercase">Metadados Clínicos (LGPD)</h2>
             <dl className="space-y-2.5 text-xs">
-              <div className="flex justify-between border-b border-slate-800/80 pb-2">
-                <dt className="text-slate-400">Código do Caso</dt>
-                <dd className="font-mono font-bold text-cyan-400">{caseData.internalCaseCode}</dd>
+              <div className="flex justify-between border-b border-slate-100 pb-2">
+                <dt className="text-slate-500">Código Pseudonimizado</dt>
+                <dd className="font-mono font-bold text-sky-700">{caseData.internalCaseCode}</dd>
               </div>
-              <div className="flex justify-between border-b border-slate-800/80 pb-2">
-                <dt className="text-slate-400">Órgão / Tecido</dt>
-                <dd className="font-medium text-slate-200">{caseData.organSite}</dd>
+              <div className="flex justify-between border-b border-slate-100 pb-2">
+                <dt className="text-slate-500">Órgão / Sítio</dt>
+                <dd className="font-semibold text-slate-800">{caseData.organSite}</dd>
               </div>
-              <div className="flex justify-between border-b border-slate-800/80 pb-2">
-                <dt className="text-slate-400">Coloração Histológica</dt>
-                <dd className="font-medium text-slate-200">{caseData.stainingType}</dd>
+              <div className="flex justify-between border-b border-slate-100 pb-2">
+                <dt className="text-slate-500">Coloração</dt>
+                <dd className="font-semibold text-slate-800">{caseData.stainingType}</dd>
               </div>
-              <div className="flex justify-between border-b border-slate-800/80 pb-2">
-                <dt className="text-slate-400">Sexo Biológico</dt>
-                <dd className="font-medium text-slate-200">{caseData.patientBiologicalSex || 'Não informado'}</dd>
+              <div className="flex justify-between border-b border-slate-100 pb-2">
+                <dt className="text-slate-500">Sexo Biológico</dt>
+                <dd className="font-semibold text-slate-800">{caseData.patientBiologicalSex || 'Não informado'}</dd>
               </div>
-              <div className="flex justify-between border-b border-slate-800/80 pb-2">
-                <dt className="text-slate-400">Idade à Biópsia</dt>
-                <dd className="font-medium text-slate-200">
+              <div className="flex justify-between border-b border-slate-100 pb-2">
+                <dt className="text-slate-500">Idade à Biópsia</dt>
+                <dd className="font-semibold text-slate-800">
                   {caseData.patientAgeAtBiopsy ? `${caseData.patientAgeAtBiopsy} anos` : 'Não informada'}
                 </dd>
               </div>
               <div className="flex justify-between pb-1">
-                <dt className="text-slate-400">Cadastrado por</dt>
-                <dd className="font-medium text-slate-200">{caseData.createdByUserName}</dd>
+                <dt className="text-slate-500">Cadastrado por</dt>
+                <dd className="font-semibold text-slate-800">{caseData.createdByUserName}</dd>
               </div>
             </dl>
           </div>
 
-          <div className="glass-card rounded-2xl p-6 space-y-3">
-            <h2 className="text-xs font-bold tracking-wide text-slate-400 uppercase">Resumo Clínico / Anamnese</h2>
-            <p className="text-xs leading-relaxed text-slate-300 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+            <h2 className="text-xs font-bold tracking-wide text-slate-500 uppercase">Resumo Clínico / Anamnese</h2>
+            <p className="text-xs leading-relaxed text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               {caseData.clinicalSummary}
             </p>
           </div>
 
           {/* Opinions History */}
-          <div className="glass-card rounded-2xl p-6 space-y-4">
-            <h2 className="text-xs font-bold tracking-wide text-slate-400 uppercase">Pareceres Médicos ({caseData.opinions.length})</h2>
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
+            <h2 className="text-xs font-bold tracking-wide text-slate-500 uppercase">Pareceres Médicos ({caseData.opinions.length})</h2>
             {caseData.opinions.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">Nenhum parecer técnico emitido até o momento.</p>
+              <p className="text-xs text-slate-400 italic">Nenhum parecer técnico emitido até o momento.</p>
             ) : (
               <div className="space-y-3">
                 {caseData.opinions.map((op) => (
-                  <div key={op.id} className="rounded-xl border border-slate-800 bg-slate-950/60 p-3.5 space-y-2">
+                  <div key={op.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-2">
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className="font-bold text-cyan-400">Dr. {op.issuedByUserName}</span>
-                      <span className="text-slate-500">{new Date(op.createdAt).toLocaleDateString('pt-BR')}</span>
+                      <span className="font-bold text-sky-800">Dr. {op.issuedByUserName}</span>
+                      <span className="text-slate-400">{new Date(op.createdAt).toLocaleDateString('pt-BR')}</span>
                     </div>
-                    <p className="text-xs text-slate-200 font-semibold">{op.diagnosticImpression}</p>
+                    <p className="text-xs text-slate-800 font-semibold">{op.diagnosticImpression}</p>
                     {op.isSigned && (
-                      <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold">
-                        <CheckCircle2 className="h-3 w-3" /> Assinado Digitalmente
+                      <div className="flex items-center gap-1.5 text-[10px] text-teal-700 font-bold">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-teal-600" /> Assinado Digitalmente
                       </div>
                     )}
                     {!op.isSigned && isDoctorOrAdmin && (
                       <button
                         onClick={() => handleSignOpinion(op.id)}
-                        className="mt-2 w-full py-1.5 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold hover:bg-emerald-600/30"
+                        className="mt-2 w-full py-2 rounded-xl bg-teal-600 text-white text-xs font-bold hover:bg-teal-700 shadow-xs transition-colors"
                       >
                         Assinar Parecer agora
                       </button>
@@ -230,36 +231,36 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
         </aside>
 
         {/* Right Column: WSI Viewer */}
-        <section className="glass-card overflow-hidden rounded-2xl space-y-0 flex flex-col">
+        <section className="bg-white border border-slate-200 shadow-xs overflow-hidden rounded-3xl space-y-0 flex flex-col">
           {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 p-4 bg-slate-950/60">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4 bg-slate-50">
             <div className="flex flex-wrap items-center gap-1">
               {tools.map((t) => (
                 <button
                   key={t.label}
                   onClick={() => setTool(t.label)}
                   title={t.label}
-                  className={`grid h-9 w-9 place-items-center rounded-lg border transition-colors ${
+                  className={`grid h-9 w-9 place-items-center rounded-xl border transition-all ${
                     tool === t.label
-                      ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400'
-                      : 'border-slate-800 text-slate-400 hover:text-white'
+                      ? 'border-sky-300 bg-sky-100 text-sky-800 shadow-xs'
+                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
                   <t.icon className="h-4 w-4" />
                 </button>
               ))}
-              <span className="ml-2 text-xs text-slate-400 hidden sm:inline">{tool}</span>
+              <span className="ml-2 text-xs font-bold text-slate-500 hidden sm:inline">{tool}</span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               {[10, 20, 40].map((z) => (
                 <button
                   key={z}
                   onClick={() => setZoom(z)}
-                  className={`h-9 rounded-lg border px-3 text-xs font-bold transition-all ${
+                  className={`h-9 rounded-xl border px-3 text-xs font-bold transition-all ${
                     zoom === z
-                      ? 'border-cyan-500/40 bg-cyan-500/15 text-cyan-400'
-                      : 'border-slate-800 text-slate-400 hover:text-white'
+                      ? 'border-sky-300 bg-sky-600 text-white shadow-xs'
+                      : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
                   }`}
                 >
                   {z}x
@@ -267,24 +268,24 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
               ))}
               <button
                 onClick={() => setZoom((z) => Math.max(5, z - 5))}
-                className="grid h-9 w-9 place-items-center rounded-lg border border-slate-800 text-slate-400 hover:text-white"
+                className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
                 title="Reduzir zoom"
               >
                 <ZoomOut className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setZoom((z) => Math.min(60, z + 5))}
-                className="grid h-9 w-9 place-items-center rounded-lg border border-slate-800 text-slate-400 hover:text-white"
+                className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
                 title="Aumentar zoom"
               >
                 <ZoomIn className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setCompare((v) => !v)}
-                className={`grid h-9 w-9 place-items-center rounded-lg border ${
+                className={`grid h-9 w-9 place-items-center rounded-xl border ${
                   compare
-                    ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-400'
-                    : 'border-slate-800 text-slate-400 hover:text-white'
+                    ? 'border-teal-300 bg-teal-50 text-teal-800 shadow-xs'
+                    : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-100'
                 }`}
                 title="Comparar colorações side-by-side"
               >
@@ -292,7 +293,7 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
               </button>
               <button
                 onClick={() => document.documentElement.requestFullscreen?.()}
-                className="grid h-9 w-9 place-items-center rounded-lg border border-slate-800 text-slate-400 hover:text-white"
+                className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
                 title="Tela cheia"
               >
                 <Maximize2 className="h-4 w-4" />
@@ -301,10 +302,10 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
           </div>
 
           {/* WSI Area */}
-          <div className="relative flex-1 bg-slate-950 p-6 flex flex-col justify-center items-center min-h-[500px]">
+          <div className="relative flex-1 bg-slate-100 p-6 flex flex-col justify-center items-center min-h-[520px]">
             <div className={`w-full grid gap-4 ${compare ? 'md:grid-cols-2' : ''}`}>
-              <figure className="relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 p-2">
-                <div className="aspect-[4/3] overflow-hidden rounded-lg">
+              <figure className="relative overflow-hidden rounded-2xl border border-slate-300 bg-white p-2 shadow-sm">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
                   <SlideThumb
                     stain={caseData.stainingType || 'HE'}
                     seed={caseData.id}
@@ -312,35 +313,35 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
                     className="h-full w-full object-cover transition-transform duration-500"
                   />
                 </div>
-                <figcaption className="absolute bottom-4 left-4 rounded-lg border border-slate-800 bg-slate-950/80 px-2.5 py-1 font-mono text-[11px] text-slate-300 backdrop-blur">
-                  {caseData.stainingType} • {zoom}x zoom • Campo de Visão
+                <figcaption className="absolute bottom-4 left-4 rounded-xl border border-slate-200 bg-white/95 px-3 py-1 font-mono text-[11px] font-bold text-slate-800 shadow-xs backdrop-blur">
+                  {caseData.stainingType} • {zoom}x zoom • Campo Microscópico
                 </figcaption>
-                <span className="pointer-events-none absolute inset-8 rounded-lg border-2 border-dashed border-cyan-500/60" />
+                <span className="pointer-events-none absolute inset-8 rounded-xl border-2 border-dashed border-sky-600/70" />
               </figure>
 
               {compare && (
-                <figure className="relative overflow-hidden rounded-xl border border-indigo-500/40 bg-slate-900/60 p-2">
-                  <div className="aspect-[4/3] overflow-hidden rounded-lg">
+                <figure className="relative overflow-hidden rounded-2xl border border-teal-300 bg-white p-2 shadow-sm">
+                  <div className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
                     <SlideThumb stain="HE" seed={`${caseData.id}-he`} cells={90} className="h-full w-full object-cover" />
                   </div>
-                  <figcaption className="absolute bottom-4 left-4 rounded-lg border border-slate-800 bg-slate-950/80 px-2.5 py-1 font-mono text-[11px] text-indigo-300 backdrop-blur">
+                  <figcaption className="absolute bottom-4 left-4 rounded-xl border border-teal-200 bg-white/95 px-3 py-1 font-mono text-[11px] font-bold text-teal-800 shadow-xs backdrop-blur">
                     HE (Referência Comparativa) • {zoom}x
                   </figcaption>
                 </figure>
               )}
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 w-full text-xs text-slate-400">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 w-full text-xs text-slate-600">
               <div className="flex gap-2">
-                <span className="rounded-lg border border-slate-800 bg-slate-900/60 px-2.5 py-1 font-mono text-[11px]">
+                <span className="rounded-xl border border-slate-200 bg-white px-3 py-1 font-mono text-[11px] font-semibold text-slate-700 shadow-2xs">
                   Escala: 1 px ≈ 0,25 µm
                 </span>
-                <span className="rounded-lg border border-slate-800 bg-slate-900/60 px-2.5 py-1 font-mono text-[11px]">
-                  Região Selecionada: 1.240 × 880 µm
+                <span className="rounded-xl border border-slate-200 bg-white px-3 py-1 font-mono text-[11px] font-semibold text-slate-700 shadow-2xs">
+                  Área ROI: 1.240 × 880 µm
                 </span>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-400 font-semibold">
-                <ShieldCheck className="h-3.5 w-3.5" /> Acesso auditado e registrado no banco (LGPD)
+              <span className="inline-flex items-center gap-1.5 rounded-xl border border-teal-200 bg-teal-50 px-3 py-1 text-xs text-teal-800 font-bold">
+                <ShieldCheck className="h-3.5 w-3.5 text-teal-600" /> Acesso auditado (LGPD)
               </span>
             </div>
           </div>
@@ -349,21 +350,21 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
 
       {/* Drawer */}
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/80 backdrop-blur-sm">
-          <div className="glass-card h-full w-full max-w-lg overflow-y-auto rounded-none p-6 sm:rounded-l-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h2 className="text-lg font-extrabold text-white">Emitir Parecer Técnico / 2ª Opinião</h2>
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs">
+          <div className="bg-white h-full w-full max-w-lg overflow-y-auto rounded-none p-6 sm:rounded-l-3xl shadow-2xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h2 className="text-lg font-black text-slate-900">Emitir Parecer Técnico / 2ª Opinião</h2>
               <button
                 onClick={() => setDrawerOpen(false)}
-                className="text-xs font-semibold text-slate-400 hover:text-white px-2 py-1 rounded-lg bg-slate-800"
+                className="text-xs font-bold text-slate-500 hover:text-slate-900 px-3 py-1.5 rounded-xl bg-slate-100"
               >
-                Fechar ✕
+                ✕ Fechar
               </button>
             </div>
 
             <form onSubmit={handleCreateOpinion} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-400 font-bold uppercase mb-1">
+                <label className="block text-slate-700 font-bold uppercase mb-1.5">
                   Impressão Diagnóstica *
                 </label>
                 <textarea
@@ -372,12 +373,12 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
                   value={diagnosticImpression}
                   onChange={(e) => setDiagnosticImpression(e.target.value)}
                   placeholder="Material histológico evidenciando..."
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950 p-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 font-bold uppercase mb-1">
+                <label className="block text-slate-700 font-bold uppercase mb-1.5">
                   Descrição Microscópica
                 </label>
                 <textarea
@@ -385,30 +386,30 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
                   value={microscopicDescription}
                   onChange={(e) => setMicroscopicDescription(e.target.value)}
                   placeholder="Achados citoarquiteturais, estroma, mitoses..."
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950 p-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 font-bold uppercase mb-1">
+                <label className="block text-slate-700 font-bold uppercase mb-1.5">
                   Observações Adicionais
                 </label>
                 <textarea
                   rows={2}
                   value={additionalComments}
                   onChange={(e) => setAdditionalComments(e.target.value)}
-                  placeholder="Recomendações técnicas..."
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950 p-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500"
+                  placeholder="Recomendações técnicas ou correlação clínica..."
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-400 font-bold uppercase mb-1">Prioridade</label>
+                  <label className="block text-slate-700 font-bold uppercase mb-1.5">Prioridade</label>
                   <select
                     value={priorityLevel}
                     onChange={(e) => setPriorityLevel(e.target.value)}
-                    className="w-full h-10 rounded-xl border border-slate-800 bg-slate-950 px-3 text-slate-300 outline-none"
+                    className="w-full h-10 rounded-xl border border-slate-200 bg-slate-50 px-3 text-slate-800 font-medium outline-none focus:border-sky-500"
                   >
                     <option value="Normal">Normal</option>
                     <option value="Urgente">Urgente</option>
@@ -417,9 +418,9 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
                 </div>
               </div>
 
-              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 space-y-1">
-                <p className="text-xs font-bold text-emerald-400">Carimbo Digital do Patologista</p>
-                <p className="text-[11px] text-slate-400">
+              <div className="rounded-2xl border border-teal-200 bg-teal-50 p-4 space-y-1">
+                <p className="text-xs font-bold text-teal-900">Carimbo Digital do Patologista</p>
+                <p className="text-[11px] text-teal-700">
                   {user?.fullName} • {user?.email}
                 </p>
               </div>
@@ -427,7 +428,7 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
               <button
                 type="submit"
                 disabled={submittingOpinion}
-                className="h-11 w-full rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-sm font-bold text-slate-950 hover:opacity-90 disabled:opacity-50 transition-opacity"
+                className="h-11 w-full rounded-xl bg-sky-600 hover:bg-sky-700 text-sm font-bold text-white shadow-md shadow-sky-600/20 disabled:opacity-50 transition-all"
               >
                 {submittingOpinion ? 'Salvando Parecer...' : 'Salvar e Publicar Parecer'}
               </button>
@@ -438,3 +439,4 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
     </div>
   );
 };
+

@@ -53,42 +53,42 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
       <div className="flex items-center gap-4">
         <button
           onClick={() => onNavigate('dashboard')}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white transition-colors"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight sm:text-3xl">Cadastrar Nova Biópsia (Mini-PACS)</h1>
-          <p className="text-sm text-slate-400 mt-0.5">Preencha a anamnese anonimizada e anexe o arquivo de lâmina gigapixel.</p>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">Cadastrar Nova Biópsia (Mini-PACS)</h1>
+          <p className="text-sm text-slate-500 mt-0.5">Preencha a anamnese anonimizada e anexe o arquivo de lâmina gigapixel.</p>
         </div>
       </div>
 
       {/* LGPD Banner */}
-      <div className="flex items-start gap-3 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 p-4 text-xs text-cyan-300">
-        <ShieldCheck className="h-5 w-5 shrink-0 text-cyan-400 mt-0.5" />
+      <div className="flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-xs text-sky-900">
+        <ShieldCheck className="h-5 w-5 shrink-0 text-sky-600 mt-0.5" />
         <div>
-          <strong className="block text-cyan-200 font-bold">Garantia de Anonimização LGPD:</strong>
+          <strong className="block text-sky-950 font-bold">Garantia de Anonimização LGPD:</strong>
           Nunca insira CPF, nome completo ou contato direto do paciente. O sistema gera automaticamente um código único pseudonimizado (ex: DP-2026-0003).
         </div>
       </div>
 
       {error && (
-        <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs font-semibold text-rose-300">
+        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-xs font-semibold text-rose-800">
           ⚠️ {error}
         </div>
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">
               Órgão / Sítio Anatômico *
             </label>
             <select
               value={organSite}
               onChange={(e) => setOrganSite(e.target.value)}
-              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
+              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm text-slate-900 outline-none focus:border-sky-500 focus:bg-white transition-all"
             >
               <option value="Pele">Pele</option>
               <option value="Mama">Mama</option>
@@ -103,13 +103,13 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">
               Tipo de Coloração Histológica *
             </label>
             <select
               value={stainingType}
               onChange={(e) => setStainingType(e.target.value)}
-              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
+              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm text-slate-900 outline-none focus:border-sky-500 focus:bg-white transition-all"
             >
               <option value="HE">Hematoxilina-Eosina (HE)</option>
               <option value="Imuno-histoquímica">Imuno-histoquímica (IHQ)</option>
@@ -122,13 +122,13 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">
               Sexo Biológico (Opcional)
             </label>
             <select
               value={patientBiologicalSex}
               onChange={(e) => setPatientBiologicalSex(e.target.value)}
-              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white outline-none focus:border-cyan-500/60"
+              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm text-slate-900 outline-none focus:border-sky-500 focus:bg-white transition-all"
             >
               <option value="F">Feminino</option>
               <option value="M">Masculino</option>
@@ -137,7 +137,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">
               Idade à Biópsia (Anos)
             </label>
             <input
@@ -147,13 +147,13 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
               value={patientAgeAtBiopsy}
               onChange={(e) => setPatientAgeAtBiopsy(e.target.value ? Number(e.target.value) : '')}
               placeholder="Ex: 45"
-              className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500/60"
+              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wide text-slate-400 mb-1.5">
+          <label className="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">
             Resumo Clínico / Anamnese Anonimizada *
           </label>
           <textarea
@@ -162,31 +162,31 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
             value={clinicalSummary}
             onChange={(e) => setClinicalSummary(e.target.value)}
             placeholder="Descreva a história clínica, suspeita diagnóstica e achados macroscópicos..."
-            className="w-full min-h-[140px] p-4 text-sm text-white leading-relaxed rounded-xl border border-slate-800 bg-slate-950/80 placeholder-slate-500 outline-none focus:border-cyan-500/60"
+            className="w-full min-h-[140px] p-4 text-sm text-slate-900 leading-relaxed rounded-2xl border border-slate-200 bg-slate-50 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all"
           />
         </div>
 
         {/* WSI File Upload */}
         <div className="space-y-2">
-          <label className="block text-xs font-bold uppercase tracking-wide text-slate-400">
+          <label className="block text-xs font-bold uppercase tracking-wide text-slate-700">
             Arquivo de Lâmina WSI Gigapixel (.svs, .tif, .ndpi, .mrxs)
           </label>
           
-          <label className="grid cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-slate-800 bg-slate-950/40 p-8 text-center transition-colors hover:border-cyan-500/50">
+          <label className="grid cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-sky-300 bg-sky-50/40 p-8 text-center transition-all hover:bg-sky-50 hover:border-sky-400">
             <input
               type="file"
               onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
               className="hidden"
             />
-            <UploadCloud className="h-8 w-8 text-cyan-400 mb-2" />
+            <UploadCloud className="h-8 w-8 text-sky-600 mb-2" />
             {selectedFile ? (
               <div>
-                <p className="text-sm font-bold text-cyan-400">{selectedFile.name}</p>
-                <p className="text-xs text-slate-400 mt-1">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                <p className="text-sm font-bold text-sky-700">{selectedFile.name}</p>
+                <p className="text-xs text-slate-500 mt-1">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
               </div>
             ) : (
               <div>
-                <p className="text-sm font-semibold text-slate-200">Clique para selecionar ou arraste o arquivo WSI</p>
+                <p className="text-sm font-bold text-slate-800">Clique para selecionar ou arraste o arquivo WSI</p>
                 <p className="text-xs text-slate-500 mt-1">Formatos suportados: .svs, .tiff, .ndpi, .mrxs, .jpg, .png</p>
               </div>
             )}
@@ -197,7 +197,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           <button
             type="button"
             onClick={() => onNavigate('dashboard')}
-            className="h-11 rounded-xl border border-slate-800 bg-slate-900 px-5 text-xs font-semibold text-slate-400 hover:text-white"
+            className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-xs font-bold text-slate-600 hover:bg-slate-50"
           >
             Cancelar
           </button>
@@ -205,7 +205,7 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-6 text-xs font-bold text-slate-950 transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="inline-flex h-11 items-center gap-2 rounded-xl bg-sky-600 hover:bg-sky-700 px-6 text-xs font-bold text-white shadow-md shadow-sky-600/20 disabled:opacity-50 transition-all"
           >
             {loading ? (
               <span>{uploadProgress || 'Salvando...'}</span>
@@ -221,3 +221,4 @@ export const NewCasePage: React.FC<NewCasePageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
