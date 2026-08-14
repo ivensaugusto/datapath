@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $portainerUrl = "https://pac.produtoweb.com.br"
 $user = "pwbot"
-$pass = "sneviugaS!26"
+$pass = 'McdSdM*1317a'
 
 Write-Host "[1/5] Compilando Frontend React..."
 Set-Location -Path "frontend"
