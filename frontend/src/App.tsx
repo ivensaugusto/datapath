@@ -14,6 +14,12 @@ function getInitialRoute(): { page: string; caseId?: string } {
   const path = window.location.pathname.toLowerCase();
   const searchParams = new URLSearchParams(window.location.search);
 
+  // Rota para o manual — redireciona para o arquivo estático
+  if (path === '/manual' || path === '/manual.html') {
+    window.location.replace('/manual.html');
+    return { page: 'home' };
+  }
+
   if (path === '/onboarding' || path === '/cadastrar' || searchParams.get('page') === 'onboarding-apply') {
     return { page: 'onboarding-apply' };
   }

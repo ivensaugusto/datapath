@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X, Home } from 'lucide-react';
+import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X, Home, BookOpen, FileDown } from 'lucide-react';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -117,6 +117,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             >
               <ExternalLink className="h-4 w-4" /> Form. Parceiros
             </button>
+
+            <div className="flex items-stretch ml-1 rounded-xl border border-slate-200 overflow-hidden">
+              <a
+                href="/manual.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                title="Abrir Manual Online em nova aba"
+              >
+                <BookOpen className="h-4 w-4 text-sky-600" /> Manual
+              </a>
+              <div className="w-px bg-slate-200"></div>
+              <a
+                href="/manual-dataPATH-oficial.pdf"
+                download
+                className="flex items-center px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                title="Baixar Manual Oficial em PDF"
+              >
+                <FileDown className="h-4 w-4" />
+              </a>
+            </div>
           </nav>
         </div>
 
@@ -197,6 +218,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           >
             <ExternalLink className="h-4 w-4" /> Form. Público de Parceiros
           </button>
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href="/manual.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200"
+            >
+              <BookOpen className="h-4 w-4 text-sky-600" /> Manual Online
+            </a>
+            <a
+              href="/manual-dataPATH-oficial.pdf"
+              download
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200"
+            >
+              <FileDown className="h-4 w-4 text-teal-600" /> Baixar PDF
+            </a>
+          </div>
         </div>
       )}
     </header>

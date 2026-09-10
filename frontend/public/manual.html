@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Oficial — dataPATH | Plataforma de Patologia Digital</title>
+    <meta name="description" content="Manual completo de utilização do sistema dataPATH Mini-PACS para a equipe da Profa. Dra. Sandra Ventorin (UFES/AFECC).">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f766e;
+            --secondary-light: #ccfbf1;
+            --accent: #10b981;
+            --accent-light: #d1fae5;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-alt: #f1f5f9;
+            --text: #0f172a;
+            --text-muted: #475569;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --border-dark: #cbd5e1;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --danger-bg: #fef2f2;
+            --warning-bg: #fffbeb;
+            --success-bg: #f0fdf4;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { color: var(--primary-dark); text-decoration: underline; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--surface-alt);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.88em;
+            color: #be185d;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--text);
+            color: #f1f5f9;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1.2rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+        pre code { background: transparent; color: inherit; border: none; padding: 0; }
+
+        /* ====== TOP NAVBAR ====== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .topbar-inner {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .topbar-brand:hover { text-decoration: none; }
+        .topbar-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: grid;
+            place-items: center;
+            color: white;
+            font-size: 1rem;
+        }
+        .topbar-brand span.colored { color: var(--primary); }
+        .topbar-actions { display: flex; align-items: center; gap: 0.75rem; }
+        .topbar-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .topbar-btn:hover {
+            background: var(--surface-alt);
+            color: var(--text);
+            border-color: var(--border-dark);
+            text-decoration: none;
+        }
+        .topbar-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: transparent;
+        }
+        .topbar-btn.primary:hover {
+            filter: brightness(1.05);
+            color: white;
+        }
+        .topbar-search {
+            position: relative;
+            flex: 1;
+            max-width: 420px;
+        }
+        .topbar-search input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface-alt);
+            font-size: 0.88rem;
+            font-family: inherit;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+        .topbar-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+        }
+        .topbar-search svg {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-light);
+        }
+
+        /* ====== LAYOUT ====== */
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            max-width: 1500px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ====== SIDEBAR ====== */
+        .sidebar {
+            position: sticky;
+            top: 92px;
+            align-self: flex-start;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-dark) transparent;
+        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+
+        .sidebar-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-light);
+            padding: 0 0.75rem 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .nav-section { margin-bottom: 1.5rem; }
+
+        .nav-link {
+            display: block;
+            padding: 0.55rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            transition: all 0.15s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        .nav-link:hover {
+            background: var(--surface-alt);
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-link.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+        .nav-sub {
+            padding-left: 1rem;
+            margin-top: 4px;
+        }
+        .nav-sub .nav-link {
+            font-size: 0.82rem;
+            padding: 0.4rem 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ====== CONTENT ====== */
+        .content {
+            min-width: 0;
+        }
+        .content-inner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.92;
+            max-width: 620px;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; position: relative; }
+        .hero-btn {
+            padding: 0.7rem 1.3rem;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
+        }
+        .hero-btn.white {
+            background: white;
+            color: var(--primary-dark);
+        }
+        .hero-btn.white:hover { background: #f1f5f9; text-decoration: none; transform: translateY(-1px); }
+        .hero-btn.outline {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.6);
+        }
+        .hero-btn.outline:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: white;
+            text-decoration: none;
+        }
+
+        section.doc-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 90px;
+        }
+        section.doc-section:last-child { margin-bottom: 0; }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            display: grid;
+            place-items: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .section-heading h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: var(--text);
+        }
+        .section-heading h2 .anchor {
+            opacity: 0;
+            margin-left: 0.4rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .section-heading:hover h2 .anchor { opacity: 1; }
+        .section-heading h2 .anchor:hover { color: var(--primary); text-decoration: none; }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 1.8rem 0 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h3::before {
+            content: '';
+            width: 4px;
+            height: 1.1em;
+            background: var(--primary);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 1.3rem 0 0.5rem;
+        }
+
+        p { margin-bottom: 1rem; color: var(--text-muted); }
+
+        ul, ol {
+            padding-left: 1.3rem;
+            margin-bottom: 1.1rem;
+            color: var(--text-muted);
+        }
+        li { margin-bottom: 0.45rem; }
+        ul li::marker { color: var(--primary); }
+        ol li::marker { color: var(--primary); font-weight: 700; }
+
+        .card {
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            margin: 1.4rem 0;
+        }
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary-dark);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .card p:last-child { margin-bottom: 0; }
+
+        .callout {
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            margin: 1.4rem 0;
+            border-left: 4px solid;
+            display: flex;
+            gap: 0.9rem;
+        }
+        .callout-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            line-height: 1.5;
+        }
+        .callout-body { flex: 1; }
+        .callout-title {
+            font-weight: 700;
+            font-size: 0.92rem;
+            margin-bottom: 0.3rem;
+        }
+        .callout p, .callout-body p { margin-bottom: 0; font-size: 0.92rem; }
+
+        .callout.info {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: #0c4a6e;
+        }
+        .callout.info p { color: #0c4a6e; }
+
+        .callout.success {
+            background: var(--success-bg);
+            border-color: var(--accent);
+            color: #065f46;
+        }
+        .callout.success p { color: #065f46; }
+
+        .callout.warning {
+            background: var(--warning-bg);
+            border-color: var(--warning);
+            color: #92400e;
+        }
+        .callout.warning p { color: #92400e; }
+
+        .callout.danger {
+            background: var(--danger-bg);
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+        .callout.danger p { color: #991b1b; }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.4rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+        thead th {
+            background: var(--surface-alt);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            padding: 0.85rem 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        tbody td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            vertical-align: top;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: var(--surface-alt); }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+        .badge.sky { background: var(--primary-light); color: var(--primary-dark); }
+        .badge.teal { background: var(--secondary-light); color: var(--secondary); }
+        .badge.emerald { background: var(--accent-light); color: #065f46; }
+        .badge.amber { background: var(--warning-bg); color: var(--warning); }
+        .badge.rose { background: var(--danger-bg); color: var(--danger); }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+            margin: 1.4rem 0;
+        }
+        .step-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding: 1rem 1rem 1rem 3.8rem;
+            margin-bottom: 0.9rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .step-list li:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+            transform: translateX(2px);
+        }
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+        .step-list li strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+        .step-list li p, .step-list li span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin: 1.4rem 0;
+        }
+        .quick-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: block;
+            color: inherit;
+        }
+        .quick-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        .quick-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            margin-bottom: 0.9rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.2rem;
+        }
+        .quick-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0 0 0.3rem;
+            color: var(--text);
+        }
+        .quick-card h4::before { display: none; }
+        .quick-card p {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .flow-diagram {
+            background: linear-gradient(180deg, var(--surface-alt) 0%, var(--surface) 100%);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin: 1.4rem 0;
+        }
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .flow-step {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text);
+            min-width: 140px;
+        }
+        .flow-step.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        .flow-step.ok {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: #065f46;
+        }
+        .flow-arrow {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .doc-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+            text-align: center;
+        }
+        .doc-footer-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+        .doc-footer-brand span { color: var(--primary); }
+        .doc-footer-meta {
+            font-size: 0.82rem;
+            color: var(--text-light);
+        }
+
+        /* ====== BACK TO TOP ====== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 90;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover { transform: translateY(-3px); }
+        .back-to-top svg { width: 20px; height: 20px; }
+
+        /* ====== MOBILE ====== */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 1.2rem;
+            left: 1.2rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 110;
+            place-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 1.2rem 1rem;
+                gap: 1.5rem;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 280px;
+                max-width: 85vw;
+                background: var(--surface);
+                z-index: 120;
+                padding: 5rem 1.2rem 1.5rem;
+                border-right: 1px solid var(--border);
+                transform: translateX(-105%);
+                transition: transform 0.3s ease;
+                max-height: 100vh;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.45);
+                z-index: 115;
+                backdrop-filter: blur(2px);
+            }
+            .sidebar-backdrop.open { display: block; }
+            .mobile-menu-toggle { display: grid; }
+            .topbar-search { display: none; }
+            .content-inner { padding: 1.5rem 1.2rem; }
+            .hero { padding: 1.8rem 1.3rem; }
+            .hero h1 { font-size: 1.7rem; }
+            .section-heading h2 { font-size: 1.3rem; }
+        }
+
+        /* ====== PRINT ====== */
+        @media print {
+            .topbar, .sidebar, .back-to-top, .mobile-menu-toggle,
+            .topbar-actions, .hero-actions { display: none !important; }
+            .layout {
+                display: block;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .content-inner {
+                background: white;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            .hero {
+                background: white !important;
+                color: var(--text) !important;
+                padding: 1rem 0 2rem;
+                border-bottom: 3px solid var(--primary);
+                border-radius: 0;
+                margin-bottom: 1.5rem;
+            }
+            .hero::before { display: none; }
+            .hero h1, .hero p { color: var(--text) !important; }
+            .doc-section { page-break-inside: avoid; }
+            body { background: white; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== PROTEÇÃO DE ACESSO NÃO-AUTENTICADO ====== -->
+    <script>
+    (function() {
+        // Bloqueia imediatamente a renderização se não houver token
+        var tokenKey = 'datapath_token';
+        var authKey = 'datapath_user';
+        var hasAuth = !!localStorage.getItem(tokenKey) && !!localStorage.getItem(authKey);
+        if (!hasAuth) {
+            hasAuth = !!sessionStorage.getItem(tokenKey) && !!sessionStorage.getItem(authKey);
+        }
+        if (!hasAuth) {
+            window.location.replace('/login');
+            throw new Error('[DataPath] Acesso negado: autenticação necessária.');
+        }
+    })();
+    </script>
+
+    <!-- ====== TOP BAR ====== -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a href="#" class="topbar-brand" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+                <div class="topbar-logo">🔬</div>
+                <div>data<span class="colored">PATH</span></div>
+            </a>
+
+            <div class="topbar-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                <input type="text" id="searchInput" placeholder="Buscar no manual (ex: login, lâmina, laudo, LGPD)..." />
+            </div>
+
+            <div class="topbar-actions">
+                <a
+                    href="/manual-dataPATH-oficial.pdf"
+                    download
+                    class="topbar-btn"
+                    title="Baixar o Manual Oficial em PDF"
+                >
+                    📄 PDF
+                </a>
+                <button class="topbar-btn" onclick="window.print()" title="Imprimir / Salvar como PDF">
+                    🖨️ Imprimir
+                </button>
+                <a href="/" class="topbar-btn primary" title="Voltar para o sistema dataPATH">
+                    ← Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== MOBILE MENU TOGGLE ====== -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ====== MAIN LAYOUT ====== -->
+    <div class="layout">
+
+        <!-- ====== SIDEBAR ====== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="nav-section">
+                <div class="sidebar-title">Início</div>
+                <a href="#intro" class="nav-link active" data-section="intro">📖 Visão Geral</a>
+                <a href="#acesso-rapido" class="nav-link" data-section="acesso-rapido">⚡ Acesso Rápido</a>
+                <a href="#perfis" class="nav-link" data-section="perfis">🔑 Perfis e Credenciais</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="sidebar-title">Guias Operacionais</div>
+                <a href="#onboarding" class="nav-link" data-section="onboarding">👥 Onboarding de Parceiros</a>
+                <div class="nav-sub">
+                    <a href="#onboarding-form" class="nav-link" data-section="onboarding-form">Formulário Público</a>
+                    <a href="#onboarding-aprovacao" class="nav-link" data-section="onboarding-aprovacao">Aprovação Interna</a>
+                </div>
+                <a href="#casos" class="nav-link" data-section="casos">📋 Gestão de Casos</a>
+                <div class="nav-sub">
+                    <a href="#casos-novo" class="nav-link" data-section="casos-novo">Cadastrar Biópsia</a>
+                    <a href="#casos-upload" class="nav-link" data-section="casos-upload">Upload de Lâminas WSI</a>
+                    <a href="#casos-dashboard" class="nav-link" data-section="casos-dashboard">Painel e Listagem</a>
+                </div>
+                <a href="#viewer" class="nav-link" data-section="viewer">🔬 Visualizador WSI</a>
+                <a href="#laudos" class="nav-link" data-section="laudos">📝 Laudos e 2ª Opinião</a>
+                <a href="#auditoria" class="nav-link" data-section="auditoria">🛡️ Auditoria LGPD</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="sidebar-title">Segurança & Conformidade</div>
+                <a href="#lgpd" class="nav-link" data-section="lgpd">⚖️ Diretrizes LGPD</a>
+                <a href="#seguranca" class="nav-link" data-section="seguranca">🔐 Boas Práticas de Segurança</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="sidebar-title">Referência</div>
+                <a href="#faq" class="nav-link" data-section="faq">❓ Perguntas Frequentes</a>
+                <a href="#troubleshooting" class="nav-link" data-section="troubleshooting">🔧 Solução de Problemas</a>
+                <a href="#glossario" class="nav-link" data-section="glossario">📚 Glossário</a>
+                <a href="#contato" class="nav-link" data-section="contato">📞 Contato e Suporte</a>
+            </div>
+        </aside>
+
+        <!-- ====== CONTENT ====== -->
+        <main class="content">
+            <div class="content-inner">
+
+                <!-- ====== HERO ====== -->
+                <div class="hero">
+                    <div class="hero-badge">📖 Manual de Utilização — Versão 2.0</div>
+                    <h1>Bem-vindo ao Manual do dataPATH</h1>
+                    <p>Documentação oficial para a equipe da Profa. Dra. Sandra Ventorin (UFES / AFECC). Aprenda a operar o Mini-PACS de Patologia Digital, cadastrar casos, analisar lâminas WSI e emitir laudos de 2ª opinião remota.</p>
+                    <div class="hero-actions">
+                        <a href="#perfis" class="hero-btn white">🚀 Começar por Aqui</a>
+                        <a href="#acesso-rapido" class="hero-btn outline">⚡ Acesso Rápido</a>
+                        <a href="#faq" class="hero-btn outline">❓ FAQ</a>
+                    </div>
+                </div>
+
+                <!-- ====== 1. INTRO / VISÃO GERAL ====== -->
+                <section class="doc-section" id="intro">
+                    <div class="section-heading">
+                        <div class="section-icon">📖</div>
+                        <h2>Visão Geral da Plataforma<a class="anchor" href="#intro">§</a></h2>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🎯 Objetivo do Sistema</div>
+                        <p>O <strong>dataPATH</strong> é um sistema médico de Patologia Digital do tipo <em>Mini-PACS</em> (Picture Archiving and Communication System) projetado para o <strong>armazenamento seguro, visualização interativa e compartilhamento de lâminas histopatológicas em altíssima resolução</strong> (WSI — Whole Slide Imaging / Gigapixel).</p>
+                        <p>Desenvolvido sob a égide do projeto FAPES Nº 09/2024 (Extensão Tecnológica), o sistema atende à equipe do Laboratório de Patologia da UFES/AFECC coordenada pela Profa. Dra. Sandra Ventorin.</p>
+                    </div>
+
+                    <h3>Principais Módulos</h3>
+                    <div class="quick-grid">
+                        <a href="#onboarding" class="quick-card">
+                            <div class="quick-card-icon" style="background:#e0f2fe;color:#0369a1;">👥</div>
+                            <h4>Onboarding & Parceiros</h4>
+                            <p>Formulário público para captação de pesquisadores, aprovação de projetos e gestão de Ordens de Serviço (ORD).</p>
+                        </a>
+                        <a href="#casos" class="quick-card">
+                            <div class="quick-card-icon" style="background:#ccfbf1;color:#0f766e;">📋</div>
+                            <h4>Casos & Biópsias</h4>
+                            <p>Cadastro pseudonimizado de casos clínicos, associação com pesquisadores parceiros e acervo de lâminas.</p>
+                        </a>
+                        <a href="#viewer" class="quick-card">
+                            <div class="quick-card-icon" style="background:#d1fae5;color:#065f46;">🔬</div>
+                            <h4>WSI Viewer Gigapixel</h4>
+                            <p>Visualizador interativo com zoom 40x, ROI, medidor micrométrico e modo comparativo side-by-side.</p>
+                        </a>
+                        <a href="#laudos" class="quick-card">
+                            <div class="quick-card-icon" style="background:#fef3c7;color:#92400e;">📝</div>
+                            <h4>2ª Opinião & Laudos</h4>
+                            <p>Módulo clínico para emissão de pareceres diagnósticos remotos com assinatura digital.</p>
+                        </a>
+                        <a href="#auditoria" class="quick-card">
+                            <div class="quick-card-icon" style="background:#fce7f3;color:#be185d;">🛡️</div>
+                            <h4>Auditoria LGPD</h4>
+                            <p>Trilha de auditoria completa de todos os acessos e ações para conformidade com a Lei 13.709/2018.</p>
+                        </a>
+                        <a href="#lgpd" class="quick-card">
+                            <div class="quick-card-icon" style="background:#ede9fe;color:#6d28d9;">⚖️</div>
+                            <h4>Conformidade LGPD</h4>
+                            <p>Diretrizes rigorosas de pseudonimização, consentimento e governança de dados de saúde.</p>
+                        </a>
+                    </div>
+
+                    <h3>Fluxo Operacional End-to-End</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-steps">
+                            <div class="flow-step active">1. Pesquisador preenche formulário</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">2. Admin aprova e gera ORD</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">3. Técnico escaneia lâmina (3DHISTECH)</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">4. Caso + WSI cadastrados no sistema</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">5. Patologista analisa remotamente</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step ok">6. Laudo assinado e arquivado</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 2. ACESSO RÁPIDO ====== -->
+                <section class="doc-section" id="acesso-rapido">
+                    <div class="section-heading">
+                        <div class="section-icon">⚡</div>
+                        <h2>Acesso Rápido<a class="anchor" href="#acesso-rapido">§</a></h2>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🌐 Endereços Oficiais</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ambiente</th>
+                                    <th>URL</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge emerald">Produção</span></td>
+                                    <td><code>https://datapath.produtoweb.com.br</code></td>
+                                    <td>Ambiente oficial de produção (SSL/HSTS ativados).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge amber">Homologação</span></td>
+                                    <td><code>—</code></td>
+                                    <td>Conforme necessidade da equipe.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge sky">Manual Online</span></td>
+                                    <td><code>https://datapath.produtoweb.com.br/manual</code></td>
+                                    <td>Esta documentação (sempre atualizada).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout info">
+                        <div class="callout-icon">💡</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Dica: Salve este manual nos favoritos</div>
+                            <p>Adicione <code>datapath.produtoweb.com.br/manual</code> aos favoritos do navegador para acesso rápido a qualquer momento. O link também está disponível no menu superior do sistema.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 3. PERFIS DE ACESSO ====== -->
+                <section class="doc-section" id="perfis">
+                    <div class="section-heading">
+                        <div class="section-icon">🔑</div>
+                        <h2>Perfis de Acesso e Credenciais<a class="anchor" href="#perfis">§</a></h2>
+                    </div>
+
+                    <p>O sistema utiliza um modelo RBAC (Role-Based Access Control) com 3 perfis principais. Cada usuário deve utilizar o perfil correspondente à sua função, garantindo o <em>princípio do menor privilégio</em> — uma exigência da LGPD.</p>
+
+                    <h3>Tabela de Perfis Operacionais</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Perfil (Role)</th>
+                                <th>E-mail de Teste</th>
+                                <th>Senha Padrão</th>
+                                <th>Permissões Principais</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge sky">Admin</span> Administrador Geral</td>
+                                <td><code>admin@datapath.local</code></td>
+                                <td><code>DataPath@2026</code></td>
+                                <td>
+                                    ✅ Aprovar/rejeitar parceiros<br>
+                                    ✅ Visualizar trilha de auditoria LGPD<br>
+                                    ✅ Gestão completa de casos<br>
+                                    ✅ Governança e configurações
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge teal">LabOperator</span> Técnico de Laboratório</td>
+                                <td><code>maria.silva@datapath.local</code></td>
+                                <td><code>DataPath@2026</code></td>
+                                <td>
+                                    ✅ Cadastrar novas biópsias<br>
+                                    ✅ Upload de lâminas WSI (gigantes)<br>
+                                    ✅ Gestão de parceiros (visualização)<br>
+                                    ✅ Associar casos a pesquisadores
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge emerald">SpecialistDoctor</span> Médico Patologista</td>
+                                <td><code>carlos.mendes@datapath.local</code></td>
+                                <td><code>DataPath@2026</code></td>
+                                <td>
+                                    ✅ Acessar WSI Viewer Gigapixel<br>
+                                    ✅ Emitir pareceres de 2ª opinião<br>
+                                    ✅ Assinar digitalmente laudos<br>
+                                    ✅ Visualizar casos atribuídos
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout warning">
+                        <div class="callout-icon">⚠️</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Segurança: Nunca compartilhe credenciais</div>
+                            <p>Cada usuário deve ter sua própria conta individual. O compartilhamento de e-mails/senhas viola a LGPD (Art. 46) e invalida a trilha de auditoria. Para solicitar novas contatos, contate o administrador do sistema.</p>
+                        </div>
+                    </div>
+
+                    <h3>Tela de Login</h3>
+                    <p>Na página de login (<code>/login</code>), informe suas credenciais recebidas pelo administrador. Após o primeiro acesso, recomendamos alterar sua senha imediatamente.</p>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Acesse o endereço oficial</strong>
+                            <span>Abra <code>https://datapath.produtoweb.com.br</code> no navegador (Chrome ou Edge recomendados).</span>
+                        </li>
+                        <li>
+                            <strong>Clique em "Entrar"</strong>
+                            <span>No canto superior direito da página inicial, clique no botão de acesso.</span>
+                        </li>
+                        <li>
+                            <strong>Informe suas credenciais</strong>
+                            <span>Digite e-mail e senha fornecidos. Clique em "Autenticar".</span>
+                        </li>
+                        <li>
+                            <strong>Você verá o Dashboard</strong>
+                            <span>Após login bem-sucedido, será redirecionado ao Painel de Casos.</span>
+                        </li>
+                    </ol>
+
+                    <div class="callout danger">
+                        <div class="callout-icon">🔒</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Bloqueio por tentativas inválidas</div>
+                            <p>Após 5 tentativas de login com senha incorreta, a conta será temporariamente bloqueada por 30 minutos. Contate o administrador para desbloqueio imediato, se necessário.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 4. ONBOARDING ====== -->
+                <section class="doc-section" id="onboarding">
+                    <div class="section-heading">
+                        <div class="section-icon">👥</div>
+                        <h2>Onboarding de Parceiros e Pesquisadores<a class="anchor" href="#onboarding">§</a></h2>
+                    </div>
+
+                    <p>O módulo de Onboarding permite que <strong>pesquisadores externos e instituições parceiras</strong> solicitem o uso da infraestrutura do laboratório (Scanner WSI 3DHISTECH e/ou Real-Time PCR 7500). Todo o processo segue um fluxo de aprovação interna, gerando automaticamente uma <strong>Ordem de Serviço (ORD-XXXX)</strong>.</p>
+
+                    <!-- 4.1 FORMULÁRIO PÚBLICO -->
+                    <h3 id="onboarding-form">4.1 Formulário Público de Solicitação</h3>
+                    <p>O formulário está disponível publicamente em <code>/onboarding</code> ou no botão <strong>"Solicitar Acesso"</strong> da página inicial. Nenhuma autenticação é necessária para preenchê-lo.</p>
+
+                    <h4>Campos obrigatórios do formulário:</h4>
+                    <ul>
+                        <li><strong>Dados do pesquisador:</strong> Nome completo, CPF, e-mail institucional, Lattes, telefone.</li>
+                        <li><strong>Instituição:</strong> Universidade, departamento, curso de pós-graduação.</li>
+                        <li><strong>Projeto:</strong> Título, resumo (200-1500 palavras), linha de pesquisa.</li>
+                        <li><strong>Documentos:</strong> Upload obrigatório do parecer do <strong>CEP/CEUA (Comitê de Ética)</strong> em PDF.</li>
+                        <li><strong>Recursos solicitados:</strong> Digitalização WSI, uso de PCR, ou ambos.</li>
+                        <li><strong>Volume estimado:</strong> Quantidade aproximada de lâminas e prazo desejado.</li>
+                        <li><strong>Termo de LGPD:</strong> Declaração de responsabilidade e consentimento.</li>
+                    </ul>
+
+                    <div class="callout success">
+                        <div class="callout-icon">✅</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Após envio: Confirmação automática</div>
+                            <p>O solicitante recebe um e-mail de confirmação com o número de protocolo. Um membro da equipe também recebe notificação para avaliação.</p>
+                        </div>
+                    </div>
+
+                    <!-- 4.2 APROVAÇÃO INTERNA -->
+                    <h3 id="onboarding-aprovacao">4.2 Aprovação Interna (Admin / LabOperator)</h3>
+                    <p>A gestão das solicitações pendentes é feita na página <strong>Gestão de Parceiros</strong>, acessível no menu lateral para perfis Admin e Técnico.</p>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Navegue até "Gestão de Parceiros"</strong>
+                            <span>No menu principal, clique no botão correspondente. Você verá uma tabela com todas as solicitações, filtráveis por status.</span>
+                        </li>
+                        <li>
+                            <strong>Abra a solicitação detalhada</strong>
+                            <span>Clique na linha do pedido para ler o projeto completo, validar o currículo Lattes e conferir o parecer CEP/CEUA anexado.</span>
+                        </li>
+                        <li>
+                            <strong>Aprove ou Rejeite</strong>
+                            <span>Use o botão verde <span class="badge emerald">Aprovar Solicitação</span> para aprovar. O sistema:
+                                <ul style="margin-top:0.4rem;">
+                                    <li>Cria uma conta de usuário automaticamente para o pesquisador</li>
+                                    <li>Envia e-mail com credenciais temporárias</li>
+                                    <li>Ger a Ordem de Serviço (ORD-XXXX)</li>
+                                </ul>
+                            </span>
+                        </li>
+                        <li>
+                            <strong>Justifique rejeições (se aplicável)</strong>
+                            <span>Caso rejeite, informe um motivo claro. O solicitante receberá a justificativa por e-mail.</span>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- ====== 5. GESTÃO DE CASOS ====== -->
+                <section class="doc-section" id="casos">
+                    <div class="section-heading">
+                        <div class="section-icon">📋</div>
+                        <h2>Gestão de Casos Clínicos e Biópsias<a class="anchor" href="#casos">§</a></h2>
+                    </div>
+
+                    <p>O módulo de Casos é o coração operacional do sistema. Ele permite cadastrar exames biópticos pseudonimizados, associá-los a parceiros e armazenar as lâminas WSI no acervo.</p>
+
+                    <!-- 5.1 NOVO CASO -->
+                    <h3 id="casos-novo">5.1 Cadastrar Nova Biópsia</h3>
+                    <p>Perfis autorizados: <span class="badge teal">LabOperator</span> e <span class="badge sky">Admin</span>.</p>
+
+                    <div class="callout danger">
+                        <div class="callout-icon">⚖️</div>
+                        <div class="callout-body">
+                            <div class="callout-title">LGPD: NUNCA cadastre dados diretos de identificação</div>
+                            <p>É estritamente proibido inserir nome completo do paciente, CPF, RG, endereço ou qualquer dado que permita reidentificação. Utilize apenas <strong>códigos pseudônimos</strong> (ex: CASO-2026-0147) ou o número do prontuário interno. O sistema foi projetado para ser <em>default privacy</em>.</p>
+                        </div>
+                    </div>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Clique em "Cadastrar Biópsia"</strong>
+                            <span>No menu superior, selecione a opção correspondente. O formulário abrirá em tela cheia.</span>
+                        </li>
+                        <li>
+                            <strong>Dados básicos do caso</strong>
+                            <span>Informe: código pseudônimo, órgão/tecido, tipo de procedimento (biópsia excisional, agulha grossa, etc.), data da coleta.</span>
+                        </li>
+                        <li>
+                            <strong>Informações clínicas (resumo)</strong>
+                            <span>Resumo clínico breve, dados anatomopatológicos, coloração utilizada (H&E, IHQ, PAS, reticulina, etc.). Sem identificação pessoal.</span>
+                        </li>
+                        <li>
+                            <strong>Associe parceiros e equipamentos</strong>
+                            <span>Selecione o pesquisador responsável (da lista de parceiros aprovados) e o equipamento utilizado. Informe também a ORD-XXXX vinculada.</span>
+                        </li>
+                        <li>
+                            <strong>Salvar como Rascunho ou Publicar</strong>
+                            <span>Use "Rascunho" se for completar depois, ou "Salvar e Publicar" para disponibilizar o caso no acervo.</span>
+                        </li>
+                    </ol>
+
+                    <!-- 5.2 UPLOAD WSI -->
+                    <h3 id="casos-upload">5.2 Upload de Lâminas WSI (Whole Slide Imaging)</h3>
+                    <p>Após o Scanner 3DHISTECH Pannoramic DESK II gerar os arquivos digitais da lâmina, estes devem ser enviados para o sistema.</p>
+
+                    <h4>Formatos suportados:</h4>
+                    <ul>
+                        <li><code>.mrxs</code> — Formato nativo 3DHISTECH (recomendado)</li>
+                        <li><code>.svs</code> — Leica Aperio</li>
+                        <li><code>.ndpi</code> — Hamamatsu</li>
+                        <li><code>.tiff / .tif</code> — Genérico BigTIFF</li>
+                    </ul>
+
+                    <div class="callout info">
+                        <div class="callout-icon">💾</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Arquivos grandes? Sem problema</div>
+                            <p>O sistema suporta upload de arquivos de até <strong>50 GB</strong> por lâmina. A conexão deve estável (recomenda-se cabo de rede). Se a conexão cair, o upload é retomado de onde parou.</p>
+                        </div>
+                    </div>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Abra o caso desejado</strong>
+                            <span>No Painel de Casos, clique no caso para abrir a página de detalhes.</span>
+                        </li>
+                        <li>
+                            <strong>Vá até a seção "Lâminas WSI"</strong>
+                            <span>Clique em "Adicionar Lâmina" ou arraste e solte os arquivos diretamente na área de upload.</span>
+                        </li>
+                        <li>
+                            <strong>Acompanhe o progresso</strong>
+                            <span>Uma barra de progresso indicará o status. Você pode continuar navegando — o upload prossegue em background.</span>
+                        </li>
+                        <li>
+                            <strong>Processamento automático</strong>
+                            <span>Após o upload, o sistema gera automaticamente os tiles piramidais para visualização no WSI Viewer. Aguarde o status <span class="badge emerald">Pronto</span>.</span>
+                        </li>
+                    </ol>
+
+                    <!-- 5.3 DASHBOARD -->
+                    <h3 id="casos-dashboard">5.3 Painel de Casos (Dashboard)</h3>
+                    <p>O Dashboard é a tela principal após o login. Ele exibe:</p>
+                    <div class="quick-grid">
+                        <div class="quick-card" style="cursor:default;">
+                            <div class="quick-card-icon" style="background:#e0f2fe;color:#0369a1;">📊</div>
+                            <h4>KPIs Resumidos</h4>
+                            <p>Total de casos, lâminas processadas, aguardando laudo, taxa de ocupação.</p>
+                        </div>
+                        <div class="quick-card" style="cursor:default;">
+                            <div class="quick-card-icon" style="background:#ccfbf1;color:#0f766e;">🔍</div>
+                            <h4>Filtros Avançados</h4>
+                            <p>Filtrar por parceiro, tecido, status, data, coloração, OU ORD-XXXX.</p>
+                        </div>
+                        <div class="quick-card" style="cursor:default;">
+                            <div class="quick-card-icon" style="background:#fef3c7;color:#92400e;">🔖</div>
+                            <h4>Badges de Status</h4>
+                            <p>Rascunho, Aguardando, Em Análise, Laudado, Arquivado.</p>
+                        </div>
+                    </div>
+
+                    <p>Para abrir um caso específico, clique na linha correspondente da tabela. Você será levado à página de detalhes com todas as lâminas e pareceres associados.</p>
+                </section>
+
+                <!-- ====== 6. WSI VIEWER ====== -->
+                <section class="doc-section" id="viewer">
+                    <div class="section-heading">
+                        <div class="section-icon">🔬</div>
+                        <h2>Visualizador WSI Gigapixel<a class="anchor" href="#viewer">§</a></h2>
+                    </div>
+
+                    <p>O WSI Viewer é o ambiente de trabalho do patologista. Ele permite explorar lâminas de até <strong>100.000 x 80.000 pixels</strong> com desempenho fluido, graças à renderização piramidal de tiles.</p>
+
+                    <h3>Barra de Ferramentas Principal</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">Ícone</th>
+                                <th>Ferramenta</th>
+                                <th>Atalho</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>🖱️</code></td>
+                                <td>Pan / Mãozinha</td>
+                                <td><code>H</code> ou <code>Espaço</code></td>
+                                <td>Arrasta a imagem. Ferramenta padrão.</td>
+                            </tr>
+                            <tr>
+                                <td><code>🔍+</code></td>
+                                <td>Zoom In</td>
+                                <td><code>Scroll cima</code> / <code>+</code></td>
+                                <td>Aumenta a ampliação (objetiva: 10x → 20x → 40x).</td>
+                            </tr>
+                            <tr>
+                                <td><code>🔍-</code></td>
+                                <td>Zoom Out</td>
+                                <td><code>Scroll baixo</code> / <code>-</code></td>
+                                <td>Reduz a ampliação.</td>
+                            </tr>
+                            <tr>
+                                <td><code>📏</code></td>
+                                <td>Medidor Micrométrico</td>
+                                <td><code>M</code></td>
+                                <td>Mede distâncias em micrômetros. <strong>1 px ≈ 0,25 µm</strong> na objetiva 40x.</td>
+                            </tr>
+                            <tr>
+                                <td><code>⬛</code></td>
+                                <td>ROI (Região de Interesse)</td>
+                                <td><code>R</code></td>
+                                <td>Desenha retângulos para demarcar áreas e adicionar anotações.</td>
+                            </tr>
+                            <tr>
+                                <td><code>📝</code></td>
+                                <td>Anotações Livres</td>
+                                <td><code>N</code></td>
+                                <td>Desenha à mão livre diretamente sobre a lâmina.</td>
+                            </tr>
+                            <tr>
+                                <td><code>◧</code></td>
+                                <td>Modo Comparativo</td>
+                                <td><code>C</code></td>
+                                <td>Divide a tela para comparar 2 lâminas lado a lado (ex: H&E vs. IHQ).</td>
+                            </tr>
+                            <tr>
+                                <td><code>☀️</code></td>
+                                <td>Ajuste de Brilho / Contraste</td>
+                                <td><code>B</code></td>
+                                <span>Calibragem fina da imagem (salva por sessão).</span>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout success">
+                        <div class="callout-icon">🖥️</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Recomendação de hardware para patologistas</div>
+                            <p>Use monitor 4K (3840×2160) calibrado, mouse scroll de precisão e conexão com >= 30 Mbps. Chrome ou Edge em última versão. Evite telas com fidelidade de cor baixa (TN panels).</p>
+                        </div>
+                    </div>
+
+                    <h3>Navegador Geral (Minimapa)</h3>
+                    <p>No canto inferior direito, o minimapa mostra sua posição atual dentro da lâmina inteira. Clique em qualquer ponto dele para navegar rapidamente. Arraste o quadrado vermelho para reposicionar.</p>
+                </section>
+
+                <!-- ====== 7. LAUDOS ====== -->
+                <section class="doc-section" id="laudos">
+                    <div class="section-heading">
+                        <div class="section-icon">📝</div>
+                        <h2>Emissão de Laudos e 2ª Opinião Remota<a class="anchor" href="#laudos">§</a></h2>
+                    </div>
+
+                    <p>Perfil autorizado: <span class="badge emerald">SpecialistDoctor</span> Médico Patologista</p>
+
+                    <p>Este módulo permite ao corpo clínico emitir pareceres diagnósticos de segunda opinião de forma 100% digital. Cada laudo é assinado digitalmente e arquivado com carimbo de data/hora inalterável.</p>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Selecione um caso pendente</strong>
+                            <span>No Dashboard, filtre por <em>"Aguardando Análise"</em> e abra o caso desejado.</span>
+                        </li>
+                        <li>
+                            <strong>Analise a lâmina no WSI Viewer</strong>
+                            <span>Utilize todas as ferramentas do visualizador. Anote ROI (regiões de interesse) se desejar — elas ficarão vinculadas ao laudo.</span>
+                        </li>
+                        <li>
+                            <strong>Preencha o formulário de Parecer</strong>
+                            <span>No painel lateral direito, preencha:
+                                <ul style="margin-top:0.4rem;">
+                                    <li>Macroscopia / Microscopia</li>
+                                    <li>Diagnóstico / Hipótese Diagnóstica</li>
+                                    <li>Classificação TNM / Grau Histológico (se aplicável)</li>
+                                    <li>Marcadores IHQ e resultados</li>
+                                    <li>Conclusão e Observações</li>
+                                    <li>Recomendações clínicas</li>
+                                </ul>
+                            </span>
+                        </li>
+                        <li>
+                            <strong>Revise cuidadosamente</strong>
+                            <span>Após assinatura, o laudo não poderá ser editado — apenas emendado mediante novo procedimento formal.</span>
+                        </li>
+                        <li>
+                            <strong>Clique em "Assinar Digitalmente"</strong>
+                            <span>Confirme a assinatura. O sistema:
+                                <ul style="margin-top:0.4rem;">
+                                    <li>🔒 Congela o documento (imutável)</li>
+                                    <li>📅 Aplica carimbo de data/hora RFC 3161</li>
+                                    <li>📨 Envia notificação ao solicitante e admin</li>
+                                    <li>📄 Gera PDF oficial para download</li>
+                                </ul>
+                            </span>
+                        </li>
+                    </ol>
+
+                    <div class="callout warning">
+                        <div class="callout-icon">📋</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Responsabilidade clínica</div>
+                            <p>O parecer de 2ª opinião emitido no dataPATH é um documento médico formal. O sistema registra em auditoria <em>todas</em> as ações: visualizações, tempo gasto, edições de rascunho e assinatura final.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 8. AUDITORIA LGPD ====== -->
+                <section class="doc-section" id="auditoria">
+                    <div class="section-heading">
+                        <div class="section-icon">🛡️</div>
+                        <h2>Auditoria LGPD e Trilha de Acessos<a class="anchor" href="#auditoria">§</a></h2>
+                    </div>
+
+                    <p>Perfil autorizado: <span class="badge sky">Admin</span></p>
+
+                    <p>A página de Auditoria exibe a trilha completa de <em>todas</em> as ações do sistema, em conformidade com o Art. 46 da LGPD (registro de operações de tratamento de dados pessoais).</p>
+
+                    <h3>Eventos auditados automaticamente:</h3>
+                    <ul>
+                        <li>✅ Login e Logout (sucesso e falha)</li>
+                        <li>✅ Visualização de caso / lâmina WSI (inclui tempo de permanência)</li>
+                        <li>✅ Download de arquivos</li>
+                        <li>✅ Criação / Edição / Exclusão de casos clínicos</li>
+                        <li>✅ Emissão e assinatura de laudos</li>
+                        <li>✅ Upload de lâminas WSI</li>
+                        <li>✅ Aprovação / Rejeição de parceiros</li>
+                        <li>✅ Alterações de permissões e perfis</li>
+                        <li>✅ Acesso a dados de parceiros</li>
+                    </ul>
+
+                    <h3>Como usar a página de Auditoria:</h3>
+                    <ol class="step-list">
+                        <li>
+                            <strong>Acesse "Auditoria LGPD"</strong>
+                            <span>Menu superior (visível apenas para Admin).</span>
+                        </li>
+                        <li>
+                            <strong>Aplique filtros</strong>
+                            <span>Por usuário, período, tipo de ação, entidade (caso, laudo, etc.) e severidade.</span>
+                        </li>
+                        <li>
+                            <strong>Exporte relatórios</strong>
+                            <span>Clique em <em>"Exportar CSV / Excel"</em> para gerar relatórios oficiais para ANVISA ou auditorias internas.</span>
+                        </li>
+                    </ol>
+
+                    <div class="callout info">
+                        <div class="callout-icon">📦</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Retenção e backup</div>
+                            <p>Os logs de auditoria são armazenados por no mínimo 5 anos (prazo legal para área da saúde), com backups diários criptografados fora do servidor principal.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 9. LGPD ====== -->
+                <section class="doc-section" id="lgpd">
+                    <div class="section-heading">
+                        <div class="section-icon">⚖️</div>
+                        <h2>Diretrizes LGPD — Uso Correto e Ético dos Dados<a class="anchor" href="#lgpd">§</a></h2>
+                    </div>
+
+                    <p>Este sistema processa <strong>dados pessoais sensíveis de saúde</strong> (Art. 5º, inciso II, da Lei 13.709/2018 — LGPD). O não cumprimento das regras abaixo sujeita o usuário às penalidades previstas na lei (multas de até 2% do faturamento e interdição do sistema).</p>
+
+                    <h3>Princípios Fundamentais da Equipe</h3>
+
+                    <div class="card">
+                        <div class="card-title">✅ Regra Ouro 1 — Pseudonimização Imediata</div>
+                        <p>Todos os casos clínicos <strong>devem</strong> ser cadastrados apenas com códigos pseudônimos. Nenhum nome direto de paciente, CPF, prontuário original ou dado de endereço pode ser inserido. O arquivo de chave de reidentificação é mantido <em>offline</em> pelo coordenador, fora do sistema digital.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">✅ Regra Ouro 2 — Mínimo Necessário</div>
+                        <p>Acesse apenas os casos de sua responsabilidade clínica ou do seu projeto de pesquisa. A auditoria registrará todo acesso, mesmo que incidental. Não abra casos por curiosidade profissional.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">✅ Regra Ouro 3 — Consentimento Formal</div>
+                        <p>Qualquer compartilhamento secundário de lâminas ou dados (com outros centros de pesquisa, artigos, apresentações) exige <strong>TCLE (Termo de Consentimento Livre e Esclarecido)</strong> específico anexado ao projeto. Sem TCLE, não compartilhe.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">✅ Regra Ouro 4 — Sigilo Profissional</div>
+                        <p>Screenshots, gravações de tela ou exportação de lâminas para dispositivos pessoais são proibidas. As anotações clínicas permanecem no sistema. Em caso de dúvida sobre um caso, contate o coordenador.</p>
+                    </div>
+                </section>
+
+                <!-- ====== 10. SEGURANÇA ====== -->
+                <section class="doc-section" id="seguranca">
+                    <div class="section-heading">
+                        <div class="section-icon">🔐</div>
+                        <h2>Boas Práticas de Segurança Digital<a class="anchor" href="#seguranca">§</a></h2>
+                    </div>
+
+                    <h3>Para sua conta individual:</h3>
+                    <ol class="step-list">
+                        <li>
+                            <strong>Altere sua senha temporária</strong>
+                            <span>No primeiro acesso, vá em Perfil > Alterar Senha. Use senhas fortes com >= 12 caracteres, incluindo símbolos.</span>
+                        </li>
+                        <li>
+                            <strong>Nunca acesse em redes Wi-Fi públicas</strong>
+                            <span>Se necessário, use VPN institucional. Acesso via celular 4G/5G é preferível a Wi-Fi aberto de shoppings ou aeroportos.</span>
+                        </li>
+                        <li>
+                            <strong>Encerre sessão em computadores compartilhados</strong>
+                            <span>Sempre clique em "Sair" após usar o sistema, especialmente em máquinas do laboratório.</span>
+                        </li>
+                        <li>
+                            <strong>Antivírus atualizado</strong>
+                            <span>Mantenha antivírus e sistema operacional sempre atualizados (máquinas que acessam laudos).</span>
+                        </li>
+                    </ol>
+
+                    <div class="callout danger">
+                        <div class="callout-icon">🚨</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Incidentes? Comunique imediatamente</div>
+                            <p>Se suspeitar de vazamento de credencial, acesso indevido ou perda de dispositivo, avise o Administrador do sistema e a Profa. Dra. Sandra Ventorin em <u>até 1 hora</u>. A LGPD obriga notificação à ANPD em até 48h em incidentes graves.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== 11. FAQ ====== -->
+                <section class="doc-section" id="faq">
+                    <div class="section-heading">
+                        <div class="section-icon">❓</div>
+                        <h2>Perguntas Frequentes (FAQ)<a class="anchor" href="#faq">§</a></h2>
+                    </div>
+
+                    <h3>Contas e Acesso</h3>
+
+                    <div class="card">
+                        <p><strong>Q: Esqueci minha senha. Como recupero?</strong></p>
+                        <p>R: Atualmente, a redefinição é feita pelo Administrador do sistema. Envie um e-mail solicitando a geração de uma senha temporária.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>Q: Posso acessar o sistema pelo celular/tablet?</strong></p>
+                        <p>R: Para consulta básica, sim. Para análise de lâminas WSI (patologista), recomendamos desktop/notebook com tela grande. Navegadores recomendados: Chrome e Edge (últimas versões).</p>
+                    </div>
+
+                    <h3>Lâminas e Uploads</h3>
+
+                    <div class="card">
+                        <p><strong>Q: Meu upload travou em 95%. O que fazer?</strong></p>
+                        <p>R: Atualize a página e reenvie o mesmo arquivo. O sistema suporta resumir uploads incompletos. Se persistir, verifique sua conexão de rede (cabo é melhor que Wi-Fi).</p>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>Q: Posso excluir uma lâmina carregada errado?</strong></p>
+                        <p>R: Perfis Técnico e Admin podem marcar como "Retirada" (soft delete). A exclusão permanente é automática após 90 dias pelo StoragePurgeBackgroundService, para conformidade LGPD.</p>
+                    </div>
+
+                    <h3>Laudos e Auditoria</h3>
+
+                    <div class="card">
+                        <p><strong>Q: Assinei o laudo e me enganei em um dado. Posso editar?</strong></p>
+                        <p>R: Laudos assinados são imutáveis. Você deve emitir um <em>Adendo ou Correção</em> como novo procedimento vinculado ao mesmo caso. Isso preserva a cadeia de custódia clínica.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>Q: Como compartilho uma lâmina com um patologista externo?</strong></p>
+                        <p>R: O parceiro/pesquisador deve ser cadastrado pelo fluxo normal de Onboarding. Não envie arquivos .mrxs por e-mail ou WhatsApp — isso viola LGPD e extravasa a trilha de auditoria.</p>
+                    </div>
+                </section>
+
+                <!-- ====== 12. TROUBLESHOOTING ====== -->
+                <section class="doc-section" id="troubleshooting">
+                    <div class="section-heading">
+                        <div class="section-icon">🔧</div>
+                        <h2>Solução de Problemas Comuns<a class="anchor" href="#troubleshooting">§</a></h2>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:30%;">Sintoma</th>
+                                <th style="width:70%;">Solução Recomendada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Visualizador WSI carrega mas fica "travado" ou em baixo resolution</td>
+                                <td>
+                                    1. Verifique velocidade da internet (<a href="https://fast.com" target="_blank" rel="noopener">fast.com</a>). Precisamos de >= 10 Mbps.<br>
+                                    2. Desative extensões do Chrome que interceptam rede (VPNs gratuitas, ad blockers agressivos).<br>
+                                    3. Teste em <strong>janela anônima</strong> do navegador.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Erro "403 Forbidden" ao abrir um caso</td>
+                                <td>Seu perfil não tem permissão para este caso. Contate o Admin para verificar a atribuição do caso ou de seu perfil.</td>
+                            </tr>
+                            <tr>
+                                <td>Upload falha repetidamente com "Network Error"</td>
+                                <td>
+                                    1. Confira tamanho do arquivo (<= 50 GB).<br>
+                                    2. Conecte via cabo de rede (desative Wi-Fi).<br>
+                                    3. Feche programas que consomem banda (streaming, torrents).<br>
+                                    4. Se for >= 10 GB, deixe o upload rodando fora do horário de pico.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tela branca ao fazer login</td>
+                                <td>
+                                    1. Limpe cache do navegador (Ctrl+Shift+Del, apenas imagens e arquivos).<br>
+                                    2. Atualize a página com Ctrl+F5.<br>
+                                    3. Se persistir, abra Console do Desenvolvedor (F12) e tire print da aba "Console" para o suporte.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pdf de laudo não gera / download corrompido</td>
+                                <td>Desative bloqueadores de pop-up para o domínio <code>datapath.produtoweb.com.br</code>. Use Chrome em vez de Safari.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- ====== 13. GLOSSÁRIO ====== -->
+                <section class="doc-section" id="glossario">
+                    <div class="section-heading">
+                        <div class="section-icon">📚</div>
+                        <h2>Glossário Técnico<a class="anchor" href="#glossario">§</a></h2>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:22%;">Termo</th>
+                                <th>Definição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>WSI</strong></td><td>Whole Slide Imaging. Lâmina histopatológica digitalizada em alta resolução (formato gigapixel).</td></tr>
+                            <tr><td><strong>Mini-PACS</strong></td><td>Sistema de arquivamento e comunicação de imagens, em escala reduzida (específico para Patologia Digital, em oposição a PACS radiológico enterprise).</td></tr>
+                            <tr><td><strong>H&E</strong></td><td>Hematoxilina & Eosina. Coloração padrão-ouro em anatomia patológica.</td></tr>
+                            <tr><td><strong>IHQ / IHC</strong></td><td>Imuno-histoquímica. Técnica de marcação de antígenos teciduais.</td></tr>
+                            <tr><td><strong>ROI</strong></td><td>Region of Interest. Região de interesse demarcada pelo patologista na lâmina digital.</td></tr>
+                            <tr><td><strong>ORD-XXXX</strong></td><td>Ordem de Serviço. Número sequencial gerado automaticamente quando uma solicitação de parceiro é aprovada.</td></tr>
+                            <tr><td><strong>CEP / CEUA</strong></td><td>Comitê de Ética em Pesquisa (seres humanos) / Comitê de Ética no Uso de Animais. Parecer obrigatório para projetos de pesquisa.</td></tr>
+                            <tr><td><strong>TCLE</strong></td><td>Termo de Consentimento Livre e Esclarecido. Documento formal que autoriza uso de dados e/ou lâminas em pesquisa.</td></tr>
+                            <tr><td><strong>LGPD</strong></td><td>Lei nº 13.709/2018. Lei Geral de Proteção de Dados Pessoais, regulamenta tratamento de dados no Brasil.</td></tr>
+                            <tr><td><strong>Pseudonimização</strong></td><td>Processo de substituição de identificadores diretos por códigos irreconhecíveis sem consulta externa (requisito LGPD para dados de saúde).</td></tr>
+                            <tr><td><strong>RBAC</strong></td><td>Role-Based Access Control. Modelo de permissões baseado em cargos/perfis.</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- ====== 14. CONTATO ====== -->
+                <section class="doc-section" id="contato">
+                    <div class="section-heading">
+                        <div class="section-icon">📞</div>
+                        <h2>Contato e Canais de Suporte<a class="anchor" href="#contato">§</a></h2>
+                    </div>
+
+                    <h3>Equipe Responsável</h3>
+                    <div class="card">
+                        <div class="card-title">🏛️ Coordenação Geral</div>
+                        <p><strong>Profa. Dra. Sandra Ventorin</strong><br>Universidade Federal do Espírito Santo (UFES) & AFECC<br>Coordenação do Projeto FAPES 09/2024</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">💻 Suporte Técnico do Sistema</div>
+                        <p>Para incidentes com plataforma (login, upload, viewer, laudos):</p>
+                        <ul>
+                            <li>Canal primário: Grupo WhatsApp da equipe</li>
+                            <li>E-mail de emergência: Informado na reunião de onboarding</li>
+                            <li>SLA de resposta: até 4h úteis em dias de semana</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🔬 Dúvidas Clínicas ou Protocolares</div>
+                        <p>Questões sobre codificação de casos, critérios de laudo, conformidade ética ou uso de lâminas em pesquisa devem ser dirigidas à coordenação da Profa. Dra. Sandra Ventorin.</p>
+                    </div>
+
+                    <div class="callout info">
+                        <div class="callout-icon">📘</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Documentação Complementar</div>
+                            <p>Além deste manual, a equipe tem acesso a:</p>
+                            <ul style="margin-top:0.4rem;">
+                                <li>Arquitetura Técnica do Sistema (desenvolvedores)</li>
+                                <li>Política de Retenção e Destinação Final de Dados</li>
+                                <li>Plano de Resposta a Incidentes de Segurança</li>
+                            </ul>
+                            <p>Solicitar ao suporte técnico caso necessário.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ====== FOOTER ====== -->
+                <div class="doc-footer">
+                    <div class="doc-footer-brand">data<span>PATH</span></div>
+                    <p class="doc-footer-meta">
+                        Manual de Utilização Oficial • Versão 2.0 • Atualizado em Setembro de 2026<br>
+                        Plataforma Mini-PACS de Patologia Digital & Onboarding — Projeto FAPES Nº 09/2024 • UFES & AFECC<br>
+                        Conforme LGPD (Lei 13.709/2018) e normas de boas práticas ANVISA
+                    </p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ====== BACK TO TOP ====== -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+
+    <script>
+        // Scroll spy for sidebar
+        const sections = document.querySelectorAll('section.doc-section');
+        const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+        function updateActiveNav() {
+            let currentSection = null;
+            const scrollPos = window.scrollY + 120;
+
+            sections.forEach(section => {
+                if (section.offsetTop <= scrollPos) {
+                    currentSection = section.id;
+                }
+            });
+
+            if (!currentSection && sections.length > 0) {
+                currentSection = sections[0].id;
+            }
+
+            navLinks.forEach(link => {
+                const sectionId = link.getAttribute('data-section');
+                const matches = currentSection === sectionId ||
+                    (sectionId && currentSection && currentSection.startsWith(sectionId.split('-')[0]));
+                link.classList.toggle('active', matches);
+            });
+        }
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 500);
+        }, { passive: true });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile menu
+        const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            sidebarBackdrop.classList.add('open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarBackdrop.classList.remove('open');
+        }
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
+        sidebarBackdrop.addEventListener('click', closeSidebar);
+        navLinks.forEach(link => link.addEventListener('click', () => {
+            if (window.innerWidth <= 1024) closeSidebar();
+        }));
+
+        // Simple search: highlight matching sections
+        const searchInput = document.getElementById('searchInput');
+        const allContent = document.querySelector('.content-inner');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.trim().toLowerCase();
+            if (term.length < 2) {
+                navLinks.forEach(l => l.style.display = '');
+                sections.forEach(s => s.style.display = '');
+                document.querySelectorAll('.nav-section .sidebar-title').forEach(t => t.style.display = '');
+                return;
+            }
+
+            // Match sections by content or heading
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                const matched = text.includes(term);
+                section.style.display = matched ? '' : 'none';
+            });
+
+            // Match sidebar links
+            navLinks.forEach(link => {
+                const label = link.innerText.toLowerCase();
+                const linkedSection = document.getElementById(link.getAttribute('href').slice(1));
+                const visible = linkedSection && linkedSection.style.display !== 'none';
+                link.style.display = (label.includes(term) || visible) ? '' : 'none';
+            });
+
+            // Show/hide section titles
+            document.querySelectorAll('.nav-section').forEach(navSec => {
+                const links = navSec.querySelectorAll('.nav-link');
+                let anyVisible = false;
+                links.forEach(l => { if (l.style.display !== 'none') anyVisible = true; });
+                const title = navSec.querySelector('.sidebar-title');
+                if (title) title.style.display = anyVisible ? '' : 'none';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.length <= 1) return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

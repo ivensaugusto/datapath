@@ -10,8 +10,8 @@ import {
   CheckCircle2,
   Users,
   Sparkles,
-  BookOpen,
   Lock,
+  BookOpen,
 } from 'lucide-react';
 
 interface HomePageProps {
