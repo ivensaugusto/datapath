@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $portainerUrl = "https://pac.produtoweb.com.br"
 $user = "pwbot"
-$pass = "sneviugaS!26"
+$pass = "McdSdM*1317a"
 $stackName = "app-datapath"
 
 Write-Host "[1/4] Autenticando no Portainer..."
