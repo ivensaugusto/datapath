@@ -22,7 +22,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
 
   const handleClick = (id: Page | 'servico') => {
     if (id === 'servico') {
-      window.open('https://datapath.produtoweb.com.br', '_blank')
+      window.open('https://datapath.produtoweb.com.br/sistema', '_blank')
     } else {
       onNavigate(id)
       setMobileOpen(false)

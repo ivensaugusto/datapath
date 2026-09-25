@@ -254,7 +254,12 @@ public class CasesController : ControllerBase
     public async Task<IActionResult> UploadSlide(Guid id, IFormFile file)
     {
         if (file == null || file.Length == 0)
-            return BadRequest(new { Message = "Selecione um arquivo de lâmina válido." });
+            return BadRequest(new { Message = "Selecione um arquivo invalido." });
+
+        var allowedExtensions = new[] { ".svs", ".ndpi", ".tif", ".tiff", ".vms", ".vmu", ".scn", ".mrxs", ".bif", ".avif", ".webp", ".png", ".jpg", ".jpeg" };
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!allowedExtensions.Contains(extension))
+            return BadRequest(new { Message = "Formato de arquivo nao permitido. Apenas laminas WSI ou imagens sao aceitas." });
 
         var biopsyCase = await _db.BiopsyCases.FindAsync(id);
         if (biopsyCase == null)
@@ -372,3 +377,4 @@ public class CasesController : ControllerBase
         return (userId, role, partnerInstId);
     }
 }
+

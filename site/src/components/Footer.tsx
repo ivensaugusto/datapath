@@ -51,7 +51,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               ))}
               <li>
                 <a
-                  href="https://datapath.produtoweb.com.br"
+                  href="https://datapath.produtoweb.com.br/sistema"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-slate-300 hover:text-white transition-colors"
