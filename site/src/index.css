@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* ============================================
+   DigiPath — Design System (Site Vitrine)
+   Harmoniza tons lilás do logo com Sky/Teal do dataPATH
+   ============================================ */
+
+:root {
+  /* Cores primárias do dataPATH */
+  --color-primary: #0284c7;       /* Sky-600 */
+  --color-secondary: #0f766e;     /* Teal-700 */
+
+  /* Tons lilás/roxo do logo DigiPath */
+  --color-accent: #7c3aed;        /* Violet-600 */
+  --color-accent-light: #a78bfa;  /* Violet-400 */
+  --color-accent-soft: #ede9fe;   /* Violet-50 */
+
+  /* Neutros */
+  --color-bg: #f8fafc;            /* Slate-50 */
+  --color-surface: #ffffff;
+  --color-text: #0f172a;          /* Slate-900 */
+  --color-text-muted: #64748b;    /* Slate-500 */
+  --color-border: #e2e8f0;        /* Slate-200 */
+
+  /* Semânticas */
+  --color-success: #059669;       /* Emerald-600 */
+  --color-warning: #d97706;       /* Amber-600 */
+  --color-danger: #dc2626;        /* Red-600 */
+
+  /* Tipografia */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   Glass Card — Estilo compartilhado do dataPATH
+   ============================================ */
+.glass-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.glass-card-hover:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Gradientes
+   ============================================ */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(135deg, #f8fafc 0%, var(--color-accent-soft) 50%, #f0f9ff 100%);
+}
+
+.bg-gradient-footer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+/* ============================================
+   Glow Effects
+   ============================================ */
+.glow-primary {
+  box-shadow: 0 0 20px rgba(2, 132, 199, 0.2);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+/* ============================================
+   Scrollbar Customizada
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ============================================
+   Animações
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }

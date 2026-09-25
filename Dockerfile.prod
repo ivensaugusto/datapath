@@ -8,6 +8,13 @@ RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
+# Build Site Vitrine
+WORKDIR /app/site
+COPY site/package*.json ./
+RUN npm ci
+COPY site/ ./
+RUN npm run build
+
 # ════════════════════════════════════════════════════════════════════
 # STAGE 2: Build Backend (.NET 8 Web API)
 # ════════════════════════════════════════════════════════════════════
@@ -29,7 +36,8 @@ RUN apt-get update && apt-get install -y nginx supervisor curl && rm -rf /var/li
 COPY --from=backend-builder /app/publish ./backend
 
 # Copy Frontend Built Assets
-COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
+COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html/sistema
+COPY --from=frontend-builder /app/site/dist /usr/share/nginx/html/site
 
 # Copy Nginx Configuration
 COPY nginx.prod.conf /etc/nginx/sites-available/default

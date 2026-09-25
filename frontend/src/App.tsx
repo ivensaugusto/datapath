@@ -20,44 +20,47 @@ function getInitialRoute(): { page: string; caseId?: string } {
     return { page: 'home' };
   }
 
-  if (path === '/onboarding' || path === '/cadastrar' || searchParams.get('page') === 'onboarding-apply') {
+  // Remove o prefixo /sistema se existir para facilitar o matching
+  const routePath = path.startsWith('/sistema') ? path.replace('/sistema', '') || '/' : path;
+
+  if (routePath === '/onboarding' || routePath === '/cadastrar' || searchParams.get('page') === 'onboarding-apply') {
     return { page: 'onboarding-apply' };
   }
-  if (path === '/login') {
+  if (routePath === '/login') {
     return { page: 'login' };
   }
-  if (path === '/sistema' || path === '/dashboard' || searchParams.get('page') === 'dashboard') {
+  if (routePath === '/' || routePath === '/dashboard' || searchParams.get('page') === 'dashboard') {
     return { page: 'dashboard' };
   }
-  if (path === '/novo-caso') {
+  if (routePath === '/novo-caso') {
     return { page: 'new-case' };
   }
-  if (path.startsWith('/caso/')) {
-    const id = path.split('/caso/')[1];
+  if (routePath.startsWith('/caso/')) {
+    const id = routePath.split('/caso/')[1];
     return { page: 'case-detail', caseId: id };
   }
-  if (path === '/gestao-onboarding') {
+  if (routePath === '/gestao-onboarding') {
     return { page: 'onboarding-management' };
   }
-  if (path === '/auditoria') {
+  if (routePath === '/auditoria') {
     return { page: 'audit-logs' };
   }
-  if (path === '/' || path === '/home') {
+  if (routePath === '/home') {
     return { page: 'home' };
   }
-  return { page: 'home' };
+  return { page: 'dashboard' };
 }
 
 function updateBrowserUrl(page: string, caseId?: string) {
-  let targetPath = '/';
-  if (page === 'home') targetPath = '/';
-  else if (page === 'onboarding-apply') targetPath = '/onboarding';
-  else if (page === 'login') targetPath = '/login';
-  else if (page === 'dashboard') targetPath = '/dashboard';
-  else if (page === 'new-case') targetPath = '/novo-caso';
-  else if (page === 'case-detail' && caseId) targetPath = `/caso/${caseId}`;
-  else if (page === 'onboarding-management') targetPath = '/gestao-onboarding';
-  else if (page === 'audit-logs') targetPath = '/auditoria';
+  let targetPath = '/sistema';
+  if (page === 'home') targetPath = '/sistema/home';
+  else if (page === 'onboarding-apply') targetPath = '/sistema/onboarding';
+  else if (page === 'login') targetPath = '/sistema/login';
+  else if (page === 'dashboard') targetPath = '/sistema/dashboard';
+  else if (page === 'new-case') targetPath = '/sistema/novo-caso';
+  else if (page === 'case-detail' && caseId) targetPath = `/sistema/caso/${caseId}`;
+  else if (page === 'onboarding-management') targetPath = '/sistema/gestao-onboarding';
+  else if (page === 'audit-logs') targetPath = '/sistema/auditoria';
 
   if (window.location.pathname !== targetPath) {
     window.history.pushState({}, '', targetPath);
