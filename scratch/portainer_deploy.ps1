@@ -47,3 +47,4 @@ $updateRes = Invoke-RestMethod -Uri $updateUrl -Method Put -Headers $headers -Bo
 
 Write-Host "DEPLOIED CONCLUIDO COM SUCESSO!"
 Write-Host "URL: https://datapath.produtoweb.com.br"
+

@@ -51,7 +51,7 @@ O **dataPATH** é uma plataforma de Patologia Digital Mini-PACS e Módulo de Onb
 ### Credenciais de Infraestrutura (Portainer Server)
 * **URL:** `https://pac.produtoweb.com.br/#!/auth`
 * **Usuário:** `pwbot`
-* **Senha:** `McdSdM*1317a`
+* **Senha:** `[REMOVIDO_POR_SEGURANCA]`
 * **Stack Name:** `app-datapath` (obrigatoriamente prefixado com `app-`)
 
 ---
@@ -123,4 +123,5 @@ Sistema/
 1. **Adicionar novos campos ao Onboarding**: Caso precise adicionar campos no formulário de captação de parceiros, modifique a entidade `EquipmentAccessRequest.cs` em `backend/src/DataPath.Core/Entities/` e adicione o campo correspondente em `OnboardingApplyPage.tsx`.
 2. **Integração com NAS QNAP**: O driver de armazenamento abstrato em `backend/src/DataPath.Infrastructure/Storage/LocalFileSystemDriver.cs` pode ser substituído por `QnapRestApiDriver.cs` alterando apenas a flag `"Storage:DriverType": "Qnap"` no `appsettings.json`.
 3. **Certificado SSL**: O SSL é gerado e renovado automaticamente pelo container `acme-companion` do Nginx Proxy presente no servidor.
+
 

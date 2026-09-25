@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $portainerUrl = "https://pac.produtoweb.com.br"
 $user = "pwbot"
-$pass = 'McdSdM*1317a'
+$pass = $env:PORTAINER_PASSWORD
 
 Write-Host "[1/6] Compilando Frontend e Site Vitrine..."
 Set-Location -Path "frontend"
@@ -74,3 +74,4 @@ Write-Host $extRes
 Write-Host "DEPLOIED CONCLUIDO COM SUCESSO VIA HOT-DEPLOY!"
 Write-Host "Site Vitrine: https://datapath.produtoweb.com.br"
 Write-Host "Sistema Principal: https://datapath.produtoweb.com.br/sistema"
+
