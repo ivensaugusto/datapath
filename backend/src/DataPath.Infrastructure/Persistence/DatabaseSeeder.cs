@@ -38,7 +38,7 @@ public static class DatabaseSeeder
                 ""IsActive"" boolean NOT NULL,
                 ""CreatedByUserId"" uuid NOT NULL,
                 CONSTRAINT ""PK_NewsArticles"" PRIMARY KEY (""Id""),
-                CONSTRAINT ""FK_NewsArticles_Users_CreatedByUserId"" FOREIGN KEY (""CreatedByUserId"") REFERENCES "users" (""Id"") ON DELETE CASCADE
+                CONSTRAINT ""FK_NewsArticles_Users_CreatedByUserId"" FOREIGN KEY (""CreatedByUserId"") REFERENCES ""users"" (""Id"") ON DELETE CASCADE
             );
         ");
         // ── Verificar se já existe seed ──────────────────────────
@@ -202,5 +202,6 @@ public static class DatabaseSeeder
         logger.LogInformation("   → Senha padrão para todos: DataPath@2026");
     }
 }
+
 
 
