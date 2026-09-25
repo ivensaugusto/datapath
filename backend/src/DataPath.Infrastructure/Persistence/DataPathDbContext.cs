@@ -23,6 +23,7 @@ public class DataPathDbContext : DbContext
     public DbSet<DigitizationOrder> DigitizationOrders => Set<DigitizationOrder>();
     public DbSet<SlideFolder> SlideFolders => Set<SlideFolder>();
     public DbSet<EquipmentAccessRequest> EquipmentAccessRequests => Set<EquipmentAccessRequest>();
+    public DbSet<NewsArticle> NewsArticles => Set<NewsArticle>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

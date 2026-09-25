@@ -26,6 +26,21 @@ public static class DatabaseSeeder
 
     public static async Task SeedAsync(DataPathDbContext db, ILogger logger)
     {
+        // WORKAROUND DE MIGRACAO: Criar tabela NewsArticles manualmente
+        await db.Database.ExecuteSqlRawAsync(@"
+            CREATE TABLE IF NOT EXISTS ""NewsArticles"" (
+                ""Id"" uuid NOT NULL,
+                ""Title"" character varying(200) NOT NULL,
+                ""Summary"" character varying(500) NOT NULL,
+                ""Content"" text NOT NULL,
+                ""CoverImageUrl"" text,
+                ""PublishedAt"" timestamp with time zone NOT NULL,
+                ""IsActive"" boolean NOT NULL,
+                ""CreatedByUserId"" uuid NOT NULL,
+                CONSTRAINT ""PK_NewsArticles"" PRIMARY KEY (""Id""),
+                CONSTRAINT ""FK_NewsArticles_Users_CreatedByUserId"" FOREIGN KEY (""CreatedByUserId"") REFERENCES ""Users"" (""Id"") ON DELETE CASCADE
+            );
+        ");
         // ── Verificar se já existe seed ──────────────────────────
         if (await db.Users.AnyAsync())
         {
@@ -187,3 +202,4 @@ public static class DatabaseSeeder
         logger.LogInformation("   → Senha padrão para todos: DataPath@2026");
     }
 }
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X, Home, BookOpen, FileDown } from 'lucide-react';
+import { Microscope, Layers, PlusCircle, UserCheck, ShieldCheck, ExternalLink, LogOut, Menu, X, Home, BookOpen, FileDown, FileText } from 'lucide-react';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -96,6 +96,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                   }`}
                 >
                   <UserCheck className="h-4 w-4" /> Gestão de Parceiros
+                </button>
+                <button
+                  onClick={() => onNavigate('news-admin')}
+                  className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                    currentPage === 'news-admin'
+                      ? 'bg-sky-100 text-sky-800 border border-sky-200'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
+                >
+                  <FileText className="h-4 w-4" /> Notícias
                 </button>
               </>
             )}
@@ -244,3 +254,4 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     </header>
   );
 };
+

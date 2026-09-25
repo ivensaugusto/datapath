@@ -7,10 +7,11 @@ interface NewsCardProps {
   category: string
   imageColor: string
   tags: string[]
+  imageUrl?: string
 }
 
-export default function NewsCard({ title, summary, date, category, imageColor, tags }: NewsCardProps) {
-  const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', {
+export default function NewsCard({ title, summary, date, category, imageColor, tags, imageUrl }: NewsCardProps) {
+  const formattedDate = new Date(date).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -18,23 +19,26 @@ export default function NewsCard({ title, summary, date, category, imageColor, t
 
   return (
     <article className="glass-card glass-card-hover overflow-hidden flex flex-col">
-      {/* Thumbnail colorida */}
+      {/* Thumbnail */}
       <div
-        className="h-48 flex items-center justify-center relative overflow-hidden"
-        style={{ backgroundColor: imageColor + '15' }}
+        className="h-48 flex items-center justify-center relative overflow-hidden bg-slate-100"
       >
-        <div
-          className="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold"
-          style={{ backgroundColor: imageColor }}
-        >
-          {category.charAt(0)}
-        </div>
+        {imageUrl ? (
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <div
+            className="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold"
+            style={{ backgroundColor: imageColor || '#0284c7' }}
+          >
+            {category?.charAt(0) || 'N'}
+          </div>
+        )}
         {/* Badge de categoria */}
         <span
-          className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
-          style={{ backgroundColor: imageColor }}
+          className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm"
+          style={{ backgroundColor: imageColor || '#0284c7' }}
         >
-          {category}
+          {category || 'Notícia'}
         </span>
       </div>
 
@@ -53,10 +57,12 @@ export default function NewsCard({ title, summary, date, category, imageColor, t
             <Calendar className="w-3.5 h-3.5" />
             <span>{formattedDate}</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-[var(--color-text-muted)]">
-            <Tag className="w-3.5 h-3.5" />
-            <span>{tags.length} tags</span>
-          </div>
+          {tags && tags.length > 0 && (
+            <div className="flex items-center gap-1 text-xs text-[var(--color-text-muted)]">
+              <Tag className="w-3.5 h-3.5" />
+              <span>{tags.length} tags</span>
+            </div>
+          )}
         </div>
       </div>
     </article>

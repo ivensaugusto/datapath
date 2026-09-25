@@ -9,6 +9,7 @@ import { CaseDetailPage } from './pages/CaseDetailPage';
 import { AuditLogsPage } from './pages/AuditLogsPage';
 import { OnboardingApplyPage } from './pages/OnboardingApplyPage';
 import { OnboardingManagementPage } from './pages/OnboardingManagementPage';
+import NewsAdminPage from './pages/NewsAdminPage';
 
 function getInitialRoute(): { page: string; caseId?: string } {
   const path = window.location.pathname.toLowerCase();
@@ -20,7 +21,6 @@ function getInitialRoute(): { page: string; caseId?: string } {
     return { page: 'home' };
   }
 
-  // Remove o prefixo /sistema se existir para facilitar o matching
   const routePath = path.startsWith('/sistema') ? path.replace('/sistema', '') || '/' : path;
 
   if (routePath === '/onboarding' || routePath === '/cadastrar' || searchParams.get('page') === 'onboarding-apply') {
@@ -34,6 +34,15 @@ function getInitialRoute(): { page: string; caseId?: string } {
   }
   if (routePath === '/novo-caso') {
     return { page: 'new-case' };
+  }
+  if (routePath === '/auditoria') {
+    return { page: 'audit-logs' };
+  }
+  if (routePath === '/parceiros') {
+    return { page: 'onboarding-management' };
+  }
+  if (routePath === '/noticias-admin') {
+    return { page: 'news-admin' };
   }
   if (routePath.startsWith('/caso/')) {
     const id = routePath.split('/caso/')[1];
@@ -59,8 +68,9 @@ function updateBrowserUrl(page: string, caseId?: string) {
   else if (page === 'dashboard') targetPath = '/sistema/dashboard';
   else if (page === 'new-case') targetPath = '/sistema/novo-caso';
   else if (page === 'case-detail' && caseId) targetPath = `/sistema/caso/${caseId}`;
-  else if (page === 'onboarding-management') targetPath = '/sistema/gestao-onboarding';
+  else if (page === 'onboarding-management') targetPath = '/sistema/parceiros';
   else if (page === 'audit-logs') targetPath = '/sistema/auditoria';
+  else if (page === 'news-admin') targetPath = '/sistema/noticias-admin';
 
   if (window.location.pathname !== targetPath) {
     window.history.pushState({}, '', targetPath);
@@ -150,6 +160,7 @@ const MainApp: React.FC = () => {
         )}
         {activePage === 'audit-logs' && <AuditLogsPage />}
         {activePage === 'onboarding-management' && <OnboardingManagementPage />}
+        {activePage === 'news-admin' && <NewsAdminPage />}
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
