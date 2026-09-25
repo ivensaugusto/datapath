@@ -24,7 +24,7 @@ export default function NewsPage() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch('/sistema/api/news')
+        const res = await fetch('/api/news')
         if (res.ok) {
           const data: ApiNews[] = await res.json()
           // Convert to UI format
@@ -155,3 +155,4 @@ export default function NewsPage() {
     </div>
   )
 }
+
