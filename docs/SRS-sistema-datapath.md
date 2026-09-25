@@ -32,9 +32,9 @@ O DataPATH é um sistema web autônomo, desenhado em arquitetura **Clean Archite
 
 #### 2.3 Perfis de Usuário (RBAC)
 O sistema utiliza controle de acesso baseado em funções com os seguintes perfis:
-* **Admin** (`admin@datapath.local`): Acesso total a todas as funcionalidades do sistema, incluindo auditoria e gestão de usuários/casos.
-* **LabOperator** (`maria.silva@datapath.local`): Responsável por cadastrar novos casos, gerenciar o onboarding de parceiros e aprovações.
-* **SpecialistDoctor** (`carlos.mendes@datapath.local`): Médico patologista que visualiza lâminas e emite pareceres diagnósticos (2ª opinião).
+* **Admin** (`admin@datapath.local`): Acesso total a todas as funcionalidades do sistema, incluindo auditoria LGPD, aprovação de parceiros e governança.
+* **Equipe técnica** (`maria.silva@datapath.local` / `TechTeam`): Operadores de scanner 3DHISTECH, biólogos e técnicos responsáveis por cadastrar casos, fazer upload de lâminas WSI e gerenciar o onboarding operacionalmente.
+* **Usuário** (`carlos.mendes@datapath.local` / `User`): Pesquisadores da UFES, médicos patologistas da AFECC, alunos e parceiros externos que acessam o visualizador WSI, exploram acervos e emitem laudos ou pareceres.
 * **Senha padrão**: `DataPath@2026`
 
 #### 2.4 Restrições e Premissas
@@ -97,7 +97,7 @@ O sistema possui 9 entidades de domínio principais.
 
 #### 5.1 Enums Principais
 * **CaseStatus**: Pending, InReview, Laudado, ReadyForArchive.
-* **UserRole**: LabOperator, SpecialistDoctor, Admin.
+* **UserRole**: User, TechTeam, Admin.
 * **EquipmentModality**: IniciacaoCientifica, Mestrado, Doutorado, PosDoc, ParceiroClinico, Outro.
 * **PartnerInstitutionType**: AcademicResearch, ClinicalLab, Hospital, IndependentPathologist.
 
@@ -114,9 +114,9 @@ A API é estruturada em 7 Controllers. O sistema baseia-se na autenticação JWT
 #### CasesController (`/api/cases`)
 * `GET /api/cases` [Authorize]: Lista com paginação, filtros e suporte a multi-tenant.
 * `GET /api/cases/{id}` [Authorize]: Detalhes do caso e links WSI assinados com duração de 30 dias.
-* `POST /api/cases` [LabOperator, Admin]: Cadastrar novo caso.
-* `POST /api/cases/{id}/slides` [LabOperator, Admin]: Upload WSI (até 2GB, gera SHA-256).
-* `PUT /api/cases/{id}` [LabOperator, Admin]: Atualizar metadados do caso.
+* `POST /api/cases` [TechTeam, Admin]: Cadastrar novo caso.
+* `POST /api/cases/{id}/slides` [TechTeam, Admin]: Upload WSI (até 2GB, gera SHA-256).
+* `PUT /api/cases/{id}` [TechTeam, Admin]: Atualizar metadados do caso.
 * `DELETE /api/cases/{id}` [Admin]: Remover caso e arquivos.
 
 #### FilesController (`/api/files`)
@@ -124,16 +124,16 @@ A API é estruturada em 7 Controllers. O sistema baseia-se na autenticação JWT
 * `GET /api/files/shared/{encodedPath}` [AllowAnonymous]: Download através de link temporário HMAC/SHA256.
 
 #### OpinionsController (`/api/opinions`)
-* `POST /api/opinions/cases/{caseId}` [SpecialistDoctor, Admin]: Registrar parecer (Rascunho), muda caso para `InReview`.
-* `POST /api/opinions/{opinionId}/sign` [SpecialistDoctor, Admin]: Assinar laudo definitivamente, muda caso para `Laudado`.
+* `POST /api/opinions/cases/{caseId}` [User, Admin]: Registrar parecer (Rascunho), muda caso para `InReview`.
+* `POST /api/opinions/{opinionId}/sign` [User, Admin]: Assinar laudo definitivamente, muda caso para `Laudado`.
 * `GET /api/opinions/cases/{caseId}/report` [Authorize]: Gera/retorna PDF ou HTML do laudo.
 
 #### OnboardingController (`/api/v1/onboarding`)
 * `POST /api/v1/onboarding/apply` [AllowAnonymous]: Envio de solicitação (Formulário + até 5 PDFs, máx 50MB).
-* `GET /api/v1/onboarding/requests` [LabOperator, Admin]: Listagem paginada de solicitações pendentes.
-* `GET /api/v1/onboarding/requests/{id}/documents/{index}` [LabOperator, Admin]: Exibe PDF inline no navegador.
-* `POST /api/v1/onboarding/requests/{id}/approve` [LabOperator, Admin]: Aprova solicitação (Workflow de criação em cadeia).
-* `POST /api/v1/onboarding/requests/{id}/reject` [LabOperator, Admin]: Rejeita solicitação exigindo justificativa.
+* `GET /api/v1/onboarding/requests` [TechTeam, Admin]: Listagem paginada de solicitações pendentes.
+* `GET /api/v1/onboarding/requests/{id}/documents/{index}` [TechTeam, Admin]: Exibe PDF inline no navegador.
+* `POST /api/v1/onboarding/requests/{id}/approve` [TechTeam, Admin]: Aprova solicitação (Workflow de criação em cadeia).
+* `POST /api/v1/onboarding/requests/{id}/reject` [TechTeam, Admin]: Rejeita solicitação exigindo justificativa.
 
 #### AuditLogsController (`/api/auditlogs`)
 * `GET /api/auditlogs` [Admin]: Consulta paginada com filtros (action, entityName).
@@ -155,9 +155,9 @@ O frontend utiliza React 18 e Vite, implementando um roteador customizado (Histo
 | `/onboarding` ou `/cadastrar` | `OnboardingApplyPage` | Público |
 | `/login` | `LoginPage` | Público |
 | `/dashboard` ou `/sistema` | `DashboardPage` | Autenticado |
-| `/novo-caso` | `NewCasePage` | Admin, LabOperator |
+| `/novo-caso` | `NewCasePage` | Admin, TechTeam |
 | `/caso/:id` | `CaseDetailPage` | Autenticado |
-| `/gestao-onboarding`| `OnboardingManagementPage` | Admin, LabOperator |
+| `/gestao-onboarding`| `OnboardingManagementPage` | Admin, TechTeam |
 | `/auditoria` | `AuditLogsPage` | Admin |
 | `/manual` | Redirecionamento | Público |
 

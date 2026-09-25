@@ -55,10 +55,10 @@ public static class DatabaseSeeder
         var labOperator = new User
         {
             Id = OperatorId,
-            FullName = "Maria Silva — Técnica de Laboratório",
+            FullName = "Maria Silva — Equipe Técnica",
             Email = "maria.silva@datapath.local",
             PasswordHash = defaultPasswordHash,
-            Role = UserRole.LabOperator,
+            Role = UserRole.TechTeam,
             ProfessionalRegistration = "CRBM-12345",
             Specialty = "Histotecnologia",
             IsActive = true,
@@ -68,10 +68,10 @@ public static class DatabaseSeeder
         var specialist = new User
         {
             Id = DoctorId,
-            FullName = "Dr. Carlos Mendes — Patologista",
+            FullName = "Dr. Carlos Mendes — Usuário / Pesquisador",
             Email = "carlos.mendes@datapath.local",
             PasswordHash = defaultPasswordHash,
-            Role = UserRole.SpecialistDoctor,
+            Role = UserRole.User,
             ProfessionalRegistration = "CRM-SP 654321",
             Specialty = "Dermatopatologia",
             IsActive = true,

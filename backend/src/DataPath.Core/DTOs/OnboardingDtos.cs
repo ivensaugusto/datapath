@@ -73,7 +73,7 @@ public class ApproveOnboardingRequestDto
     public string? ReviewNotes { get; set; }
     public int ExpectedSlidesCount { get; set; } = 10;
     public PartnerInstitutionType InstitutionType { get; set; } = PartnerInstitutionType.AcademicResearch;
-    public UserRole AssignedUserRole { get; set; } = UserRole.LabOperator;
+    public UserRole AssignedUserRole { get; set; } = UserRole.User;
 }
 
 /// <summary>

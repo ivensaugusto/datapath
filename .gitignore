@@ -30,3 +30,7 @@ yarn-error.log*
 .vscode/
 .DS_Store
 Thumbs.db
+deploy_tmp/
+scratch/*.json
+scratch/*.gz
+

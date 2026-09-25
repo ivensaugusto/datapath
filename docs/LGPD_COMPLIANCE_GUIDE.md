@@ -25,7 +25,7 @@ Toda requisição que consome metadados de pacientes ou arquivos de imagem WSI �
 Cada registro no banco PostgreSQL contém:
 - **Timestamp UTC:** Data e hora exata no padrão ISO-8601.
 - **User ID & Email:** Identificação do operador ou médico autenticado.
-- **Role:** Perfil de acesso (`LabOperator`, `SpecialistDoctor`, `Admin`).
+- **Role:** Perfil de acesso (`TechTeam`, `User`, `Admin`).
 - **IP de Origem:** Endereço IP do dispositivo cliente (preservado pelo `X-Forwarded-For` do Nginx).
 - **Ação:** Método HTTP e rota acessada (ex: `GET /api/cases/case-902-abc`).
 - **User-Agent:** Identificador do navegador/sistema operacional.
@@ -37,14 +37,14 @@ Os logs de auditoria não possuem endpoints de alteração (`UPDATE`) ou exclus�
 
 ## 3. Matriz de Controle de Acesso Baseado em Cargos (RBAC)
 
-| Funcionalidade | Técnico Lab (`LabOperator`) | Médico Patologista (`SpecialistDoctor`) | Administrador (`Admin`) |
+| Funcionalidade | Equipe técnica (`TechTeam`) | Usuário / Pesquisador (`User`) | Administrador (`Admin`) |
 | :--- | :---: | :---: | :---: |
 | Cadastrar Caso Clínico | ✅ | ❌ | ✅ |
 | Upload de Lâmina WSI | ✅ | ❌ | ✅ |
 | Visualizar WSI & Anamnese | ✅ | ✅ | ✅ |
 | Emissão / Assinatura de Laudo | ❌ | ✅ | ✅ |
-| Aprovar Onboarding de Parceiros | ❌ | ❌ | ✅ |
-| Consultar Logs de Auditoria | ❌ | ❌ | ✅ |
+| Gestão Operacional de Parceiros | ✅ | ❌ | ✅ |
+| Aprovação Final & Auditoria LGPD | ❌ | ❌ | ✅ |
 
 ---
 

@@ -58,7 +58,7 @@ public class OnboardingControllerTests
         {
             InstitutionType = InstitutionType.PublicUniversity,
             ExpectedSlidesCount = 50,
-            AssignedUserRole = UserRole.Operator,
+            AssignedUserRole = UserRole.User,
             ReviewNotes = ""Approved for testing""
         };
 

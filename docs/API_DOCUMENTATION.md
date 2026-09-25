@@ -46,7 +46,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 2.1 Listar Casos Clínicos
 - **URL:** `GET /api/cases`
-- **Acesso:** Autenticado (`LabOperator`, `SpecialistDoctor`, `Admin`)
+- **Acesso:** Autenticado (`User`, `TechTeam`, `Admin`)
 - **Parâmetros Query:**
   - `search` (opcional): Filtro textual por código do caso ou síntese anamnéstica.
   - `organSite` (opcional): Ex: `Próstata`, `Mama`, `Pele`, `Pulmão`, `Tiróide`.
@@ -80,7 +80,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 2.3 Cadastrar Novo Caso Bióptico
 - **URL:** `POST /api/cases`
-- **Acesso:** `LabOperator`, `Admin`
+- **Acesso:** `TechTeam`, `Admin`
 - **Corpo da Requisição (JSON):**
 ```json
 {
@@ -95,7 +95,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 2.4 Upload de Lâmina Gigapixel (WSI)
 - **URL:** `POST /api/cases/{caseId}/slides`
-- **Acesso:** `LabOperator`, `Admin`
+- **Acesso:** `TechTeam`, `Admin`
 - **Form-Data:** `file` (Arquivo binário `.svs`, `.tif`, `.ndpi`, `.mrxs`, `.jpg`, `.png`).
 - **Resposta Sucesso (200 OK):**
 ```json
@@ -110,7 +110,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 2.5 Registrar Parecer Diagnóstico (2ª Opinião)
 - **URL:** `POST /api/cases/{caseId}/opinion`
-- **Acesso:** `SpecialistDoctor`, `Admin`
+- **Acesso:** `User`, `Admin`
 - **Corpo da Requisição (JSON):**
 ```json
 {
@@ -144,7 +144,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 3.2 Listar Solicitações (Painel Gestor)
 - **URL:** `GET /api/onboarding`
-- **Acesso:** `Admin`, `LabOperator`
+- **Acesso:** `Admin`, `TechTeam`
 - **Parâmetros Query:** `status` (`Pending`, `Approved`, `Rejected`), `equipment` (`scanner`, `pcr`).
 
 ### 3.3 Aprovar Solicitação

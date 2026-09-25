@@ -68,7 +68,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
             Gestão de lâminas histopatológicas gigapixel e telepatologia diagnóstica em tempo real
           </p>
         </div>
-        {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
+        {(user?.role === 'TechTeam' || user?.role === 'LabOperator' || user?.role === 'Admin') && (
           <button
             onClick={() => onNavigate('new-case')}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-sky-600 hover:bg-sky-700 px-5 text-sm font-bold text-white shadow-md shadow-sky-600/20 transition-all"

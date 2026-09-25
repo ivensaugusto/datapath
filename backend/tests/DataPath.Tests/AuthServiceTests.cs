@@ -72,7 +72,7 @@ public class AuthServiceTests
             Email = "doctor@test.com",
             FullName = "Dr. Test Pathologist",
             PasswordHash = passwordHash,
-            Role = UserRole.SpecialistDoctor,
+            Role = UserRole.User,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
         };
@@ -90,6 +90,6 @@ public class AuthServiceTests
         Assert.NotNull(result);
         Assert.NotNull(result.Token);
         Assert.Equal("doctor@test.com", result.User.Email);
-        Assert.Equal("SpecialistDoctor", result.User.Role);
+        Assert.Equal("User", result.User.Role);
     }
 }

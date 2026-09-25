@@ -2,7 +2,7 @@ export interface User {
   id: string;
   fullName: string;
   email: string;
-  role: 'Admin' | 'LabOperator' | 'SpecialistDoctor';
+  role: 'Admin' | 'TechTeam' | 'User' | 'LabOperator' | 'SpecialistDoctor';
   professionalRegistration?: string;
   specialty?: string;
 }

@@ -51,8 +51,8 @@ public class CasesController : ControllerBase
             .AsNoTracking()
             .AsQueryable();
 
-        // Trava Multi-Tenant para Médicos/Parceiros
-        if (role != UserRole.Admin.ToString() && role != UserRole.LabOperator.ToString())
+        // Trava Multi-Tenant para Usuários/Parceiros
+        if (role != UserRole.Admin.ToString() && role != UserRole.TechTeam.ToString() && role != UserRole.LabOperator.ToString())
         {
             query = query.Where(c => c.SlideFolder != null && c.SlideFolder.Policy == StoragePolicyType.PublicRepository ||
                                      c.CreatedByUserId == userId ||
@@ -133,7 +133,7 @@ public class CasesController : ControllerBase
         if (biopsyCase == null)
             return NotFound(new { Message = "Caso clínico não encontrado." });
 
-        if (role != UserRole.Admin.ToString() && role != UserRole.LabOperator.ToString())
+        if (role != UserRole.Admin.ToString() && role != UserRole.TechTeam.ToString() && role != UserRole.LabOperator.ToString())
         {
             bool hasAccess = biopsyCase.SlideFolder?.Policy == StoragePolicyType.PublicRepository ||
                              biopsyCase.CreatedByUserId == userId ||

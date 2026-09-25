@@ -74,14 +74,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               onClick={() => fillQuickUser('maria.silva@datapath.local')}
               className="p-2 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 text-xs font-bold transition-all text-center"
             >
-              👩‍🔬 Técnico
+              🧪 Equipe técnica
             </button>
             <button
               type="button"
               onClick={() => fillQuickUser('carlos.mendes@datapath.local')}
               className="p-2 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 text-xs font-bold transition-all text-center"
             >
-              👨‍⚕️ Patologista
+              🔬 Usuário
             </button>
             <button
               type="button"

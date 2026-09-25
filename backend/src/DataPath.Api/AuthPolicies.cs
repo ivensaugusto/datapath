@@ -12,17 +12,19 @@ public static class AuthPolicies
     public const string AdminOnly = "AdminOnly";
 
     /// <summary>
-    /// LabOperator ou Admin (CRUD completo de casos).
+    /// Equipe Técnica ou Admin (CRUD de casos e onboarding).
     /// </summary>
-    public const string LabOperatorOrAdmin = "LabOperatorOrAdmin";
+    public const string TechTeamOrAdmin = "TechTeamOrAdmin";
+    public const string LabOperatorOrAdmin = TechTeamOrAdmin;
 
     /// <summary>
-    /// SpecialistDoctor, LabOperator ou Admin (leitura de casos + emissão de parecer).
+    /// Usuário, Equipe Técnica ou Admin.
     /// </summary>
     public const string AnyAuthenticated = "AnyAuthenticated";
 
     /// <summary>
-    /// Apenas SpecialistDoctor ou Admin (emissão de pareceres).
+    /// Usuário ou Admin (emissão de pareceres e análises).
     /// </summary>
-    public const string DoctorOrAdmin = "DoctorOrAdmin";
+    public const string UserOrAdmin = "UserOrAdmin";
+    public const string DoctorOrAdmin = UserOrAdmin;
 }

@@ -17,10 +17,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     switch (role) {
       case 'Admin':
         return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800 border border-sky-200">Admin</span>;
+      case 'TechTeam':
       case 'LabOperator':
-        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-100 text-teal-800 border border-teal-200">Técnico Lab</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-100 text-teal-800 border border-teal-200">Equipe técnica</span>;
+      case 'User':
       case 'SpecialistDoctor':
-        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Patologista</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Usuário</span>;
       default:
         return null;
     }
@@ -72,7 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               <Layers className="h-4 w-4" /> Painel de Casos
             </button>
 
-            {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
+            {(user?.role === 'TechTeam' || user?.role === 'LabOperator' || user?.role === 'Admin') && (
               <>
                 <button
                   onClick={() => onNavigate('new-case')}
@@ -188,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           >
             <Layers className="h-4 w-4 text-sky-600" /> Painel de Casos
           </button>
-          {(user?.role === 'LabOperator' || user?.role === 'Admin') && (
+          {(user?.role === 'TechTeam' || user?.role === 'LabOperator' || user?.role === 'Admin') && (
             <>
               <button
                 onClick={() => { onNavigate('new-case'); setMobileOpen(false); }}

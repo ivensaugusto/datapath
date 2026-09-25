@@ -17,7 +17,7 @@ Stack: .NET 8 (ASP.NET Core Web API) + PostgreSQL 16 + React 18 (Vite/TypeScript
 
 ## ÉPICO 2: Autenticação, Segurança e Conformidade LGPD (RBAC)
 - [x] **US-201**: Implementar autenticação via JWT (JSON Web Token) no .NET 8 com senhas hasheadas utilizando BCrypt ou Argon2.
-- [x] **US-202**: Configurar controle de acesso baseado em cargos (RBAC): perfil `LabOperator` (acesso total no CRUD), `SpecialistDoctor` (acesso aos casos) e `Admin` (governança).
+- [x] **US-202**: Configurar controle de acesso baseado em cargos (RBAC): perfil `Equipe técnica` / `TechTeam` (gestão operacional do acervo), `Usuário` / `User` (pesquisadores/médicos) e `Admin` (governança).
 - [x] **US-203**: Criar middleware de auditoria (`AuditLogMiddleware`) para registrar no banco (IP, Horário, Usuário e Ação) todo acesso a metadados clínicos e arquivos.
 
 ## ÉPICO 3: Mini-PACS e Cadastro de Casos Clínicos

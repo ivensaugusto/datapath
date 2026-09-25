@@ -64,14 +64,14 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(AuthPolicies.AdminOnly, policy =>
         policy.RequireRole("Admin"));
 
-    options.AddPolicy(AuthPolicies.LabOperatorOrAdmin, policy =>
-        policy.RequireRole("LabOperator", "Admin"));
+    options.AddPolicy(AuthPolicies.TechTeamOrAdmin, policy =>
+        policy.RequireRole("TechTeam", "Admin", "LabOperator"));
 
-    options.AddPolicy(AuthPolicies.DoctorOrAdmin, policy =>
-        policy.RequireRole("SpecialistDoctor", "Admin"));
+    options.AddPolicy(AuthPolicies.UserOrAdmin, policy =>
+        policy.RequireRole("User", "Admin", "SpecialistDoctor"));
 
     options.AddPolicy(AuthPolicies.AnyAuthenticated, policy =>
-        policy.RequireRole("LabOperator", "SpecialistDoctor", "Admin"));
+        policy.RequireRole("User", "TechTeam", "Admin", "LabOperator", "SpecialistDoctor"));
 });
 
 // ── CORS (permitir Frontend React em dev) ────────────────────────

@@ -49,7 +49,7 @@ public class FilesController : ControllerBase
         var partnerInstStr = User.FindFirst("partner_institution_id")?.Value;
         Guid? partnerInstId = Guid.TryParse(partnerInstStr, out var pId) ? pId : null;
 
-        if (role != "Admin" && role != "LabOperator" && slide.SlideFolder?.Policy != Core.Enums.StoragePolicyType.PublicRepository)
+        if (role != "Admin" && role != "TechTeam" && role != "LabOperator" && slide.SlideFolder?.Policy != Core.Enums.StoragePolicyType.PublicRepository)
         {
             bool hasAccess = slide.BiopsyCase.CreatedByUserId == userId ||
                              slide.BiopsyCase.AssignedDoctorId == userId ||

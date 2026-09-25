@@ -25,14 +25,14 @@ O **dataPATH** é uma plataforma de Patologia Digital Mini-PACS e Módulo de Onb
 ### Backend
 * **Linguagem / Framework**: C# / .NET 8 (ASP.NET Core Web API)
 * **Banco de Dados**: PostgreSQL 16 Alpine com Entity Framework Core 8
-* **Autenticação**: JWT (JSON Web Tokens) com RBAC (`Admin`, `LabOperator`, `SpecialistDoctor`)
+* **Autenticação**: JWT (JSON Web Tokens) com RBAC (`Admin`, `TechTeam` / Equipe técnica, `User` / Usuário)
 * **Armazenamento**: Abstração `IStorageProvider` com implementação `LocalFileSystemDriver` (suporta expansão para NAS QNAP)
 * **Localização no Código**: `backend/src/DataPath.Api`, `backend/src/DataPath.Core`, `backend/src/DataPath.Infrastructure`
 
 ### Frontend
 * **Framework**: React 18 + TypeScript + Vite 8
 * **Estilização**: TailwindCSS v4 + CSS Vanilla (`index.css`)
-* **Design System**: Modos escuros avançados, cores tailgated, cards com bordas arredondadas (`rounded-2xl`) e amplo respiro interno (`p-6`/`p-8`)
+* **Design System**: Modo claro clínico institucional (`#0284c7`, `#0f766e`, `#f8fafc`)
 * **Localização no Código**: `frontend/src/`
 
 ---
@@ -44,9 +44,9 @@ O **dataPATH** é uma plataforma de Patologia Digital Mini-PACS e Módulo de Onb
 
 | Perfil | E-mail | Descrição do Escopo |
 | :--- | :--- | :--- |
-| **Administrador** | `admin@datapath.local` | Acesso total, gestão de usuários, auditoria LGPD e onboarding |
-| **Técnico de Laboratório** | `maria.silva@datapath.local` | Criar casos, associar lâminas WSI, gerenciar parceiros |
-| **Médico Patologista** | `carlos.mendes@datapath.local` | Visualizar lâminas, emitir pareceres de 2ª opinião |
+| **Administrador (`Admin`)** | `admin@datapath.local` | Acesso total, gestão de parceiros, auditoria LGPD e onboarding |
+| **Equipe técnica (`TechTeam`)** | `maria.silva@datapath.local` | Criar casos, associar lâminas WSI, gestão operacional de parceiros |
+| **Usuário (`User`)** | `carlos.mendes@datapath.local` | Pesquisadores UFES/AFECC, patologistas, exploração WSI e laudos |
 
 ### Credenciais de Infraestrutura (Portainer Server)
 * **URL:** `https://pac.produtoweb.com.br/#!/auth`

@@ -17,8 +17,8 @@ public enum CaseStatus
 /// </summary>
 public enum UserRole
 {
-    LabOperator = 0,
-    SpecialistDoctor = 1,
+    User = 0,
+    TechTeam = 1,
     Admin = 2
 }
 

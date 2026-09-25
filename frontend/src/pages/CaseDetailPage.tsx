@@ -105,7 +105,7 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({ caseId, onNaviga
     return <div className="py-12 text-center text-sm font-bold text-rose-600">Caso clínico não encontrado.</div>;
   }
 
-  const isDoctorOrAdmin = user?.role === 'SpecialistDoctor' || user?.role === 'Admin';
+  const isDoctorOrAdmin = user?.role === 'User' || user?.role === 'SpecialistDoctor' || user?.role === 'Admin';
 
   return (
     <div className="space-y-6">
