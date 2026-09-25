@@ -59,7 +59,7 @@ export default function NewsAdminPage() {
       if (!editingId) {
         const res = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': Bearer  },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({ title, summary, content })
         })
         if (!res.ok) {
@@ -69,9 +69,9 @@ export default function NewsAdminPage() {
         const data = await res.json()
         articleId = data.id
       } else {
-        const res = await fetch(${API_URL}/, {
+        const res = await fetch(API_URL + '/' + editingId, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'Authorization': Bearer  },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({ title, summary, content, isActive })
         })
         if (!res.ok) throw new Error('Erro ao atualizar: ' + res.status)
@@ -80,9 +80,9 @@ export default function NewsAdminPage() {
       if (coverImage && articleId) {
         const formData = new FormData()
         formData.append('file', coverImage)
-        const uRes = await fetch(${API_URL}//upload-image, {
+        const uRes = await fetch(API_URL + '/' + articleId + '/upload-image', {
           method: 'POST',
-          headers: { 'Authorization': Bearer  },
+          headers: { 'Authorization': 'Bearer ' + token },
           body: formData
         })
         if (!uRes.ok) throw new Error('Erro imagem: ' + uRes.status)
@@ -92,10 +92,9 @@ export default function NewsAdminPage() {
       fetchNews()
     } catch (err: any) {
       console.error(err)
-      alert(err.message || 'Erro ao salvar notícia.')
+      alert(err.message || 'Erro ao salvar not�cia.')
     }
   }
-
   const handleDelete = async (id: string) => {
     if (!confirm("Tem certeza que deseja apagar esta notÃ­cia?")) return
     const token = localStorage.getItem('datapath_token')
