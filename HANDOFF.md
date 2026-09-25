@@ -70,7 +70,7 @@ Quando modificar apenas arquivos do frontend em `frontend/src/`:
    ```
 2. Execute o script de hot-deploy via PowerShell:
    ```powershell
-   powershell -ExecutionPolicy Bypass -File "scratch/hot_deploy_exec.ps1"
+   powershell -ExecutionPolicy Bypass -File "scratch/full_hot_deploy.ps1"
    ```
    *O script empacota o `dist/` em base64 e o injeta via API Exec do Portainer direto em `/usr/share/nginx/html` no container `datapath-app`, recarregando o Nginx sem derrubar o backend.*
 
@@ -123,3 +123,4 @@ Sistema/
 1. **Adicionar novos campos ao Onboarding**: Caso precise adicionar campos no formulário de captação de parceiros, modifique a entidade `EquipmentAccessRequest.cs` em `backend/src/DataPath.Core/Entities/` e adicione o campo correspondente em `OnboardingApplyPage.tsx`.
 2. **Integração com NAS QNAP**: O driver de armazenamento abstrato em `backend/src/DataPath.Infrastructure/Storage/LocalFileSystemDriver.cs` pode ser substituído por `QnapRestApiDriver.cs` alterando apenas a flag `"Storage:DriverType": "Qnap"` no `appsettings.json`.
 3. **Certificado SSL**: O SSL é gerado e renovado automaticamente pelo container `acme-companion` do Nginx Proxy presente no servidor.
+
