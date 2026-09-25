@@ -26,6 +26,9 @@ public static class DatabaseSeeder
 
     public static async Task SeedAsync(DataPathDbContext db, ILogger logger)
     {
+                // WORKAROUND DE MIGRAÇÃO: Corrige os nomes dos roles antigos no banco
+        await db.Database.ExecuteSqlRawAsync("UPDATE users SET \"Role\" = 'TechTeam' WHERE \"Role\" = 'LabOperator';");
+        await db.Database.ExecuteSqlRawAsync("UPDATE users SET \"Role\" = 'User' WHERE \"Role\" = 'SpecialistDoctor';");
         // WORKAROUND DE MIGRACAO: Criar tabela NewsArticles manualmente
         await db.Database.ExecuteSqlRawAsync(@"
             CREATE TABLE IF NOT EXISTS ""NewsArticles"" (
@@ -202,6 +205,7 @@ public static class DatabaseSeeder
         logger.LogInformation("   â†’ Senha padrÃ£o para todos: DataPath@2026");
     }
 }
+
 
 
 
