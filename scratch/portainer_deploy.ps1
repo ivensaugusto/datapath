@@ -29,18 +29,18 @@ if (-not $targetStack) {
 
 Write-Host ("Target Stack -> ID: " + $targetStack.Id + " | Nome: " + $targetStack.Name)
 
-Write-Host "[3/4] Obtendo docker-compose da Stack..."
-$fileRes = Invoke-RestMethod -Uri ("$portainerUrl/api/stacks/" + $targetStack.Id + "/file") -Method Get -Headers $headers
+Write-Host "[3/4] Lendo docker-compose.prod.yml local..."
+$localCompose = Get-Content "docker-compose.prod.yml" -Raw
 
 Write-Host "[4/4] Executando Redeploy..."
 $endpointId = $targetStack.EndpointId
 $updateUrl = "$portainerUrl/api/stacks/" + $targetStack.Id + "?endpointId=" + $endpointId
 
 $updatePayload = @{
-    stackFileContent = $fileRes.StackFileContent
+    stackFileContent = $localCompose
     env = $targetStack.Env
     prune = $true
-    pullImage = $true
+    pullImage = $false
 } | ConvertTo-Json -Depth 10
 
 $updateRes = Invoke-RestMethod -Uri $updateUrl -Method Put -Headers $headers -Body $updatePayload -ContentType "application/json"
